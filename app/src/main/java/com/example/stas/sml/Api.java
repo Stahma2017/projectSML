@@ -10,6 +10,9 @@ import retrofit2.http.Query;
 
 public interface Api {
     @GET("/v2/venues/search")
-    Call<List<PlaceResponce>> search(@Query("name") String resourceName);
-
+    Call<PlaceResponce> search(@Query("client_id") String clientID,
+                               @Query("client_secret") String clientSecret,
+                               @Query("v") String version,
+                               @Query("ll") String ll,
+                               @Query("llAcc") double llAcc);
 }
