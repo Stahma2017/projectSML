@@ -2,7 +2,6 @@ package com.example.stas.sml.Model;
 
 import java.util.List;
 
-import com.example.stas.sml.Model.LabeledLatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
