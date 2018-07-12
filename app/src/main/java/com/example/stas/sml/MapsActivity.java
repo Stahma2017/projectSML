@@ -2,7 +2,9 @@ package com.example.stas.sml;
 
 import android.Manifest;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -10,6 +12,11 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -18,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import com.example.stas.sml.Model.PlaceResponce;
-import com.example.stas.sml.VenueDetailedModel.VenueDetailed;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -32,8 +39,9 @@ import java.io.IOException;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
 
     private GoogleMap mMap;
-    Marker marker;
-    String venueId;
+    private Marker marker;
+    private String venueId;
+    private Disposable disposable;
 
     private Api serverApi = RetrofitClient.getInstance().getApi();
 
@@ -42,6 +50,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMap();
+
+        disposable = ReactiveNetwork.observeInternetConnectivity()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(isConnectedToInternet -> {
+                    Toast.makeText(MapsActivity.this, "Connection is" + isConnectedToInternet, Toast.LENGTH_SHORT);
+                });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
     }
 
     @Override
@@ -54,7 +75,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapClick(LatLng latLng) {
         setMarker(latLng);
         MapsActivityPermissionsDispatcher.setMarkerWithPermissionCheck(this, latLng);
-        Log.d("Markers", "Click on " + marker.getPosition());
     }
 
 
@@ -64,15 +84,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setMarker(latLng);
         MapsActivityPermissionsDispatcher.setMarkerWithPermissionCheck(this, latLng);
 
-
-        //когда с search(latLng) Ошибка в логах: ll must be of the form XX.XX,YY.YY
-        Call<PlaceResponce> searches = serverApi.search("44.3,37.2",
+        String point = latLng.latitude + "," + latLng.longitude;
+        Call<PlaceResponce> searches = serverApi.search(point,
                 10000.0);
         searches.enqueue(new Callback<PlaceResponce>() {
             @Override
             public void onResponse(Call<PlaceResponce> call, Response<PlaceResponce> response) {
                 if (response.isSuccessful()) {
                     venueId = response.body().getResponse().getVenues().get(0).getId();
+                    Log.d("id", venueId);
+
+                    Intent intent = new Intent(MapsActivity.this, PictureActivity.class);
+                    intent.putExtra("VENUE_id", venueId);
+                    startActivity(intent);
                 }
                 else{
                     Log.d("id", "Unsuccessful response");
@@ -80,38 +104,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             @Override
             public void onFailure(Call<PlaceResponce> call, Throwable t) {
-                Log.d("No", "Internet");
-                if(t instanceof IOException){
-                    t.getStackTrace();
-                }
-            }
-        });
-
-        //Ошибка в логах: Value VENUE_ID is invalid for venue id
-        Call<VenueDetailed> venuePhotos = serverApi.getVenue("58f5c78f419a9e48f46e0b50");
-
-        venuePhotos.enqueue(new Callback<VenueDetailed>() {
-            @Override
-            public void onResponse(Call<VenueDetailed> call, Response<VenueDetailed> response) {
-                if (response.isSuccessful()) {
-                    String url;
-                    url = response.body().getResponse().getVenue().getPage().getUser().getPhoto().getPrefix() +
-                            response.body().getResponse().getVenue().getPage().getUser().getPhoto().getSuffix();
-                    Log.d("FourSquare: ", url);
-
-
-                    Intent intent = new Intent(MapsActivity.this, PictureReceiverActivity.class);
-                    intent.putExtra(PictureReceiverActivity.KEY_PICTURE_URL, url);
-                    startActivity(intent);
-                }
-                else{
-                    Log.d("No: ", "fail");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<VenueDetailed> call, Throwable t) {
-                Log.d("No", "Internet");
                 if(t instanceof IOException){
                     t.getStackTrace();
                 }
@@ -156,4 +148,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intent);
     }
 
+
+
+    private void registerConnectivityNetworkMonitor(Context context) {
+
+       //InternetConnectionListener listener = connectionListener;
+
+      //  ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        /*NetworkRequest.Builder builder = new NetworkRequest.Builder().build();
+        connectivityManager.registerNetworkCallback(
+                builder.build(),
+                new ConnectivityManager.NetworkCallback() {
+                    @Override
+                    public void onAvailable(Network network) {
+
+                    }
+                    @Override
+                    public void onLost(Network network) {
+                        listener.onConnectionLost();
+
+                    }
+                }
+        );*/
+
+    }
 }

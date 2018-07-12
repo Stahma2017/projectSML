@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface Api {
@@ -15,9 +16,8 @@ public interface Api {
                                @Query("llAcc") double llAcc);
 
 
-    @GET("v2/venues/VENUE_ID")
-    Call<VenueDetailed> getVenue(
-            @Query("VENUE_ID") String id);
+    @GET("v2/venues/{VENUE_ID}")
+    Call<VenueDetailed> getVenue(@Path("VENUE_ID") String id);
 }
 
 
