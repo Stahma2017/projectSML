@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -55,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(isConnectedToInternet -> {
-                    Toast.makeText(MapsActivity.this, "Connection is" + isConnectedToInternet, Toast.LENGTH_SHORT);
+                    Toast.makeText(MapsActivity.this, "Connection is" + isConnectedToInternet, Toast.LENGTH_SHORT).show();
                 });
     }
 

@@ -22,6 +22,9 @@ public class Venue {
     @SerializedName("venuePage")
     @Expose
     private VenuePage venuePage;
+    @SerializedName("bestPhoto")
+    @Expose
+    private BestPhoto bestPhoto;
 
     public String getId() {
         return id;
@@ -61,5 +64,13 @@ public class Venue {
 
     public void setVenuePage(VenuePage venuePage) {
         this.venuePage = venuePage;
+    }
+
+    public BestPhoto getBestPhoto() {
+        return bestPhoto;
+    }
+
+    public void setBestPhoto(BestPhoto bestPhoto) {
+        this.bestPhoto = bestPhoto;
     }
 }

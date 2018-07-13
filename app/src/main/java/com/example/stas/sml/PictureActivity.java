@@ -41,6 +41,9 @@ public class PictureActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     url = response.body().getResponse().getVenue().getPage().getUser().getPhoto().getPrefix() +
                             response.body().getResponse().getVenue().getPage().getUser().getPhoto().getSuffix();
+                    Glide.with(PictureActivity.this)
+                            .load(url)
+                            .into(imageView);
                     Log.d("FourSquare: ", url);
                 }
             }
@@ -53,8 +56,5 @@ public class PictureActivity extends AppCompatActivity {
             }
         });
 
-        Glide.with(this)
-                .load(url)
-                .into(imageView);
     }
 }
