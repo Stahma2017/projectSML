@@ -1,6 +1,7 @@
 package com.example.stas.sml;
 
 import com.example.stas.sml.Model.PlaceResponce;
+import com.example.stas.sml.Model.VenueDetailsResponse;
 import com.example.stas.sml.VenueDetailedModel.VenueDetailed;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface Api {
 
 
     @GET("v2/venues/{VENUE_ID}")
-    Call<VenueDetailed> getVenue(@Path("VENUE_ID") String id);
+    Call<VenueDetailsResponse> getVenue(@Path("VENUE_ID") String id);
 }
 
 

@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.stas.sml.Model.PlaceResponce;
+import com.example.stas.sml.Model.VenueDetailsResponse;
 import com.example.stas.sml.VenueDetailedModel.VenueDetailed;
 
 import java.io.IOException;
@@ -25,34 +27,34 @@ public class PictureActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_picture_receiver);
+        setContentView(R.layout.activity_picture);
         imageView = findViewById(R.id.placeImage);
 
         Intent intent = getIntent();
         String venueId = intent.getStringExtra("VENUE_id");
         Toast.makeText(this, venueId, Toast.LENGTH_SHORT).show();
 
-        Call<VenueDetailed> venuePhotos = serverApi.getVenue(venueId);
+        Call<VenueDetailsResponse> venuePhotos = serverApi.getVenue(venueId);
 
-
-        venuePhotos.enqueue(new Callback<VenueDetailed>() {
+        venuePhotos.enqueue(new Callback<VenueDetailsResponse>() {
             @Override
-            public void onResponse(Call<VenueDetailed> call, Response<VenueDetailed> response) {
+            public void onResponse(Call<VenueDetailsResponse> call, Response<VenueDetailsResponse> response) {
                 if (response.isSuccessful()) {
-                    url = response.body().getResponse().getVenue().getPage().getUser().getPhoto().getPrefix() +
-                            response.body().getResponse().getVenue().getPage().getUser().getPhoto().getSuffix();
-                    Glide.with(PictureActivity.this)
+                    url = response.body().getVenueDto().getVenue().getBestPhoto().getPrefix() + "400x400" +
+                            response.body().getVenueDto().getVenue().getBestPhoto().getSuffix();
+
+                    GlideApp.with(PictureActivity.this)
                             .load(url)
+                            .centerCrop()
                             .into(imageView);
                     Log.d("FourSquare: ", url);
                 }
             }
+
             @Override
-            public void onFailure(Call<VenueDetailed> call, Throwable t) {
+            public void onFailure(Call<VenueDetailsResponse> call, Throwable t) {
                 Log.d("FourSquare: ", "Internet lost");
-                if(t instanceof IOException){
-                    t.getStackTrace();
-                }
+               t.printStackTrace();
             }
         });
 

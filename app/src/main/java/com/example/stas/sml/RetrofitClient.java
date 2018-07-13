@@ -15,6 +15,8 @@ public class RetrofitClient {
 
     private static RetrofitClient ourInstance = new RetrofitClient();
     private static Api api;
+    private static final String CLIENT_ID = "client_id";
+    private static final String BASE_URL = "https://api.foursquare.com/";
 
     public static RetrofitClient getInstance() {
         return ourInstance;
@@ -31,9 +33,9 @@ public class RetrofitClient {
                     public Response intercept(Chain chain) throws IOException {
                         Request original = chain.request();
                         HttpUrl originalHttpUrl = original.url();
-
                         HttpUrl url = originalHttpUrl.newBuilder()
-                                .addQueryParameter("client_id", "NYT2MPS2OZZNSXIB3D4HGFNO5UMNWD0CHQWZNAEZDQPJ5JHH")
+                                //move to build config
+                                .addQueryParameter(CLIENT_ID, "NYT2MPS2OZZNSXIB3D4HGFNO5UMNWD0CHQWZNAEZDQPJ5JHH")
                                 .addQueryParameter("client_secret", "MZQIKOZG0YNUGRAO5YS3PDUHYHFPATNDS1OCO0FXEO2DAYLR")
                                 .addQueryParameter("v", "20180323")
                                 .build();
@@ -47,7 +49,7 @@ public class RetrofitClient {
                 });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.foursquare.com/")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

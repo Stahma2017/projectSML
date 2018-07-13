@@ -4,13 +4,14 @@ import android.Manifest;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -31,7 +32,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mahc.custombottomsheetbehavior.BottomSheetBehaviorGoogleMapsLike;
+
 import java.io.IOException;
+
 
 
 @RuntimePermissions
@@ -75,7 +79,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setMarker(latLng);
         MapsActivityPermissionsDispatcher.setMarkerWithPermissionCheck(this, latLng);
     }
-
 
     @Override
     public void onMapLongClick(LatLng latLng) {
@@ -142,6 +145,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     void showNeverAskForMap(){
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //intent.resolveActivity()
         Uri uri = Uri.fromParts("package", getPackageName(), null);
         intent.setData(uri);
         startActivity(intent);
