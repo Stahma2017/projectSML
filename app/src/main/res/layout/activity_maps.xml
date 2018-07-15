@@ -10,12 +10,12 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:name="com.google.android.gms.maps.MapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MapsActivity"/>
 
-    <android.support.design.widget.AppBarLayout
+   <!-- <android.support.design.widget.AppBarLayout
         android:id="@+id/appbarlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,13 +67,13 @@
         android:clickable="true"
         android:focusable="true"/>
 
-    <!--android:src="@drawable/ic_action_go"-->
+    &lt;!&ndash;android:src="@drawable/ic_action_go"&ndash;&gt;
 
     <com.mahc.custombottomsheetbehavior.MergedAppBarLayout
         android:id="@+id/mergedappbarlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/MergedAppBarLayoutBehavior"/>
-
+-->
 </android.support.design.widget.CoordinatorLayout>
 

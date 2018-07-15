@@ -28,20 +28,10 @@
         </activity>
 
         <receiver
-            android:name=".InternetStateReceiver"
-            android:enabled="true"
-            android:exported="true">
-           <!-- <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>-->
-        </receiver>
-
-        <receiver
-            android:name=".GpsReceiver"
+            android:name=".GpsStateReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <!--<action android:name="android.location.GPS_ENABLED_CHANGE" />-->
                 <action android:name="android.location.PROVIDERS_CHANGED" />
             </intent-filter>
         </receiver>

@@ -23,6 +23,7 @@ public class PictureActivity extends AppCompatActivity {
     ImageView imageView;
     private Api serverApi = RetrofitClient.getInstance().getApi();
     String url;
+    static final String VENUE_ID = "venueId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +32,8 @@ public class PictureActivity extends AppCompatActivity {
         imageView = findViewById(R.id.placeImage);
 
         Intent intent = getIntent();
-        String venueId = intent.getStringExtra("VENUE_id");
-        Toast.makeText(this, venueId, Toast.LENGTH_SHORT).show();
+        String venueId = intent.getStringExtra(VENUE_ID);
+        Toast.makeText(this, "venueId", Toast.LENGTH_SHORT).show();
 
         Call<VenueDetailsResponse> venuePhotos = serverApi.getVenue(venueId);
 
@@ -50,7 +51,6 @@ public class PictureActivity extends AppCompatActivity {
                     Log.d("FourSquare: ", url);
                 }
             }
-
             @Override
             public void onFailure(Call<VenueDetailsResponse> call, Throwable t) {
                 Log.d("FourSquare: ", "Internet lost");
