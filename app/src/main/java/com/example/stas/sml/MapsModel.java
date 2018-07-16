@@ -1,40 +1,24 @@
 package com.example.stas.sml;
 
-import android.util.Log;
-import com.example.stas.sml.Model.PlaceResponce;
-import java.io.IOException;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+
 
 public class MapsModel implements MapsContract.Model{
 
     private Api serverApi = RetrofitClient.getInstance().getApi();
 
+    // TODO: 16.07.2018 Single, Flowable, Completable, Observable, Maybe
+
     @Override
-    public void loadVenueId(String latLng, LoadVenueIdCallback callback){
-        Call<PlaceResponce> searches = serverApi.search(latLng,
-                10000.0);
-        searches.enqueue(new Callback<PlaceResponce>() {
-            @Override
-            public void onResponse(Call<PlaceResponce> call, Response<PlaceResponce> response) {
-                if (response.isSuccessful()) {
-                    String venueId = response.body().getResponse().getVenues().get(0).getId();
-                    callback.onLoad(venueId);
-                }
-                else{
-                    Log.d("id", "Unsuccessful response");
-                }
-            }
-            @Override
-            public void onFailure(Call<PlaceResponce> call, Throwable t) {
-                if(t instanceof IOException){
-                    t.getStackTrace();
-                }
-            }
-        });
+    public Single<String> loadVenueId(String latLng) {
+        return serverApi.search(latLng, 1000.0)
+             .map(placeResponce -> placeResponce.getResponse().getVenues().get(0).getId());
     }
-    interface LoadVenueIdCallback {
-        void onLoad(String venueId);
+
+    @Override
+    public Observable<Boolean> observeConnectionStates() {
+      return ReactiveNetwork.observeInternetConnectivity();
     }
 }

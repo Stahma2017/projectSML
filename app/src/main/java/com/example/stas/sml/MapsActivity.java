@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.widget.Toast;
-import io.reactivex.disposables.Disposable;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -20,13 +19,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
 @RuntimePermissions
 public class MapsActivity extends FragmentActivity implements MapsContract.View, OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
 
     private GoogleMap mMap;
     private Marker marker;
-    private Disposable disposable;
     private MapsPresenter presenter;
 
     @Override
@@ -34,19 +31,13 @@ public class MapsActivity extends FragmentActivity implements MapsContract.View,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         init();
-        disposable = presenter.checkNetworkConnection();
+        presenter.checkNetworkConnection();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        disposable.dispose();
         presenter.detachView();
-    }
-
-    @Override
-    public void onNetworkConnectionChanged() {
-        Toast.makeText(MapsActivity.this, "Connection off/on", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -74,6 +65,7 @@ public class MapsActivity extends FragmentActivity implements MapsContract.View,
         intent.putExtra(PictureActivity.VENUE_ID, venueId);
         startActivity(intent);
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -107,6 +99,11 @@ public class MapsActivity extends FragmentActivity implements MapsContract.View,
     @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
     void showDeniedForMap(){
         Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void displayErrorDialog(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @OnNeverAskAgain(Manifest.permission.ACCESS_FINE_LOCATION)

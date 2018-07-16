@@ -2,21 +2,26 @@ package com.example.stas.sml;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import io.reactivex.disposables.Disposable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+
 
 public interface MapsContract {
-    interface View{
-        void onNetworkConnectionChanged();
+    interface View extends BaseView {
         void goToPictureActivity(String venueId);
+
     }
     interface Presenter{
         void attachView(View view);
         void detachView();
-        Disposable checkNetworkConnection();
+        void checkNetworkConnection();
         void loadVenueId(LatLng latLng);
-
     }
     interface Model{
-        void loadVenueId(String latLng, MapsModel.LoadVenueIdCallback callback);
+        Single<String> loadVenueId(String latLng);
+        Observable<Boolean> observeConnectionStates();
+    }
+    interface BaseView {
+        void displayErrorDialog(String message);
     }
 }
