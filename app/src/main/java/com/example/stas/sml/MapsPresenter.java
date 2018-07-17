@@ -8,7 +8,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-
 public class MapsPresenter implements MapsContract.Presenter {
 
     private WeakReference<MapsContract.View> mapsView;
@@ -24,8 +23,7 @@ public class MapsPresenter implements MapsContract.Presenter {
                     @Override
                     public void accept(Boolean isConnected) throws Exception {
                         if (!isConnected){
-                            mapsView.get()
-                                    .displayErrorDialog("internet connection lost");}
+                            mapsView.get().displayErrorDialog("internet connection lost");}
                         }
                 });
         compositeDisposable.add(NetworkConnectionDisposable);

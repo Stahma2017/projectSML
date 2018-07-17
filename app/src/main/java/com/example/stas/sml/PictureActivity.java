@@ -14,22 +14,24 @@ import com.example.stas.sml.VenueDetailedModel.VenueDetailed;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PictureActivity extends AppCompatActivity {
 
-    ImageView imageView;
     private Api serverApi = RetrofitClient.getInstance().getApi();
     String url;
     static final String VENUE_ID = "venueId";
+    @BindView(R.id.placeImage) ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
-        imageView = findViewById(R.id.placeImage);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         String venueId = intent.getStringExtra(VENUE_ID);

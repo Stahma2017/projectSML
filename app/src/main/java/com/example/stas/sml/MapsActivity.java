@@ -5,13 +5,21 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
+
+import com.example.stas.sml.bottomSheet.HeaderView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,17 +28,34 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 @RuntimePermissions
-public class MapsActivity extends FragmentActivity implements MapsContract.View, OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
+public class MapsActivity extends AppCompatActivity implements MapsContract.View, OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener{
 
     private GoogleMap mMap;
     private Marker marker;
     private MapsPresenter presenter;
+
+    //BottomSheet
+/*
+    @BindView(R.id.toolbar_header_view)
+    protected HeaderView toolbarHeaderView;
+
+    @BindView(R.id.float_header_view)
+    protected HeaderView floatHeaderView;
+
+    @BindView(R.id.appbar)
+    protected AppBarLayout appBarLayout;
+
+    @BindView(R.id.toolbar)
+    protected Toolbar toolbar;
+*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         init();
+        ButterKnife.bind(this);
         presenter.checkNetworkConnection();
     }
 
@@ -114,4 +139,5 @@ public class MapsActivity extends FragmentActivity implements MapsContract.View,
         intent.setData(uri);
         if (intent.resolveActivity(getPackageManager()) != null) startActivity(intent);
     }
+
 }
