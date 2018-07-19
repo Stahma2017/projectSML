@@ -1,9 +1,10 @@
-package com.example.stas.sml.VenueDetailedModel;
+package com.example.stas.sml.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Response {
+public class VenueDto {
+
     @SerializedName("venue")
     @Expose
     private Venue venue;
@@ -15,4 +16,5 @@ public class Response {
     public void setVenue(Venue venue) {
         this.venue = venue;
     }
+
 }

@@ -1,4 +1,4 @@
-package com.example.stas.sml.Model;
+package com.example.stas.sml.model;
 
 
 

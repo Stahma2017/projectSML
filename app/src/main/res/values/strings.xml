@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">SML</string>
     <string name="title_activity_maps">Map</string>
+    <string name="bad_request_error">Request failed</string>
+    <string name="network_error">Network connection lost</string>
+    <string name="unknown_error">Unknown error</string>
+
 </resources>

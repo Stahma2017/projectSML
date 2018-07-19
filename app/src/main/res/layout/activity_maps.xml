@@ -13,7 +13,47 @@
             android:layout_height="match_parent"
             tools:context=".MapsActivity"/>
 
-    <android.support.design.widget.AppBarLayout
+    <!--<android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"/>-->
+
+    <!--<ImageView
+        android:id="@+id/parallax"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:src="@drawable/cat"
+       />-->
+
+    <com.daimajia.slider.library.SliderLayout
+        android:id="@+id/parallax"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/bottomsheet"
+        android:background="@android:color/white"
+        android:layout_gravity="bottom"
+        app:behavior_hideable="true"
+        app:behavior_header_layout="@layout/custom_header"
+        app:behavior_content_layout="@layout/custom_content"
+        android:elevation="16dp"
+        app:layout_behavior="com.example.stas.sml.bottomSheet.GoogleMapsBottomSheetBehavior"
+
+
+
+
+        />
+
+   <!-- <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,8 +112,8 @@
         android:id="@+id/bottom_sheet"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:behavior_hideable="true">
-        <!--app:anchorPoint="@dimen/anchor_point"-->
-      <!--  app:layout_behavior="android.support.design.widget.BottomSheetBehavior"-->
+        &lt;!&ndash;app:anchorPoint="@dimen/anchor_point"&ndash;&gt;
+      &lt;!&ndash;  app:layout_behavior="android.support.design.widget.BottomSheetBehavior"&ndash;&gt;
 
         <include
             android:id="@+id/float_header_view"
@@ -81,7 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/scrollView"/>
-    </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.NestedScrollView>-->
 
 
 

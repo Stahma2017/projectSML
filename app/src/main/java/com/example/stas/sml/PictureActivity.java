@@ -7,12 +7,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.stas.sml.Model.PlaceResponce;
-import com.example.stas.sml.Model.VenueDetailsResponse;
-import com.example.stas.sml.VenueDetailedModel.VenueDetailed;
-
-import java.io.IOException;
+import com.example.stas.sml.model.VenueDetailsResponse;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

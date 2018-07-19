@@ -9,4 +9,6 @@
     <dimen name="header_view_end_text_size">18sp</dimen>
     <dimen name="activity_horizontal_margin">64dp</dimen>
 
+    <dimen name="peekHeightMin">64dp</dimen>
+
 </resources>

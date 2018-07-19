@@ -7,21 +7,23 @@ import io.reactivex.Single;
 
 
 public interface MapsContract {
-    interface View extends BaseView {
+    interface MapView extends BaseView, CanShowError {
         void goToPictureActivity(String venueId);
-
     }
-    interface Presenter{
-        void attachView(View view);
+
+    interface Presenter {
+        void attachView(MapView view);
+
         void detachView();
+
         void checkNetworkConnection();
+
         void loadVenueId(LatLng latLng);
     }
-    interface Model{
+
+    interface Model {
         Single<String> loadVenueId(String latLng);
+
         Observable<Boolean> observeConnectionStates();
-    }
-    interface BaseView {
-        void displayErrorDialog(String message);
     }
 }

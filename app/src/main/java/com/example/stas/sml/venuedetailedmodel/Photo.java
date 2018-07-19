@@ -1,9 +1,9 @@
-package com.example.stas.sml.Model;
+package com.example.stas.sml.venuedetailedmodel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Icon {
+public class Photo {
 
     @SerializedName("prefix")
     @Expose

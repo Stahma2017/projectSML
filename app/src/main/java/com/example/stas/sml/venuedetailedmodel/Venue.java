@@ -1,4 +1,4 @@
-package com.example.stas.sml.VenueDetailedModel;
+package com.example.stas.sml.venuedetailedmodel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

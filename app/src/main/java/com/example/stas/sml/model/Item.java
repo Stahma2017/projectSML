@@ -1,10 +1,9 @@
-package com.example.stas.sml.VenueDetailedModel;
+package com.example.stas.sml.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Photo {
-
+public class Item {
     @SerializedName("prefix")
     @Expose
     private String prefix;
@@ -27,4 +26,5 @@ public class Photo {
     public void setSuffix(String suffix) {
         this.suffix = suffix;
     }
+
 }

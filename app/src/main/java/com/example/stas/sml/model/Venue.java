@@ -1,4 +1,4 @@
-package com.example.stas.sml.Model;
+package com.example.stas.sml.model;
 
 import java.util.List;
 
@@ -25,6 +25,18 @@ public class Venue {
     @SerializedName("bestPhoto")
     @Expose
     private BestPhoto bestPhoto;
+    @SerializedName("photos")
+    @Expose
+    private Photos photos;
+
+
+    public Photos getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Photos photos) {
+        this.photos = photos;
+    }
 
     public String getId() {
         return id;
