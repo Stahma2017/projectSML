@@ -1,19 +1,14 @@
 package com.example.stas.sml;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.stas.sml.model.VenueDetailsResponse;
+import com.example.stas.sml.data.network.Api;
+import com.example.stas.sml.data.network.RetrofitClient;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class PictureActivity extends AppCompatActivity {
 
@@ -28,7 +23,7 @@ public class PictureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_picture);
         ButterKnife.bind(this);
 
-        Intent intent = getIntent();
+       /* Intent intent = getIntent();
         String venueId = intent.getStringExtra(VENUE_ID);
         Toast.makeText(this, "venueId", Toast.LENGTH_SHORT).show();
 
@@ -53,7 +48,7 @@ public class PictureActivity extends AppCompatActivity {
                 Log.d("FourSquare: ", "Internet lost");
                t.printStackTrace();
             }
-        });
+        });*/
 
     }
 }
