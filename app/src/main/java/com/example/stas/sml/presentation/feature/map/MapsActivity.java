@@ -60,10 +60,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         setUpMap();
         presenter.checkNetworkConnection();
 
-
-       // final View bottomsheet = findViewById(R.id.bottomsheet);
         behavior = GoogleMapsBottomSheetBehavior.from(bottomsheet);
-       // parallax = (SliderLayout)findViewById(R.id.parallax);
         behavior.setParallax(parallax);
 
         bottomsheet.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -80,7 +77,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
             @Override
             public void onStateChanged(@NonNull View bottomSheet, @GoogleMapsBottomSheetBehavior.State int newState) {
 
-
             }
 
             @Override
@@ -88,8 +84,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
 
             }
         });
-
-
     }
 
     @Override
@@ -131,7 +125,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
                     .image(url)
                     .setScaleType(BaseSliderView.ScaleType.Fit);
             parallax.addSlider(textSliderView);
-          //  Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }
 
