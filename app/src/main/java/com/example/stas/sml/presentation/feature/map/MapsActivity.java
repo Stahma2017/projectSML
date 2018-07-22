@@ -20,9 +20,9 @@ import permissions.dispatcher.RuntimePermissions;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.example.stas.sml.App;
 import com.example.stas.sml.R;
 import com.example.stas.sml.customView.bottomSheet.GoogleMapsBottomSheetBehavior;
-import com.example.stas.sml.presentation.base.BaseErrorHandler;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,35 +31,35 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.List;
+import javax.inject.Inject;
+
 
 @RuntimePermissions
 public class MapsActivity extends AppCompatActivity implements MapsContract.MapView, OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener{
 
     private GoogleMap mMap;
     private Marker marker;
-    private MapsPresenter presenter;
+
+   @Inject
+   MapsPresenter presenter;
+   @Inject
+   ErrorHandler errorHandler;
 
     //BottomSheet
     private GoogleMapsBottomSheetBehavior behavior;
     @BindView(R.id.bottomsheet) View bottomsheet;
     @BindView(R.id.parallax) SliderLayout parallax;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        App.getComponent().inject(this);
         ButterKnife.bind(this);
-        ErrorHandler errorHandler = new BaseErrorHandler(this);
-        presenter = new MapsPresenter(errorHandler);
         presenter.attachView(this);
         setUpMap();
         presenter.checkNetworkConnection();
-
         behavior = GoogleMapsBottomSheetBehavior.from(bottomsheet);
         behavior.setParallax(parallax);
 
@@ -72,7 +72,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
                 bottomsheet.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-
         behavior.setBottomSheetCallback(new GoogleMapsBottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, @GoogleMapsBottomSheetBehavior.State int newState) {
@@ -116,9 +115,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         presenter.loadVenueId(latLng);
     }
 
-
     public void showSlider(List<String> urls) {
-
         TextSliderView textSliderView = new TextSliderView(this);
         for(String url : urls){
             textSliderView
@@ -156,7 +153,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     void showDeniedForMap(){
         Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
     }
-
 
     @OnNeverAskAgain(Manifest.permission.ACCESS_FINE_LOCATION)
     void showNeverAskForMap(){

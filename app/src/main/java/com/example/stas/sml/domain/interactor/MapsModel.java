@@ -10,7 +10,6 @@ import io.reactivex.Observable;
 
 
 public class MapsModel implements MapsContract.Model {
-
     private Api serverApi = RetrofitClient.getInstance().getApi();
     private VenueMapper mapper = new VenueMapper();
 
