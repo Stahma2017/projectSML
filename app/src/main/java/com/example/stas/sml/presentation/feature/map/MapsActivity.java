@@ -42,7 +42,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     private Marker marker;
 
    @Inject
-   MapsPresenter presenter;
+   MapsContract.Presenter presenter;
    @Inject
    ErrorHandler errorHandler;
 
@@ -55,7 +55,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        App.getComponent().inject(this);
+        App.getInstance().addMapsComponent().injectMapsActivity(this);
         ButterKnife.bind(this);
         presenter.attachView(this);
         setUpMap();

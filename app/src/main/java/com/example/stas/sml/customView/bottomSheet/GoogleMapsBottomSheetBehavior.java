@@ -1191,7 +1191,7 @@ public class GoogleMapsBottomSheetBehavior<V extends View> extends CoordinatorLa
     }
 
     /**
-     * A utility function to get the {@link GoogleMapsBottomSheetBehavior} associated with the {@code view}.
+     * A utility function to getInstance the {@link GoogleMapsBottomSheetBehavior} associated with the {@code view}.
      *
      * @param view The {@link View} with {@link GoogleMapsBottomSheetBehavior}.
      * @return The {@link GoogleMapsBottomSheetBehavior} associated with the {@code view}.

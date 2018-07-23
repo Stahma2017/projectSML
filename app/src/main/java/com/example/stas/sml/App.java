@@ -1,24 +1,30 @@
 package com.example.stas.sml;
 import android.app.Application;
-import com.example.stas.sml.di.AppComponent;
 
+import com.example.stas.sml.di.AppComponent;
 import com.example.stas.sml.di.DaggerAppComponent;
+import com.example.stas.sml.presentation.feature.map.di.MapsComponent;
 import com.example.stas.sml.di.module.AppModule;
-import com.example.stas.sml.di.module.ErrorHandlerModule;
-import com.example.stas.sml.di.module.PresenterModule;
+import com.example.stas.sml.presentation.feature.map.di.MapsModule;
 import com.squareup.leakcanary.LeakCanary;
 
 public class App extends Application {
 
-    private static AppComponent component;
+    protected static App instance;
+
+    public static App getInstance() {
+        return instance;
+    }
+
+    private  AppComponent component;
+    private MapsComponent mapsComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         component = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
-                .errorHandlerModule(new ErrorHandlerModule())
-                .presenterModule(new PresenterModule())
                 .build();
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -26,7 +32,23 @@ public class App extends Application {
         }
         LeakCanary.install(this);
     }
-    public static AppComponent getComponent() {
+    public AppComponent getComponent() {
         return component;
     }
+
+    public MapsComponent getMapsComponent() {
+        return mapsComponent;
+    }
+
+    public MapsComponent addMapsComponent(){
+        if (mapsComponent == null){
+            mapsComponent = component.addMapsComponent(new MapsModule());
+        }
+        return mapsComponent;
+    }
+
+    public void clearMapsComponent(){
+        mapsComponent = null;
+    }
+
 }

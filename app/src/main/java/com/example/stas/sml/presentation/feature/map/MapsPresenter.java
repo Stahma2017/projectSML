@@ -1,5 +1,4 @@
 package com.example.stas.sml.presentation.feature.map;
-import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.google.android.gms.maps.model.LatLng;
 import java.lang.ref.WeakReference;
@@ -11,13 +10,19 @@ import io.reactivex.schedulers.Schedulers;
 public class MapsPresenter implements MapsContract.Presenter {
 
     private WeakReference<MapsContract.MapView> mapsView;
-    private MapsModel model = new MapsModel();
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private ErrorHandler errorHandler;
-    
-    public MapsPresenter(ErrorHandler errorHandler) {
+    private final MapsContract.Model model;
+    private final ErrorHandler errorHandler;
+    private final CompositeDisposable compositeDisposable;
+
+
+    public MapsPresenter(MapsContract.Model model,
+                         ErrorHandler errorHandler,
+                         CompositeDisposable compositeDisposable) {
+        this.model = model;
         this.errorHandler = errorHandler;
+        this.compositeDisposable = compositeDisposable;
     }
+
 
     @Override
     public void checkNetworkConnection() {
@@ -52,7 +57,7 @@ public class MapsPresenter implements MapsContract.Presenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(venueEntity -> mapsView.get().showSlider(venueEntity.getPhotosUrls()),
-                        throwable -> errorHandler.proceed(throwable));
+                        errorHandler::proceed);
         compositeDisposable.add(venueIdRequestDisposable);
     }
 

@@ -1,6 +1,7 @@
 package com.example.stas.sml.presentation.feature.map;
 
 import com.example.stas.sml.CanShowError;
+import com.example.stas.sml.domain.entity.VenueEntity;
 import com.example.stas.sml.presentation.base.BaseView;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -11,8 +12,8 @@ import io.reactivex.Observable;
 
 public interface MapsContract {
     interface MapView extends BaseView, CanShowError {
-       /* void goToPictureActivity(List<String> urls);*/
-       void showSlider(List<String> urls);
+        /* void goToPictureActivity(List<String> urls);*/
+        void showSlider(List<String> urls);
     }
 
     interface Presenter {
@@ -26,7 +27,8 @@ public interface MapsContract {
     }
 
     interface Model {
-      //  Single<String> loadVenueId(String latLng);
+        //  Single<String> loadVenueId(String latLng);
+        Observable<VenueEntity> loadPhotos(String latLng);
 
         Observable<Boolean> observeConnectionStates();
     }
