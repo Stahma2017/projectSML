@@ -1,6 +1,8 @@
 package com.example.stas.sml.presentation.feature.map;
 import com.example.stas.sml.presentation.base.ErrorHandler;
+
 import com.google.android.gms.maps.model.LatLng;
+
 import java.lang.ref.WeakReference;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -13,7 +15,6 @@ public class MapsPresenter implements MapsContract.Presenter {
     private final MapsContract.Model model;
     private final ErrorHandler errorHandler;
     private final CompositeDisposable compositeDisposable;
-
 
     public MapsPresenter(MapsContract.Model model,
                          ErrorHandler errorHandler,

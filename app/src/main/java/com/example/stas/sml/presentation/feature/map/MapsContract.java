@@ -27,7 +27,7 @@ public interface MapsContract {
     }
 
     interface Model {
-        //  Single<String> loadVenueId(String latLng);
+
         Observable<VenueEntity> loadPhotos(String latLng);
 
         Observable<Boolean> observeConnectionStates();

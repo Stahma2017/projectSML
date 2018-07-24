@@ -34,7 +34,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 import javax.inject.Inject;
 
-
 @RuntimePermissions
 public class MapsActivity extends AppCompatActivity implements MapsContract.MapView, OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener{
 
@@ -50,6 +49,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     private GoogleMapsBottomSheetBehavior behavior;
     @BindView(R.id.bottomsheet) View bottomsheet;
     @BindView(R.id.parallax) SliderLayout parallax;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +83,13 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
 
             }
         });
+
+
     }
+
+
+
+
 
     @Override
     protected void onDestroy() {
