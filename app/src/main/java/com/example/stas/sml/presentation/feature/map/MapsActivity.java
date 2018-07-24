@@ -6,8 +6,11 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
@@ -44,6 +47,8 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
    MapsContract.Presenter presenter;
    @Inject
    ErrorHandler errorHandler;
+
+   @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigation;
 
     //BottomSheet
     private GoogleMapsBottomSheetBehavior behavior;
@@ -83,6 +88,28 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
 
             }
         });
+
+        bottomNavigation.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.action_search:
+                                //do search
+                                break;
+                            case R.id.action_places:
+                                //do places
+                                break;
+                            case R.id.action_map:
+                               //do map
+                                Log.d("map", "map itme clicked");
+                                break;
+                        }
+                        return true;
+                    }
+                });
+
+
 
 
     }
