@@ -14,15 +14,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.MapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".presentation.feature.map.MapsActivity"/>
+
 
     </FrameLayout>
+    <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.feature.map.MapsActivity"/>-->
 
 
 
@@ -49,15 +50,11 @@
             app:behavior_hideable="true"
             app:behavior_header_layout="@layout/custom_header"
             app:behavior_content_layout="@layout/custom_content"
-            android:elevation="16dp"
+            app:behavior_peekHeight="140dp"
             app:layout_behavior="com.example.stas.sml.customView.bottomSheet.GoogleMapsBottomSheetBehavior"/>
 
 
 
-
-
-
-           
 
         
 

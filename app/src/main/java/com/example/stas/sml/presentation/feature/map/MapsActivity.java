@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.example.stas.sml.App;
+import com.example.stas.sml.PLacesFragment;
 import com.example.stas.sml.R;
 import com.example.stas.sml.customView.bottomSheet.GoogleMapsBottomSheetBehavior;
 import com.example.stas.sml.presentation.base.ErrorHandler;
@@ -63,7 +66,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         App.getInstance().addMapsComponent().injectMapsActivity(this);
         ButterKnife.bind(this);
         presenter.attachView(this);
-        setUpMap();
+        //  setUpMap();
         presenter.checkNetworkConnection();
         behavior = GoogleMapsBottomSheetBehavior.from(bottomsheet);
         behavior.setParallax(parallax);
@@ -98,25 +101,23 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
                                 //do search
                                 break;
                             case R.id.action_places:
-                                //do places
+                                PLacesFragment placesFragment = new PLacesFragment();
+
+                                FragmentManager fm = getSupportFragmentManager();
+                                FragmentTransaction transaction = fm.beginTransaction();
+                                transaction.replace(R.id.fragment_container, placesFragment);
+                                transaction.commit();
                                 break;
                             case R.id.action_map:
                                //do map
+                                setUpMap();
                                 Log.d("map", "map itme clicked");
                                 break;
                         }
                         return true;
                     }
                 });
-
-
-
-
     }
-
-
-
-
 
     @Override
     protected void onDestroy() {
@@ -168,9 +169,9 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     void setUpMap(){
-        final MapFragment mapFragment = (MapFragment) getFragmentManager()
+       /* final MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
-            mapFragment.getMapAsync(this);
+            mapFragment.getMapAsync(this);*/
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
