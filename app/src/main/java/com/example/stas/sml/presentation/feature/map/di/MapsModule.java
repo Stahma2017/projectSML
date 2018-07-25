@@ -8,11 +8,6 @@ import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.example.stas.sml.presentation.feature.map.MapsActivity;
 import com.example.stas.sml.presentation.feature.map.MapsContract;
 import com.example.stas.sml.presentation.feature.map.MapsPresenter;
-
-import java.lang.ref.WeakReference;
-
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.annotations.NonNull;
@@ -21,10 +16,10 @@ import io.reactivex.disposables.CompositeDisposable;
 @Module
 public class MapsModule {
 
-    @MapsScope
+   /* @MapsScope
     @NonNull
     @Provides
-    MapsContract.Presenter provideMapsPresenter(ErrorHandler errorHandler, CompositeDisposable compositeDisposable,
+    MapsPresenter provideMapsPresenter(ErrorHandler errorHandler, CompositeDisposable compositeDisposable,
                                                 MapsContract.Model mapsModel) {
         return new MapsPresenter(mapsModel, errorHandler, compositeDisposable);
     }
@@ -41,5 +36,5 @@ public class MapsModule {
     @Provides
     MapsActivity provideMapsActivity(MapsActivity mapsActivity) {
         return mapsActivity;
-    }
+    }*/
 }

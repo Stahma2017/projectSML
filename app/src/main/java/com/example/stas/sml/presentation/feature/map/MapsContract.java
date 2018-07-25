@@ -13,7 +13,7 @@ import io.reactivex.Observable;
 public interface MapsContract {
     interface MapView extends BaseView, CanShowError {
         /* void goToPictureActivity(List<String> urls);*/
-        void showSlider(List<String> urls);
+        //void showSlider(List<String> urls);
     }
 
     interface Presenter {
