@@ -23,17 +23,10 @@
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- <activity
-             android:name=".MainActivity">
-             <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
-         </activity>-->
 
         <receiver
             android:name=".GpsStateReceiver"
@@ -44,7 +37,7 @@
             </intent-filter>
         </receiver>
 
-
+        <activity android:name=".presentation.feature.map.PlacesActivity"></activity>
     </application>
 
 </manifest>
