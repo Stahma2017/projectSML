@@ -16,10 +16,10 @@ import io.reactivex.disposables.CompositeDisposable;
 @Module
 public class MapsModule {
 
-   /* @MapsScope
+    @MapsScope
     @NonNull
     @Provides
-    MapsPresenter provideMapsPresenter(ErrorHandler errorHandler, CompositeDisposable compositeDisposable,
+    MapsContract.Presenter provideMapsPresenter(ErrorHandler errorHandler, CompositeDisposable compositeDisposable,
                                                 MapsContract.Model mapsModel) {
         return new MapsPresenter(mapsModel, errorHandler, compositeDisposable);
     }
@@ -36,5 +36,5 @@ public class MapsModule {
     @Provides
     MapsActivity provideMapsActivity(MapsActivity mapsActivity) {
         return mapsActivity;
-    }*/
+    }
 }

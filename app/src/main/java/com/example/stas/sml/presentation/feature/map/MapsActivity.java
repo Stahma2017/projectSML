@@ -43,18 +43,15 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     private GoogleMap mMap;
     private Marker marker;
 
-   @Inject
-   MapsContract.Presenter presenter;
-   @Inject
-   ErrorHandler errorHandler;
-
-   @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigation;
+    @Inject
+    MapsContract.Presenter presenter;
+    @Inject
+    ErrorHandler errorHandler;
 
     //BottomSheet
     private GoogleMapsBottomSheetBehavior behavior;
     @BindView(R.id.bottomsheet) View bottomsheet;
     @BindView(R.id.parallax) SliderLayout parallax;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,27 +85,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
 
             }
         });
-
-        bottomNavigation.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.action_search:
-                                //do search
-                                break;
-                            case R.id.action_places:
-                                //do places
-                                break;
-                            case R.id.action_map:
-                               //do map
-                                setUpMap();
-                                Log.d("map", "map itme clicked");
-                                break;
-                        }
-                        return true;
-                    }
-                });
     }
 
     @Override
@@ -163,7 +139,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     void setUpMap(){
         final MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
-            mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)

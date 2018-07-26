@@ -10,6 +10,7 @@ import retrofit2.HttpException;
 
 public class BaseErrorHandler implements ErrorHandler {
 
+
     public BaseErrorHandler(Context context) {
         this.context = context;
     }
