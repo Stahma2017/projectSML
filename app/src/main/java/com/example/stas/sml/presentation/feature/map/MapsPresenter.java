@@ -54,13 +54,13 @@ public class MapsPresenter implements MapsContract.Presenter {
 
     @Override
     public void loadVenueId(LatLng latLng) {
-        String point = latLng.latitude + "," + latLng.longitude;
+       /* String point = latLng.latitude + "," + latLng.longitude;
         Disposable venueIdRequestDisposable = model.loadPhotos(point)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(venueEntity -> mapsView.get().showSlider(venueEntity.getPhotosUrls()),
                         errorHandler::proceed);
-        compositeDisposable.add(venueIdRequestDisposable);
+        compositeDisposable.add(venueIdRequestDisposable);*/
     }
 
 

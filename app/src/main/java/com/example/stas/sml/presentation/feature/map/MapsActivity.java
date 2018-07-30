@@ -9,10 +9,10 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.MenuItem;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,9 +20,6 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
 import com.example.stas.sml.customView.bottomSheet.GoogleMapsBottomSheetBehavior;
@@ -51,7 +48,14 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     //BottomSheet
     private GoogleMapsBottomSheetBehavior behavior;
     @BindView(R.id.bottomsheet) View bottomsheet;
-    @BindView(R.id.parallax) SliderLayout parallax;
+    @BindView(R.id.parallax)
+    ImageView parallax;
+    @BindView(R.id.bottomAppBar)
+    BottomNavigationView bottomNavigation;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,10 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         presenter.checkNetworkConnection();
         behavior = GoogleMapsBottomSheetBehavior.from(bottomsheet);
         behavior.setParallax(parallax);
+        setSupportActionBar(toolbar);
+
+
+
 
         bottomsheet.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -87,6 +95,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         });
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -97,6 +106,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         MapsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+
     }
 
     @Override
@@ -118,13 +128,13 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     }
 
     public void showSlider(List<String> urls) {
-        TextSliderView textSliderView = new TextSliderView(this);
+      /*  TextSliderView textSliderView = new TextSliderView(this);
         for(String url : urls){
             textSliderView
                     .image(url)
                     .setScaleType(BaseSliderView.ScaleType.Fit);
             parallax.addSlider(textSliderView);
-        }
+        }*/
     }
 
     @Override
@@ -169,4 +179,9 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     public void showError(String errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
+
+   /* public void goToActivity(View view) {
+        Intent intent = new Intent(this, PlacesActivity.class);
+        startActivity(intent);
+    }*/
 }

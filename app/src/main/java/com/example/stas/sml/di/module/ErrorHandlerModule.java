@@ -19,7 +19,5 @@ public class ErrorHandlerModule {
     @Singleton
     public ErrorHandler provideErrorHandler(Context context){
         return new BaseErrorHandler(context);
-
     }
-
 }

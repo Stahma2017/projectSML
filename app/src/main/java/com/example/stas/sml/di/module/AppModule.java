@@ -3,7 +3,6 @@ package com.example.stas.sml.di.module;
 import android.content.Context;
 
 import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.annotations.NonNull;

@@ -5,4 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
 
+    <color name="GradientStrokeBorder">
+        <item name="android:startColor">#FFFFFF</item>
+        <item name="android:endColor">#00FFFF</item>
+        <item name="android:angle">145</item>
+    </color>
+
 </resources>

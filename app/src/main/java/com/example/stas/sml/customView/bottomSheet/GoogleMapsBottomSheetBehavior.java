@@ -14,9 +14,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
+
+
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
+
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -38,8 +41,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
@@ -1114,7 +1115,7 @@ public class GoogleMapsBottomSheetBehavior<V extends View> extends CoordinatorLa
             out.writeInt(state);
         }
 
-        public static final ClassLoaderCreator<SavedState> CREATOR = new ClassLoaderCreator<SavedState>() {
+        public static final Parcelable.ClassLoaderCreator<SavedState> CREATOR = new Parcelable.ClassLoaderCreator<SavedState>() {
             @Override
             public SavedState createFromParcel(Parcel in, ClassLoader loader) {
                 return new SavedState(in, loader);

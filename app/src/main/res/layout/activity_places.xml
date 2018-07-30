@@ -4,6 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".presentation.feature.map.PlacesActivity">
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/NavView"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bottom_bar"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/bottomappbar_menu" />
 
 </android.support.constraint.ConstraintLayout>

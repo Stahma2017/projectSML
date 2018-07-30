@@ -13,5 +13,4 @@ import dagger.Component;
 @Singleton
 public interface AppComponent {
     MapsComponent addMapsComponent(MapsModule mapsModule);
-    //MapsModel getModel();
 }
