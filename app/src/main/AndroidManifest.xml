@@ -18,7 +18,9 @@
 
         <activity
             android:name=".presentation.feature.map.MapsActivity"
-            android:theme="@style/MapActivityTheme">
+            android:theme="@style/MapActivityTheme"
+            android:label=""
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

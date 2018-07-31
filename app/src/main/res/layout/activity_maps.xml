@@ -6,11 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".presentation.feature.map.PlacesActivity">
 
-
-
-
-
-
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
@@ -29,46 +24,72 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".presentation.feature.map.MapsActivity">
 
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/gps_arrow"
+
+            app:layout_anchorGravity="top|end"
+            app:layout_anchor="@id/bottom_sheet"
+
+            android:layout_margin="15dp"
+
+            />
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:clipToPadding="true"
+            android:background="@drawable/bottomsheet_background"
+            app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Ул. Красная 95"
+                    android:textSize="16sp"
+                    android:textAllCaps="true"
+                    android:padding="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Россия, Краснодарский край"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <android.support.v7.widget.RecyclerView
+            android:background="#ffffff"
+            android:visibility="invisible"
+            android:id="@+id/categoryRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="54dp"/>
+        
+
         <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/toolbar"
-            android:layout_width="80dp"
+            android:id="@+id/myTool"
+            android:layout_width="wrap_content"
             android:layout_height="54dp"
             android:background="@drawable/rectangle_14_edited"
             app:menu="@menu/toolbar_menu"
             android:layout_gravity="end"
             />
 
-
-
-        <!--  <com.daimajia.slider.library.SliderLayout
-              android:id="@+id/parallax"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content" />-->
-
-        <ImageView
-            android:id="@+id/parallax"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/bottomsheet"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:background="@android:color/white"
-            app:behavior_content_layout="@layout/custom_content"
-            app:behavior_header_layout="@layout/custom_header"
-            app:behavior_hideable="true"
-            app:behavior_peekHeight="120dp"
-            app:layout_behavior="com.example.stas.sml.customView.bottomSheet.GoogleMapsBottomSheetBehavior" />
-
         <FrameLayout
             android:layout_width="200dp"
             android:layout_height="56dp"
             android:layout_gravity="bottom"
             android:background="@drawable/bottom_bar">
-
             <android.support.design.widget.BottomNavigationView
                 android:id="@+id/bottomAppBar"
                 android:layout_width="170dp"
@@ -76,9 +97,6 @@
                 android:layout_marginTop="10dp"
                 app:menu="@menu/bottomappbar_menu" />
         </FrameLayout>
-
-
-
     </android.support.design.widget.CoordinatorLayout>
 </android.support.constraint.ConstraintLayout>
 
