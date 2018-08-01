@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.feature.map.PlacesActivity">
+    tools:context=".presentation.feature.map.MapsActivity">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -24,18 +24,37 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".presentation.feature.map.MapsActivity">
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/gps_arrow"
+        <Button
+            android:layout_gravity="top"
+            android:layout_width="66dp"
+            android:layout_height="67dp"
+            android:background="@drawable/ic_zoom_plus"
+            app:layout_anchor="@id/minus"
+            app:layout_anchorGravity="top|end"
+            android:layout_marginEnd="15dp"
+            android:onClick="zoomIn"/>
 
+        <Button
+            android:id="@+id/minus"
+            android:layout_gravity="top"
+            android:layout_width="66dp"
+            android:layout_height="67dp"
+            android:background="@drawable/ic_zoom_minus"
+            app:layout_anchor="@id/location"
+            app:layout_anchorGravity="top|end"
+            android:layout_marginEnd="15dp"
+            android:onClick="zoomOut"/>
+
+        <Button
+            android:layout_gravity="top"
+            android:id="@+id/location"
+            android:layout_width="66dp"
+            android:layout_height="67dp"
+            android:background="@drawable/gps_arrow"
             app:layout_anchorGravity="top|end"
             app:layout_anchor="@id/bottom_sheet"
-
-            android:layout_margin="15dp"
-
-            />
-
+            android:layout_marginEnd="15dp"
+            android:onClick="getCurrentLocation"/>
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/bottom_sheet"
@@ -48,15 +67,28 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Ул. Красная 95"
-                    android:textSize="16sp"
-                    android:textAllCaps="true"
-                    android:padding="10dp"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/marker"
+                        android:layout_marginStart="5dp"/>
+                    <TextView
+                        android:layout_marginStart="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ул. Красная 95"
+                        android:textSize="16sp"
+                        android:textAllCaps="true"/>
+
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -64,16 +96,24 @@
                     android:text="Россия, Краснодарский край"
                     android:textSize="16sp"/>
             </LinearLayout>
+
         </android.support.v4.widget.NestedScrollView>
 
         <android.support.v7.widget.RecyclerView
-            android:background="#ffffff"
+            android:background="#7611bc"
             android:visibility="invisible"
             android:id="@+id/categoryRecycler"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="110dp"
             android:layout_marginTop="54dp"/>
-        
+
+        <android.support.v7.widget.RecyclerView
+
+            android:id="@+id/placesRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="60dp"/>
 
         <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"

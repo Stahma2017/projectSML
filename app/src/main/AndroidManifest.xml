@@ -37,7 +37,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".presentation.feature.map.PlacesActivity"/>
     </application>
 
 </manifest>

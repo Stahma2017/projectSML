@@ -6,6 +6,9 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -34,12 +37,14 @@ import permissions.dispatcher.RuntimePermissions;
 import com.example.stas.sml.App;
 import com.example.stas.sml.Category;
 import com.example.stas.sml.CategoryRecyclerAdapter;
+import com.example.stas.sml.PlacesRecyclerAdapter;
 import com.example.stas.sml.R;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -56,8 +61,13 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     private BottomSheetBehavior bottomSheetBehavior;
     private List<Category> categoryList = new ArrayList<>();
 
+    private List<String> placesList = new ArrayList<>();
+
     //New dependency
     private CategoryRecyclerAdapter categoryAdapter;
+
+    //New dependency
+    private PlacesRecyclerAdapter placesAdapter;
 
 
     @Inject
@@ -71,6 +81,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     @BindView(R.id.bottom_sheet) View bottomSheet;
     @BindView(R.id.categoryRecycler)
     RecyclerView categoryRecycler;
+    @BindView(R.id.placesRecycler) RecyclerView placesRecycler;
 
 
     @Override
@@ -86,27 +97,62 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         presenter.checkNetworkConnection();
         setSupportActionBar(toolbar);
+
         categoryAdapter = new CategoryRecyclerAdapter(categoryList, getApplicationContext());
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
         categoryRecycler.setLayoutManager(horizontalLayoutManager);
         categoryRecycler.setAdapter(categoryAdapter);
         populateCategoryList();
 
+        placesAdapter = new PlacesRecyclerAdapter(placesList, getApplicationContext());
+        LinearLayoutManager placesLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        placesRecycler.setLayoutManager(placesLayoutManager);
+        placesRecycler.setAdapter(placesAdapter);
     }
 
     void populateCategoryList(){
-        Category all = new Category(R.drawable.all_category, "Все");
-        Category drink = new Category(R.drawable.drink_category, "Выпить");
-        Category read = new Category(R.drawable.read_category, "Почитать");
-        Category play = new Category(R.drawable.play_category, "Поиграть");
-        Category watch = new Category(R.drawable.watch_category, "Поигарть");
-        categoryList.add(all);
-        categoryList.add(drink);
-        categoryList.add(read);
-        categoryList.add(play);
-        categoryList.add(watch);
-        categoryList.add(drink);
+        Category travel = new Category(R.drawable.ic_category_travel, "Путешествия и транспорт");
+        Category entertainment = new Category(R.drawable.ic_category_entertainment, "Искусство и развлечения");
+        Category education = new Category(R.drawable.ic_category_education, "Высшие учебные заведения");
+        Category event = new Category(R.drawable.ic_category_event, "События");
+        Category food = new Category(R.drawable.ic_category_food, "Кафе и рестораны");
+        Category nightlife = new Category(R.drawable.ic_category_nightlife, "Ночные заведения");
+        Category parks = new Category(R.drawable.ic_category_parks_outdoors, "Заведения на свежем воздухе");
+        Category building = new Category(R.drawable.ic_category_building, "Услуги и учреждения");
+        Category shop = new Category(R.drawable.ic_category_shops, "Магазины и услуги");
+        categoryList.add(travel);
+        categoryList.add(entertainment);
+        categoryList.add(education);
+        categoryList.add(event);
+        categoryList.add(food);
+        categoryList.add(nightlife);
+        categoryList.add(parks);
+        categoryList.add(building);
+        categoryList.add(shop);
     }
+
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    public void getCurrentLocation(View view) {
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(provider);
+        if (location != null) {
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            LatLng latLng = new LatLng(latitude, longitude);
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        }
+    }
+
+    public void zoomIn(View view) {
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+    }
+
+    public void zoomOut(View view) {
+        mMap.animateCamera(CameraUpdateFactory.zoomOut());
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -156,6 +202,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         MapsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
 
+
     }
 
     @Override
@@ -189,6 +236,10 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.053984, 38.981784), 15.0f));
         mMap.setOnMapClickListener(this);
         mMap.setOnMapLongClickListener(this);
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -196,6 +247,8 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         final MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -203,7 +256,11 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         if (marker != null) {
             marker.remove();
         }
-        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("Custom location");
+
+        MarkerOptions markerOptions = new MarkerOptions().
+                position(latLng).
+                title("Custom location")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
         marker = mMap.addMarker(markerOptions);
     }
 

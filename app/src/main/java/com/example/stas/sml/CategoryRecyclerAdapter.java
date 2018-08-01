@@ -24,7 +24,7 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View categoryView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.category_recycler_contents, viewGroup, false);
+        View categoryView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.category_recycler_item, viewGroup, false);
         CategoryViewHolder cvh = new CategoryViewHolder(categoryView);
         return cvh;
     }
@@ -41,7 +41,7 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
         return categoryList.size();
     }
 
-    public class CategoryViewHolder extends RecyclerView.ViewHolder{
+    public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView imageView;
         TextView txtview;
 
@@ -49,6 +49,12 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
             super(itemView);
             imageView = itemView.findViewById(R.id.categoryImage);
             txtview = itemView.findViewById(R.id.categoryName);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+
         }
     }
 }
