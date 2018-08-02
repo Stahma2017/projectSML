@@ -29,4 +29,6 @@ public class MapsModel implements MapsContract.Model {
     public Observable<Boolean> observeConnectionStates() {
         return ReactiveNetwork.observeInternetConnectivity();
     }
+
+
 }

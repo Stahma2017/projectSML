@@ -13,7 +13,8 @@ import io.reactivex.Observable;
 public interface MapsContract {
     interface MapView extends BaseView, CanShowError {
         /* void goToPictureActivity(List<String> urls);*/
-        void showSlider(List<String> urls);
+       /* void showSlider(List<String> urls);*/
+       public void showSuggestions();
     }
 
     interface Presenter {
@@ -24,6 +25,13 @@ public interface MapsContract {
         void checkNetworkConnection();
 
         void loadVenueId(LatLng latLng);
+
+        void onBindCategoryRowViewAtPosition(int position, MapsContract.CategoryRowView rowView);
+        int getCategoryRowCount();
+
+        void populateCategories();
+
+        void onItemClickedAtPosition(int position);
     }
 
     interface Model {
@@ -31,5 +39,10 @@ public interface MapsContract {
         Observable<VenueEntity> loadPhotos(String latLng);
 
         Observable<Boolean> observeConnectionStates();
+    }
+    interface CategoryRowView{
+        void setIcon(int icon);
+        void setName(String name);
+
     }
 }

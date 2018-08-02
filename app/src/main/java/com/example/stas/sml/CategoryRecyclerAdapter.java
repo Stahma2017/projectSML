@@ -3,58 +3,77 @@ package com.example.stas.sml;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.stas.sml.presentation.feature.map.MapsContract;
+import com.example.stas.sml.presentation.feature.map.MapsPresenter;
 
 import java.util.List;
 
 public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecyclerAdapter.CategoryViewHolder> {
 
-    private List<Category> categoryList;
-    Context context;
+    /*private List<Category> categoryList;
+    Context context;*/
 
-    public CategoryRecyclerAdapter(List<Category> categoryList, Context context) {
-        this.categoryList = categoryList;
-        this.context = context;
+    private final MapsContract.Presenter presenter;
+
+    public CategoryRecyclerAdapter(MapsContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
     @NonNull
     @Override
-    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View categoryView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.category_recycler_item, viewGroup, false);
-        CategoryViewHolder cvh = new CategoryViewHolder(categoryView);
-        return cvh;
+    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+       return new CategoryViewHolder(presenter, LayoutInflater.from(parent.getContext())
+       .inflate(R.layout.category_recycler_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int i) {
-        holder.imageView.setImageResource(categoryList.get(i).getCategoryImage());
-        holder.txtview.setText(categoryList.get(i).getCategoryName());
-
+    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
+      presenter.onBindCategoryRowViewAtPosition(position, holder);
     }
 
     @Override
     public int getItemCount() {
-        return categoryList.size();
+        return presenter.getCategoryRowCount();
     }
 
-    public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        ImageView imageView;
-        TextView txtview;
+    public class CategoryViewHolder extends RecyclerView.ViewHolder implements MapsContract.CategoryRowView{
+        ImageView categoryIcon;
+        TextView categoryName;
 
-        public CategoryViewHolder(@NonNull View itemView) {
+        public CategoryViewHolder(MapsContract.Presenter presenter, @NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.categoryImage);
-            txtview = itemView.findViewById(R.id.categoryName);
+
+            categoryIcon = itemView.findViewById(R.id.categoryImage);
+            categoryName = itemView.findViewById(R.id.categoryName);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    presenter.onItemClickedAtPosition(CategoryViewHolder.this.getAdapterPosition());
+                }
+            });
+
         }
 
         @Override
-        public void onClick(View view) {
-
-
+        public void setIcon(int icon) {
+           categoryIcon.setImageResource(icon);
         }
+
+        @Override
+        public void setName(String name) {
+           categoryName.setText(name);
+        }
+
+
     }
+
 }

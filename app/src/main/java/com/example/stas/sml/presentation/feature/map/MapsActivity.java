@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -59,9 +60,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     private GoogleMap mMap;
     private Marker marker;
     private BottomSheetBehavior bottomSheetBehavior;
-    private List<Category> categoryList = new ArrayList<>();
-
-    private List<String> placesList = new ArrayList<>();
 
     //New dependency
     private CategoryRecyclerAdapter categoryAdapter;
@@ -82,6 +80,9 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     @BindView(R.id.categoryRecycler)
     RecyclerView categoryRecycler;
     @BindView(R.id.placesRecycler) RecyclerView placesRecycler;
+    @BindView(R.id.location)Button locationBtn;
+    @BindView(R.id.minus)Button zoomOutBtn;
+    @BindView(R.id.plus)Button zoomInBtn;
 
 
     @Override
@@ -97,39 +98,23 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         presenter.checkNetworkConnection();
         setSupportActionBar(toolbar);
+        presenter.populateCategories();
 
-        categoryAdapter = new CategoryRecyclerAdapter(categoryList, getApplicationContext());
+
+
+        categoryAdapter = new CategoryRecyclerAdapter(presenter);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
         categoryRecycler.setLayoutManager(horizontalLayoutManager);
         categoryRecycler.setAdapter(categoryAdapter);
-        populateCategoryList();
 
-        placesAdapter = new PlacesRecyclerAdapter(placesList, getApplicationContext());
+
+        placesAdapter = new PlacesRecyclerAdapter(new ArrayList<>(), getApplicationContext());
         LinearLayoutManager placesLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
         placesRecycler.setLayoutManager(placesLayoutManager);
         placesRecycler.setAdapter(placesAdapter);
     }
 
-    void populateCategoryList(){
-        Category travel = new Category(R.drawable.ic_category_travel, "Путешествия и транспорт");
-        Category entertainment = new Category(R.drawable.ic_category_entertainment, "Искусство и развлечения");
-        Category education = new Category(R.drawable.ic_category_education, "Высшие учебные заведения");
-        Category event = new Category(R.drawable.ic_category_event, "События");
-        Category food = new Category(R.drawable.ic_category_food, "Кафе и рестораны");
-        Category nightlife = new Category(R.drawable.ic_category_nightlife, "Ночные заведения");
-        Category parks = new Category(R.drawable.ic_category_parks_outdoors, "Заведения на свежем воздухе");
-        Category building = new Category(R.drawable.ic_category_building, "Услуги и учреждения");
-        Category shop = new Category(R.drawable.ic_category_shops, "Магазины и услуги");
-        categoryList.add(travel);
-        categoryList.add(entertainment);
-        categoryList.add(education);
-        categoryList.add(event);
-        categoryList.add(food);
-        categoryList.add(nightlife);
-        categoryList.add(parks);
-        categoryList.add(building);
-        categoryList.add(shop);
-    }
+
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     public void getCurrentLocation(View view) {
@@ -282,4 +267,15 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     public void showError(String errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
+
+
+    @Override
+    public void showSuggestions() {
+        placesRecycler.setVisibility(View.VISIBLE);
+        locationBtn.setVisibility(View.INVISIBLE);
+        zoomOutBtn.setVisibility(View.INVISIBLE);
+        zoomInBtn.setVisibility(View.INVISIBLE);
+    }
+
+
 }

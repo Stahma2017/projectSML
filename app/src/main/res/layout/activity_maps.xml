@@ -25,6 +25,7 @@
         tools:context=".presentation.feature.map.MapsActivity">
 
         <Button
+            android:id="@+id/plus"
             android:layout_gravity="top"
             android:layout_width="66dp"
             android:layout_height="67dp"
@@ -108,7 +109,7 @@
             android:layout_marginTop="54dp"/>
 
         <android.support.v7.widget.RecyclerView
-
+            android:visibility="invisible"
             android:id="@+id/placesRecycler"
             android:layout_width="match_parent"
             android:layout_height="230dp"
@@ -122,8 +123,7 @@
             android:layout_height="54dp"
             android:background="@drawable/rectangle_14_edited"
             app:menu="@menu/toolbar_menu"
-            android:layout_gravity="end"
-            />
+            android:layout_gravity="end"/>
 
         <FrameLayout
             android:layout_width="200dp"
