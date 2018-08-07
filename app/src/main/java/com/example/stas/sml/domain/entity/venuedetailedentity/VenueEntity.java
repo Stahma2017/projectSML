@@ -1,78 +1,45 @@
-package com.example.stas.sml.data.model.venuedetailedmodel;
+package com.example.stas.sml.domain.entity.venuedetailedentity;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.example.stas.sml.data.model.venuedetailedmodel.Hours;
+import com.example.stas.sml.data.model.venuedetailedmodel.Location;
+import com.example.stas.sml.data.model.venuedetailedmodel.Page;
 
-public class Venue {
+public class VenueEntity {
 
     private Integer distance;
 
-    public Integer getDistance() {
-        return distance;
-    }
-
-    public void setDistance(Integer distance) {
-        this.distance = distance;
-    }
-
-    @SerializedName("id")
-    @Expose
     private String id;
-    @SerializedName("name")
-    @Expose
+
     private String name;
 
-    @SerializedName("page")
-    @Expose
     private Page page = new Page();
 
-    @SerializedName("location")
-    @Expose
     private Location location;
 
-    @SerializedName("canonicalUrl")
-    @Expose
     private String canonicalUrl;
 
-    @SerializedName("verified")
-    @Expose
     private Boolean verified;
 
-    @SerializedName("url")
-    @Expose
     private String url;
 
-    @SerializedName("rating")
-    @Expose
     private Double rating = 0d;
-    @SerializedName("ratingColor")
-    @Expose
+
     private String ratingColor;
-    @SerializedName("ratingSignals")
-    @Expose
+
     private Integer ratingSignals;
 
-    @SerializedName("description")
-    @Expose
     private String description;
-    @SerializedName("storeId")
-    @Expose
+
     private String storeId;
 
-    @SerializedName("createdAt")
-    @Expose
     private Integer createdAt;
 
-    @SerializedName("shortUrl")
-    @Expose
     private String shortUrl;
-    @SerializedName("timeZone")
-    @Expose
+
     private String timeZone;
 
-    @SerializedName("hours")
-    @Expose
     private Hours hours = new Hours();
+
 
     public Location getLocation() {
         return location;
@@ -106,6 +73,13 @@ public class Venue {
         this.name = name;
     }
 
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
 
     public String getCanonicalUrl() {
         return canonicalUrl;
@@ -155,8 +129,6 @@ public class Venue {
         this.ratingSignals = ratingSignals;
     }
 
-
-
     public String getDescription() {
         return description;
     }
@@ -172,8 +144,6 @@ public class Venue {
     public void setStoreId(String storeId) {
         this.storeId = storeId;
     }
-
-
 
     public Integer getCreatedAt() {
         return createdAt;

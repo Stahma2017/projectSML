@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mask">
+
+    <ImageView
+        android:src="@drawable/meatlove"
+        android:id="@+id/placeLogo"
+        android:layout_width="@dimen/placelogo_width"
+        android:layout_height="@dimen/placelogo_height"
+        android:layout_marginStart="@dimen/placelogo_marginstart"
+        android:layout_marginTop="@dimen/placelogo_margintop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/placeName"
+        android:layout_width="@dimen/placename_width"
+        android:layout_height="25dp"
+        android:layout_marginStart="@dimen/placename_marginstart"
+        android:layout_marginTop="@dimen/placename_margintop"
+        android:textSize="@dimen/placename_text_size"
+        android:text="Мясо Love"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RatingBar
+        android:numStars="5"
+        android:id="@+id/placeRating"
+        style="?android:attr/ratingBarStyleSmall"
+        android:theme="@style/RatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/placerating_marginstart"
+        android:layout_marginTop="@dimen/placerating_margintop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <TextView
+        android:id="@+id/placeShortDescription"
+        android:layout_width="@dimen/placeshortdescription_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/placeshortdescription_marginstart"
+        android:layout_marginTop="@dimen/placeshortdescription_margintop"
+        android:text="Ресторан, где любят мясо"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/placeAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/placeaddress_marginstart"
+        android:layout_marginTop="@dimen/placeaddress_margintop"
+        android:text="Ул. Красная, 134"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="168dp"
+        android:id="@+id/workIndicator"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/workStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/workstatus_marginstart"
+        android:layout_marginTop="@dimen/workstatus_margintop"
+        android:text="Открыто до 00:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="@dimen/short_distance_sign_width"
+        android:layout_height="@dimen/short_distance_sign_height"
+        android:layout_marginStart="@dimen/short_distance_sign_marginstart"
+        android:layout_marginTop="@dimen/short_distance_sign_margintop"
+        android:src="@drawable/distance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/shortDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/short_distance_marginstart"
+        android:layout_marginTop="@dimen/short_distance_margintop"
+        android:text="3.1 км"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

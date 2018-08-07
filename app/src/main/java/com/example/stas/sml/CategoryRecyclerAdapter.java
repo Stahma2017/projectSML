@@ -54,13 +54,7 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
             categoryIcon = itemView.findViewById(R.id.categoryImage);
             categoryName = itemView.findViewById(R.id.categoryName);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    presenter.onItemClickedAtPosition(CategoryViewHolder.this.getAdapterPosition());
-                }
-            });
-
+            itemView.setOnClickListener(view -> presenter.loadVenueList(CategoryViewHolder.this.getAdapterPosition()));
         }
 
         @Override
@@ -72,7 +66,6 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
         public void setName(String name) {
            categoryName.setText(name);
         }
-
 
     }
 

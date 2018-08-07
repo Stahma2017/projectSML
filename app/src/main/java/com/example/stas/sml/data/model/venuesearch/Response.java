@@ -1,6 +1,7 @@
-package com.example.stas.sml.data.model;
+package com.example.stas.sml.data.model.venuesearch;
 
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

@@ -55,12 +55,12 @@
             app:layout_anchorGravity="top|end"
             app:layout_anchor="@id/bottom_sheet"
             android:layout_marginEnd="15dp"
-            android:onClick="getCurrentLocation"/>
+            android:onClick="toCurrentLocation"/>
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="@dimen/bottomsheet_height"
             android:clipToPadding="true"
             android:background="@drawable/bottomsheet_background"
             app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="@dimen/bottomsheet_boarder_padding">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -77,25 +77,40 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/marker_in_bottomsheet_width"
+                        android:layout_height="@dimen/marker_in_bottomsheet_height"
                         android:src="@drawable/marker"
-                        android:layout_marginStart="5dp"/>
+                        android:layout_marginStart="@dimen/marker_in_bottomsheet_marginstart"/>
+
                     <TextView
-                        android:layout_marginStart="5dp"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/addressField"
+                        android:layout_marginStart="@dimen/address_marginstart"
+                        android:layout_width="@dimen/address_width"
                         android:layout_height="wrap_content"
-                        android:text="Ул. Красная 95"
-                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/address_text_size"
                         android:textAllCaps="true"/>
 
+                    <TextView
+                        android:paddingStart="@dimen/distance_paddingstart"
+                        android:id="@+id/distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
                 <TextView
+                    android:layout_marginTop="@dimen/region_margintop"
+                    android:id="@+id/regionField"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Россия, Краснодарский край"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/region_text_size"/>
+
+                <ImageView
+                    android:layout_width="@dimen/distance_sign_width"
+                    android:layout_height="@dimen/distance_sign_height"
+                    android:src="@drawable/distance"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/distance_sign_marginend"/>
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
@@ -120,21 +135,21 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/myTool"
             android:layout_width="wrap_content"
-            android:layout_height="54dp"
+            android:layout_height="@dimen/toolbar_height"
             android:background="@drawable/rectangle_14_edited"
             app:menu="@menu/toolbar_menu"
             android:layout_gravity="end"/>
 
         <FrameLayout
-            android:layout_width="200dp"
-            android:layout_height="56dp"
+            android:layout_width="@dimen/frame_of_bottomnavigation_width"
+            android:layout_height="@dimen/frame_of_bottomnavigation_height"
             android:layout_gravity="bottom"
             android:background="@drawable/bottom_bar">
             <android.support.design.widget.BottomNavigationView
                 android:id="@+id/bottomAppBar"
-                android:layout_width="170dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="@dimen/bottomnavigation_width"
+                android:layout_height="@dimen/bottomnavigation_height"
+                android:layout_marginTop="@dimen/bottomnavigation_margintop"
                 app:menu="@menu/bottomappbar_menu" />
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>

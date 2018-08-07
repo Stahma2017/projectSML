@@ -1,16 +1,18 @@
-package com.example.stas.sml.data.model;
+package com.example.stas.sml.data.model.venuesearch;
 
+import com.example.stas.sml.data.model.venuesearch.Meta;
+import com.example.stas.sml.data.model.venuesearch.Response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class VenueDetailsResponse {
+public class PlaceResponce {
 
     @SerializedName("meta")
     @Expose
     private Meta meta;
     @SerializedName("response")
     @Expose
-    private VenueDto response;
+    private Response response;
 
     public Meta getMeta() {
         return meta;
@@ -20,12 +22,11 @@ public class VenueDetailsResponse {
         this.meta = meta;
     }
 
-    public VenueDto getVenueDto() {
+    public Response getResponse() {
         return response;
     }
 
-    public void setVenueDto(VenueDto response) {
+    public void setResponse(Response response) {
         this.response = response;
     }
-
 }

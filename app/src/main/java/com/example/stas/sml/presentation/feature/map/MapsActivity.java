@@ -1,12 +1,12 @@
 package com.example.stas.sml.presentation.feature.map;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -16,29 +16,31 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.module.AppGlideModule;
 import com.example.stas.sml.App;
-import com.example.stas.sml.Category;
 import com.example.stas.sml.CategoryRecyclerAdapter;
-import com.example.stas.sml.PlacesRecyclerAdapter;
+import com.example.stas.sml.CategorySuggestionRecyclerAdapter;
+import com.example.stas.sml.MyAppGlideModule;
 import com.example.stas.sml.R;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -50,12 +52,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import javax.inject.Inject;
 
 @RuntimePermissions
-public class MapsActivity extends AppCompatActivity implements MapsContract.MapView, OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener{
+public class MapsActivity extends AppCompatActivity implements MapsContract.MapView, OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
 
     private GoogleMap mMap;
     private Marker marker;
@@ -65,7 +70,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     private CategoryRecyclerAdapter categoryAdapter;
 
     //New dependency
-    private PlacesRecyclerAdapter placesAdapter;
+    private CategorySuggestionRecyclerAdapter placesAdapter;
 
 
     @Inject
@@ -75,15 +80,26 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
 
     @BindView(R.id.bottomAppBar)
     BottomNavigationView bottomNavigation;
-    @BindView(R.id.myTool) Toolbar toolbar;
-    @BindView(R.id.bottom_sheet) View bottomSheet;
+    @BindView(R.id.myTool)
+    Toolbar toolbar;
+    @BindView(R.id.bottom_sheet)
+    View bottomSheet;
     @BindView(R.id.categoryRecycler)
     RecyclerView categoryRecycler;
-    @BindView(R.id.placesRecycler) RecyclerView placesRecycler;
-    @BindView(R.id.location)Button locationBtn;
-    @BindView(R.id.minus)Button zoomOutBtn;
-    @BindView(R.id.plus)Button zoomInBtn;
-
+    @BindView(R.id.placesRecycler)
+    RecyclerView placesRecycler;
+    @BindView(R.id.location)
+    Button locationBtn;
+    @BindView(R.id.minus)
+    Button zoomOutBtn;
+    @BindView(R.id.plus)
+    Button zoomInBtn;
+    @BindView(R.id.regionField)
+    TextView regionTW;
+    @BindView(R.id.addressField)
+    TextView addressTW;
+    @BindView(R.id.distance)
+    TextView distanceTW;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +114,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         presenter.checkNetworkConnection();
         setSupportActionBar(toolbar);
-        presenter.populateCategories();
-
-
 
         categoryAdapter = new CategoryRecyclerAdapter(presenter);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
@@ -108,20 +121,11 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         categoryRecycler.setAdapter(categoryAdapter);
 
 
-        placesAdapter = new PlacesRecyclerAdapter(new ArrayList<>(), getApplicationContext());
-        LinearLayoutManager placesLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        placesRecycler.setLayoutManager(placesLayoutManager);
-        placesRecycler.setAdapter(placesAdapter);
     }
 
 
-
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    public void getCurrentLocation(View view) {
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(provider);
+    public void toCurrentLocation(View view) {
+        Location location = getCurrentLocation();
         if (location != null) {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
@@ -130,6 +134,17 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         }
     }
 
+
+    @Override
+    public Location getCurrentLocation() {
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(provider);
+        return location;
+    }
+
+
     public void zoomIn(View view) {
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
     }
@@ -137,7 +152,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     public void zoomOut(View view) {
         mMap.animateCamera(CameraUpdateFactory.zoomOut());
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -182,19 +196,39 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         presenter.detachView();
     }
 
+    @SuppressLint("NeedOnRequestPermissionsResult")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         MapsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-
-
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
         setMarker(latLng);
         MapsActivityPermissionsDispatcher.setMarkerWithPermissionCheck(this, latLng);
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            String address = addresses.get(0).getAddressLine(0);
+            String[] splitedAdress = address.split(",");
+            address = splitedAdress[0] + "," + splitedAdress[1];
+            addressTW.setText(address);
+            String region = addresses.get(0).getCountryName() + ", " + addresses.get(0).getAdminArea();
+            regionTW.setText(region);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Location location = getCurrentLocation();
+        float[] results = new float[1];
+        Location.distanceBetween(latLng.latitude, latLng.longitude, location.getLatitude(), location.getLongitude(), results);
+
+        distanceTW.setText(String.format("%.0f", results[0]) + " м");
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     @Override
@@ -202,7 +236,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         setMarker(latLng);
         MapsActivityPermissionsDispatcher.setMarkerWithPermissionCheck(this, latLng);
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        presenter.loadVenueId(latLng);
+
     }
 
     public void showSlider(List<String> urls) {
@@ -224,24 +258,20 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    void setUpMap(){
+    void setUpMap() {
         final MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    void setMarker(LatLng latLng){
+    void setMarker(LatLng latLng) {
         if (marker != null) {
             marker.remove();
         }
-
         MarkerOptions markerOptions = new MarkerOptions().
                 position(latLng).
                 title("Custom location")
@@ -250,12 +280,12 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     }
 
     @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
-    void showDeniedForMap(){
+    void showDeniedForMap() {
         Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
     }
 
     @OnNeverAskAgain(Manifest.permission.ACCESS_FINE_LOCATION)
-    void showNeverAskForMap(){
+    void showNeverAskForMap() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri uri = Uri.fromParts("package", getPackageName(), null);
@@ -271,10 +301,16 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
 
     @Override
     public void showSuggestions() {
+        placesAdapter = new CategorySuggestionRecyclerAdapter(presenter);
+        LinearLayoutManager placesLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        placesRecycler.setLayoutManager(placesLayoutManager);
+        placesRecycler.setAdapter(placesAdapter);
+
+
         placesRecycler.setVisibility(View.VISIBLE);
-        locationBtn.setVisibility(View.INVISIBLE);
-        zoomOutBtn.setVisibility(View.INVISIBLE);
-        zoomInBtn.setVisibility(View.INVISIBLE);
+        locationBtn.setVisibility(View.GONE);
+        zoomOutBtn.setVisibility(View.GONE);
+        zoomInBtn.setVisibility(View.GONE);
     }
 
 
