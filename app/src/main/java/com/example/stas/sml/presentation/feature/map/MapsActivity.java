@@ -2,7 +2,10 @@ package com.example.stas.sml.presentation.feature.map;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
@@ -10,21 +13,28 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+
+
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +52,7 @@ import com.example.stas.sml.CategoryRecyclerAdapter;
 import com.example.stas.sml.CategorySuggestionRecyclerAdapter;
 import com.example.stas.sml.MyAppGlideModule;
 import com.example.stas.sml.R;
+import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -100,6 +111,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     TextView addressTW;
     @BindView(R.id.distance)
     TextView distanceTW;
+    List<String> suggestions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +131,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
         categoryRecycler.setLayoutManager(horizontalLayoutManager);
         categoryRecycler.setAdapter(categoryAdapter);
-
 
     }
 
@@ -157,7 +168,79 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, toolbar.getMenu());
 
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = (SearchView) toolbar.getMenu().findItem(R.id.action_search).getActionView();
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+
+
+
         MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search);
+
+
+
+
+        final android.support.v4.widget.CursorAdapter suggestionAdapter = new android.support.v4.widget.SimpleCursorAdapter(this,
+                android.R.layout.simple_list_item_1,
+                null,
+                new String[]{SearchManager.SUGGEST_COLUMN_TEXT_1},
+                new int[]{android.R.id.text1},
+                0);
+
+
+
+        searchView.setSuggestionsAdapter(suggestionAdapter);
+
+
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int i) {
+                return false;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int i) {
+
+                return false;
+            }
+        });
+
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+
+                if (s.length() >=2){
+                    suggestions = presenter.loadSuggestions(s);
+                }
+
+                String[] columns = { BaseColumns._ID,
+                        SearchManager.SUGGEST_COLUMN_TEXT_1,
+                        SearchManager.SUGGEST_COLUMN_INTENT_DATA,
+                };
+
+                MatrixCursor cursor = new MatrixCursor(columns);
+                for (int i = 0; i < suggestions.size(); i++) {
+                    String[] tmp = {Integer.toString(i),suggestions.get(i),suggestions.get(i)};
+                    cursor.addRow(tmp);
+                }
+                suggestionAdapter.changeCursor(cursor);
+
+                return true;
+            }
+        });
+
+
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
@@ -174,18 +257,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
             }
         });
 
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
         return true;
     }
 
@@ -225,7 +296,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         }
         Location location = getCurrentLocation();
         float[] results = new float[1];
-        Location.distanceBetween(latLng.latitude, latLng.longitude, location.getLatitude(), location.getLongitude(), results);
+        Location.distanceBetween(latLng.latitude, latLng.longitude, location.getLatitude (), location.getLongitude(), results);
 
         distanceTW.setText(String.format("%.0f", results[0]) + " м");
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -305,7 +376,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         LinearLayoutManager placesLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
         placesRecycler.setLayoutManager(placesLayoutManager);
         placesRecycler.setAdapter(placesAdapter);
-
 
         placesRecycler.setVisibility(View.VISIBLE);
         locationBtn.setVisibility(View.GONE);

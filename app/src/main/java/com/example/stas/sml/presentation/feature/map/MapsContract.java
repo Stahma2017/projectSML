@@ -7,9 +7,12 @@ import android.view.View;
 
 import com.example.stas.sml.CanShowError;
 import com.example.stas.sml.data.model.venuedetailedmodel.Venue;
+import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.domain.entity.VenueEntity;
 import com.example.stas.sml.presentation.base.BaseView;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -36,15 +39,17 @@ public interface MapsContract {
         void onBindSuggestionRowViewAtPosition(int position, MapsContract.CategorySuggestionRowView rowView);
         int getSuggestionRowCount();
         void loadVenueList(int position);
+
+        List<String> loadSuggestions(String querry);
     }
 
     interface Model {
-        //  Single<String> loadVenueId(String latLng);
-      //  Observable<VenueEntity> loadPhotos(String latLng);
+
+        Observable<List<Minivenue>> searchSuggestions(String querry);
 
         Observable<Boolean> observeConnectionStates();
 
-      Observable<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> search(Location location, String categoryId);
+        Observable<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> search(Location location, String categoryId);
 
 
     }

@@ -7,6 +7,9 @@ import com.example.stas.sml.data.model.venuedetailedmodel.VenueDetailsResponse;
 import com.example.stas.sml.data.model.venuedetailedmodel.Venue;
 import com.example.stas.sml.data.model.venuesearch.SearchResponse;
 
+import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
+import com.example.stas.sml.data.model.venuesuggestion.Response;
+import com.example.stas.sml.data.model.venuesuggestion.SuggestionResponse;
 import com.example.stas.sml.domain.entity.VenueEntity;
 import com.example.stas.sml.presentation.feature.map.MapsContract;
 import com.example.stas.sml.data.network.Api;
@@ -52,6 +55,18 @@ public class MapsModel implements MapsContract.Model {
                           venueDetailsResponse.getVenueDto().getVenue().setDistance(venuesearch.getLocation().getDistance());
                            return mapper.map(venueDetailsResponse.getVenueDto().getVenue());
                         }));
+    }
+
+
+    @Override
+    public Observable<List<Minivenue>> searchSuggestions(String querry){
+        return serverApi.searchSuggestions("45.045583, 38.978452", querry)
+              .map(new Function<SuggestionResponse, List<Minivenue>>() {
+                  @Override
+                  public List<Minivenue> apply(SuggestionResponse suggestionResponse) throws Exception {
+                    return suggestionResponse.getResponse().getMinivenues();
+                  }
+              });
     }
 }
 

@@ -5,6 +5,7 @@ import com.example.stas.sml.Category;
 
 
 import com.example.stas.sml.data.model.venuedetailedmodel.Venue;
+import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 
@@ -19,6 +20,7 @@ import java.util.Locale;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class MapsPresenter implements MapsContract.Presenter {
@@ -29,6 +31,10 @@ public class MapsPresenter implements MapsContract.Presenter {
     private final CompositeDisposable compositeDisposable;
 
     private List<VenueEntity> venues = new ArrayList<>();
+    private List<String> suggestions = new ArrayList<>();
+
+
+
 
 
 
@@ -80,6 +86,25 @@ public class MapsPresenter implements MapsContract.Presenter {
                 },
                         errorHandler::proceed);
         compositeDisposable.add(venueListDisposable);
+    }
+
+    @Override
+    public List<String> loadSuggestions(String querry){
+
+
+        Disposable bla = model.searchSuggestions(querry)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(minivenues -> {
+                    suggestions.clear();
+                    for (Minivenue minivenue: minivenues
+                         ) {
+                        suggestions.add(minivenue.getName());
+                    }
+                    }
+                );
+        compositeDisposable.add(bla);
+        return suggestions;
     }
 
 
