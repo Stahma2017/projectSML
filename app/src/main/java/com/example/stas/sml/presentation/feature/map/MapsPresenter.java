@@ -4,13 +4,10 @@ import android.location.Location;
 import com.example.stas.sml.Category;
 
 
-import com.example.stas.sml.data.model.venuedetailedmodel.Venue;
-import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 
 import com.example.stas.sml.utils.CategoryList;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -20,7 +17,6 @@ import java.util.Locale;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class MapsPresenter implements MapsContract.Presenter {
@@ -31,11 +27,6 @@ public class MapsPresenter implements MapsContract.Presenter {
     private final CompositeDisposable compositeDisposable;
 
     private List<VenueEntity> venues = new ArrayList<>();
-    private List<String> suggestions = new ArrayList<>();
-
-
-
-
 
 
     public MapsPresenter(MapsContract.Model model,
@@ -73,38 +64,47 @@ public class MapsPresenter implements MapsContract.Presenter {
     }
 
     @Override
-    public void loadVenueList(int position){
-        String categoryId =CategoryList.getInstance().getCategoryList().get(position).getCategoryId();
+    public void getVenuesWithCategory(int position){
+        String categoryId = CategoryList.getInstance().getCategoryList().get(position).getCategoryId();
         Location currentLocation = mapsView.get().getCurrentLocation();
         venues.clear();
-        Disposable venueListDisposable = model.search(currentLocation, categoryId)
+        Disposable venueListDisposable = model.loadVenuesWithCategory(currentLocation, categoryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((VenueEntity venue) -> {
                     venues.add(venue);
-                    mapsView.get().showSuggestions();
+                    mapsView.get().showPlacesByCategory();
                 },
                         errorHandler::proceed);
         compositeDisposable.add(venueListDisposable);
     }
 
     @Override
-    public List<String> loadSuggestions(String querry){
+    public void getTextSuggestions(String querry){
 
-
-        Disposable bla = model.searchSuggestions(querry)
+        Disposable bla = model.loadTextSuggestions(querry)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(minivenues -> {
-                    suggestions.clear();
-                    for (Minivenue minivenue: minivenues
-                         ) {
-                        suggestions.add(minivenue.getName());
-                    }
-                    }
+                .subscribe(minivenues ->
+                    mapsView.get().showSearchSuggestions(minivenues)
                 );
         compositeDisposable.add(bla);
-        return suggestions;
+    }
+
+    @Override
+    public void getVenuesByQuerySubmit(String querry){
+        Location currentLocation = mapsView.get().getCurrentLocation();
+
+        venues.clear();
+        Disposable venueListDisposable = model.loadVenuesByQuerySubmition(currentLocation, querry)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((VenueEntity venue) -> {
+                            venues.add(venue);
+                            mapsView.get().showPlacesByQuerySubmit(venues);
+                        },
+                        errorHandler::proceed);
+        compositeDisposable.add(venueListDisposable);
     }
 
 
@@ -125,7 +125,7 @@ public class MapsPresenter implements MapsContract.Presenter {
         rowView.setDistance(String.format(Locale.US,"%.1f км", ((double)venue.getDistance())/1000));
         rowView.setRating((float)(venue.getRating()/2));
         rowView.setLogo(venue.getPage().getPageInfo().getBanner());
-        rowView.setWorkIndicator(venue.getHours().getOpen());
+//        rowView.setWorkIndicator(venue.getHours().getOpen());
     }
 
     @Override

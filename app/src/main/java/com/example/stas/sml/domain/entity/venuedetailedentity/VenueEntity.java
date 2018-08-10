@@ -1,8 +1,5 @@
 package com.example.stas.sml.domain.entity.venuedetailedentity;
 
-import com.example.stas.sml.data.model.venuedetailedmodel.Hours;
-import com.example.stas.sml.data.model.venuedetailedmodel.Location;
-import com.example.stas.sml.data.model.venuedetailedmodel.Page;
 
 public class VenueEntity {
 

@@ -2,10 +2,7 @@ package com.example.stas.sml.presentation.feature.map;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
@@ -13,46 +10,37 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.provider.BaseColumns;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-
-
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.module.AppGlideModule;
 import com.example.stas.sml.App;
 import com.example.stas.sml.CategoryRecyclerAdapter;
-import com.example.stas.sml.CategorySuggestionRecyclerAdapter;
-import com.example.stas.sml.MyAppGlideModule;
+import com.example.stas.sml.VenuesByCategoryRecyclerAdapter;
 import com.example.stas.sml.R;
+import com.example.stas.sml.SearchSuggestionsRecyclerAdapter;
+import com.example.stas.sml.VenuesByQuerySubmitRecyclerAdapter;
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
+import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -62,12 +50,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import javax.inject.Inject;
 
 @RuntimePermissions
@@ -78,10 +64,13 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     private BottomSheetBehavior bottomSheetBehavior;
 
     //New dependency
-    private CategoryRecyclerAdapter categoryAdapter;
+    private VenuesByCategoryRecyclerAdapter placesAdapter;
 
     //New dependency
-    private CategorySuggestionRecyclerAdapter placesAdapter;
+    private SearchSuggestionsRecyclerAdapter suggestionAdapter;
+
+    //New dependency
+    private VenuesByQuerySubmitRecyclerAdapter placesBySubmitAdapter;
 
 
     @Inject
@@ -89,32 +78,22 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     @Inject
     ErrorHandler errorHandler;
 
-    @BindView(R.id.bottomAppBar)
-    BottomNavigationView bottomNavigation;
-    @BindView(R.id.myTool)
-    Toolbar toolbar;
-    @BindView(R.id.bottom_sheet)
-    View bottomSheet;
-    @BindView(R.id.categoryRecycler)
-    RecyclerView categoryRecycler;
-    @BindView(R.id.placesRecycler)
-    RecyclerView placesRecycler;
-    @BindView(R.id.location)
-    Button locationBtn;
-    @BindView(R.id.minus)
-    Button zoomOutBtn;
-    @BindView(R.id.plus)
-    Button zoomInBtn;
-    @BindView(R.id.regionField)
-    TextView regionTW;
-    @BindView(R.id.addressField)
-    TextView addressTW;
-    @BindView(R.id.distance)
-    TextView distanceTW;
-    List<String> suggestions = new ArrayList<>();
+    @BindView(R.id.bottomAppBar)BottomNavigationView bottomNavigation;
+    @BindView(R.id.myTool)Toolbar toolbar;
+    @BindView(R.id.bottom_sheet)View bottomSheet;
+    @BindView(R.id.categoryRecycler)RecyclerView categoryRecycler;
+    @BindView(R.id.placesRecycler)RecyclerView placesRecycler;
+    @BindView(R.id.location)Button locationBtn;
+    @BindView(R.id.minus)Button zoomOutBtn;
+    @BindView(R.id.plus)Button zoomInBtn;
+    @BindView(R.id.regionField)TextView regionTW;
+    @BindView(R.id.addressField)TextView addressTW;
+    @BindView(R.id.distance)TextView distanceTW;
+    @BindView(R.id.suggestion_list)RecyclerView suggestionRecycler;
+    @BindView(R.id.suggesiontByQuerySubmitList)RecyclerView suggestionsBySubmitRecycler;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {`
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         App.getInstance().addMapsComponent().injectMapsActivity(this);
@@ -127,13 +106,26 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         presenter.checkNetworkConnection();
         setSupportActionBar(toolbar);
 
-        categoryAdapter = new CategoryRecyclerAdapter(presenter);
+        CategoryRecyclerAdapter categoryAdapter = new CategoryRecyclerAdapter(presenter);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
         categoryRecycler.setLayoutManager(horizontalLayoutManager);
         categoryRecycler.setAdapter(categoryAdapter);
 
-    }
+        placesAdapter = new VenuesByCategoryRecyclerAdapter(presenter);
+        LinearLayoutManager placesLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        placesRecycler.setLayoutManager(placesLayoutManager);
+        placesRecycler.setAdapter(placesAdapter);
 
+        suggestionAdapter = new SearchSuggestionsRecyclerAdapter(this);
+        LinearLayoutManager suggestionManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.VERTICAL, false);
+        suggestionRecycler.setLayoutManager(suggestionManager);
+        suggestionRecycler.setAdapter(suggestionAdapter);
+
+        placesBySubmitAdapter = new VenuesByQuerySubmitRecyclerAdapter(this);
+        LinearLayoutManager suggestionsLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.VERTICAL, false);
+        suggestionsBySubmitRecycler.setLayoutManager(suggestionsLayoutManager);
+        suggestionsBySubmitRecycler.setAdapter(placesBySubmitAdapter);
+    }
 
     public void toCurrentLocation(View view) {
         Location location = getCurrentLocation();
@@ -145,7 +137,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         }
     }
 
-
     @Override
     public Location getCurrentLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -154,7 +145,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         Location location = locationManager.getLastKnownLocation(provider);
         return location;
     }
-
 
     public void zoomIn(View view) {
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
@@ -168,78 +158,26 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, toolbar.getMenu());
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
         SearchView searchView = (SearchView) toolbar.getMenu().findItem(R.id.action_search).getActionView();
-
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
-
-
-
         MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search);
-
-
-
-
-        final android.support.v4.widget.CursorAdapter suggestionAdapter = new android.support.v4.widget.SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_1,
-                null,
-                new String[]{SearchManager.SUGGEST_COLUMN_TEXT_1},
-                new int[]{android.R.id.text1},
-                0);
-
-
-
-        searchView.setSuggestionsAdapter(suggestionAdapter);
-
-
-        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
-            @Override
-            public boolean onSuggestionSelect(int i) {
-                return false;
-            }
-
-            @Override
-            public boolean onSuggestionClick(int i) {
-
-                return false;
-            }
-        });
-
-
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String s) {
-                return false;
+                suggestionRecycler.setVisibility(View.GONE);
+                presenter.getVenuesByQuerySubmit(s);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-
-
-                if (s.length() >=2){
-                    suggestions = presenter.loadSuggestions(s);
-                }
-
-                String[] columns = { BaseColumns._ID,
-                        SearchManager.SUGGEST_COLUMN_TEXT_1,
-                        SearchManager.SUGGEST_COLUMN_INTENT_DATA,
-                };
-
-                MatrixCursor cursor = new MatrixCursor(columns);
-                for (int i = 0; i < suggestions.size(); i++) {
-                    String[] tmp = {Integer.toString(i),suggestions.get(i),suggestions.get(i)};
-                    cursor.addRow(tmp);
-                }
-                suggestionAdapter.changeCursor(cursor);
-
-                return true;
+                    if (s.length() >= 3){
+                        presenter.getTextSuggestions(s);
+                    }
+               return true;
             }
         });
-
 
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
@@ -256,10 +194,8 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
                 return true;
             }
         });
-
         return true;
     }
-
 
     @Override
     protected void onDestroy() {
@@ -307,17 +243,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         setMarker(latLng);
         MapsActivityPermissionsDispatcher.setMarkerWithPermissionCheck(this, latLng);
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-
-    }
-
-    public void showSlider(List<String> urls) {
-      /*  TextSliderView textSliderView = new TextSliderView(this);
-        for(String url : urls){
-            textSliderView
-                    .image(url)
-                    .setScaleType(BaseSliderView.ScaleType.Fit);
-            parallax.addSlider(textSliderView);
-        }*/
     }
 
     @Override
@@ -369,19 +294,32 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 
-
     @Override
-    public void showSuggestions() {
-        placesAdapter = new CategorySuggestionRecyclerAdapter(presenter);
-        LinearLayoutManager placesLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        placesRecycler.setLayoutManager(placesLayoutManager);
-        placesRecycler.setAdapter(placesAdapter);
-
+    public void showPlacesByCategory() {
+        placesAdapter.notifyDataSetChanged();
         placesRecycler.setVisibility(View.VISIBLE);
         locationBtn.setVisibility(View.GONE);
         zoomOutBtn.setVisibility(View.GONE);
         zoomInBtn.setVisibility(View.GONE);
     }
 
+    @Override
+    public void showPlacesByQuerySubmit(List<VenueEntity> venues){
+        suggestionsBySubmitRecycler.setVisibility(View.VISIBLE);
+        suggestionRecycler.setVisibility(View.GONE);
+        placesBySubmitAdapter.setVenues(venues);
+        placesBySubmitAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showSearchSuggestions(List<Minivenue> minivenues){
+        suggestionRecycler.setVisibility(View.VISIBLE);
+        suggestionAdapter.setMinivenues(minivenues);
+        suggestionAdapter.notifyDataSetChanged();
+
+        locationBtn.setVisibility(View.GONE);
+        zoomOutBtn.setVisibility(View.GONE);
+        zoomInBtn.setVisibility(View.GONE);
+    }
 
 }

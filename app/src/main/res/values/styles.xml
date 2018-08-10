@@ -20,6 +20,11 @@
         <item name="colorControlActivated">#686363</item>
     </style>
 
+    <style
+        name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </style>
+
 
 
 

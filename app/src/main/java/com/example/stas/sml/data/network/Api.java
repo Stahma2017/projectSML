@@ -25,8 +25,14 @@ public interface Api {
 
 
     @GET("/v2/venues/search")
-    Observable<SearchResponse> searchNew(@Query("ll") String ll,
+    Observable<SearchResponse> searchWithCategory(@Query("ll") String ll,
                                          @Query("llAcc") double llAcc, @Query("categoryId") String categoryId, @Query("limit") Integer limit);
+
+    @GET("/v2/venues/search")
+    Observable<SearchResponse> searchWithQueryParam(@Query("ll") String ll,
+                                         @Query("llAcc") double llAcc, @Query("query") String query, @Query("limit") Integer limit);
+
+
 
     @GET("https://api.foursquare.com/v2/venues/suggestcompletion")
     Observable<SuggestionResponse> searchSuggestions(@Query("ll") String ll, @Query("query") String query);

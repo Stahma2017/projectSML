@@ -1,40 +1,31 @@
 package com.example.stas.sml;
-
-import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 import com.example.stas.sml.presentation.feature.map.MapsContract;
 
-import java.util.Map;
-
-public class CategorySuggestionRecyclerAdapter extends RecyclerView.Adapter<CategorySuggestionRecyclerAdapter.SuggestionViewHolder> {
+public class VenuesByCategoryRecyclerAdapter extends RecyclerView.Adapter<VenuesByCategoryRecyclerAdapter.SuggestionViewHolder> {
 
     private final MapsContract.Presenter presenter;
 
-    public CategorySuggestionRecyclerAdapter(MapsContract.Presenter presenter) {
+    public VenuesByCategoryRecyclerAdapter(MapsContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
     @NonNull
     @Override
     public SuggestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new CategorySuggestionRecyclerAdapter.SuggestionViewHolder(presenter, LayoutInflater.from(parent.getContext())
+        return new VenuesByCategoryRecyclerAdapter.SuggestionViewHolder(presenter, LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.suggestion_recycler_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategorySuggestionRecyclerAdapter.SuggestionViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull VenuesByCategoryRecyclerAdapter.SuggestionViewHolder holder, int position) {
         presenter.onBindSuggestionRowViewAtPosition(position, holder);
 
     }

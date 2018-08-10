@@ -1,20 +1,14 @@
 package com.example.stas.sml;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.stas.sml.presentation.feature.map.MapsContract;
-import com.example.stas.sml.presentation.feature.map.MapsPresenter;
-
-import java.util.List;
 
 public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecyclerAdapter.CategoryViewHolder> {
 
@@ -54,7 +48,7 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
             categoryIcon = itemView.findViewById(R.id.categoryImage);
             categoryName = itemView.findViewById(R.id.categoryName);
 
-            itemView.setOnClickListener(view -> presenter.loadVenueList(CategoryViewHolder.this.getAdapterPosition()));
+            itemView.setOnClickListener(view -> presenter.getVenuesWithCategory(CategoryViewHolder.this.getAdapterPosition()));
         }
 
         @Override
