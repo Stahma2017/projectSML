@@ -18,7 +18,7 @@
 
         />
     <item
-        android:id="@+id/account"
+        android:id="@+id/action_account"
         android:icon="@drawable/ic_action_room"
         android:title=""
         app:showAsAction="ifRoom"

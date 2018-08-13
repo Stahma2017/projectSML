@@ -4,9 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.location.Address;
 import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -14,7 +12,8 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,8 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +40,8 @@ import com.example.stas.sml.VenuesByQuerySubmitRecyclerAdapter;
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.base.ErrorHandler;
+import com.example.stas.sml.presentation.feature.map.map.MapsFragment;
+import com.example.stas.sml.presentation.feature.map.querysubmit.VenuesByQuerySubmitFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -50,18 +50,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Locale;
+
 import javax.inject.Inject;
 
 @RuntimePermissions
-public class MapsActivity extends AppCompatActivity implements MapsContract.MapView, OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
+public class MainActivity extends AppCompatActivity implements MapsContract.MapView, OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Marker marker;
-    private BottomSheetBehavior bottomSheetBehavior;
+
 
     //New dependency
     private VenuesByCategoryRecyclerAdapter placesAdapter;
@@ -69,72 +68,69 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     //New dependency
     private SearchSuggestionsRecyclerAdapter suggestionAdapter;
 
-    //New dependency
-    private VenuesByQuerySubmitRecyclerAdapter placesBySubmitAdapter;
-
-
     @Inject
     MapsContract.Presenter presenter;
     @Inject
     ErrorHandler errorHandler;
 
+
     @BindView(R.id.bottomAppBar)BottomNavigationView bottomNavigation;
     @BindView(R.id.myTool)Toolbar toolbar;
-    @BindView(R.id.bottom_sheet)View bottomSheet;
+
     @BindView(R.id.categoryRecycler)RecyclerView categoryRecycler;
     @BindView(R.id.placesRecycler)RecyclerView placesRecycler;
-    @BindView(R.id.location)Button locationBtn;
-    @BindView(R.id.minus)Button zoomOutBtn;
-    @BindView(R.id.plus)Button zoomInBtn;
-    @BindView(R.id.regionField)TextView regionTW;
-    @BindView(R.id.addressField)TextView addressTW;
-    @BindView(R.id.distance)TextView distanceTW;
+
     @BindView(R.id.suggestion_list)RecyclerView suggestionRecycler;
-    @BindView(R.id.suggesiontByQuerySubmitList)RecyclerView suggestionsBySubmitRecycler;
+
+    @BindView(R.id.fragment_container)FrameLayout fragmentContainer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {`
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        App.getInstance().addMapsComponent().injectMapsActivity(this);
+        App.getInstance().addMapsComponent().injectMainActivity(this);
         ButterKnife.bind(this);
         presenter.attachView(this);
         setUpMap();
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        bottomSheetBehavior.setHideable(true);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
         presenter.checkNetworkConnection();
         setSupportActionBar(toolbar);
 
         CategoryRecyclerAdapter categoryAdapter = new CategoryRecyclerAdapter(presenter);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
         categoryRecycler.setLayoutManager(horizontalLayoutManager);
         categoryRecycler.setAdapter(categoryAdapter);
 
         placesAdapter = new VenuesByCategoryRecyclerAdapter(presenter);
-        LinearLayoutManager placesLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager placesLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
         placesRecycler.setLayoutManager(placesLayoutManager);
         placesRecycler.setAdapter(placesAdapter);
 
         suggestionAdapter = new SearchSuggestionsRecyclerAdapter(this);
-        LinearLayoutManager suggestionManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager suggestionManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
         suggestionRecycler.setLayoutManager(suggestionManager);
         suggestionRecycler.setAdapter(suggestionAdapter);
 
-        placesBySubmitAdapter = new VenuesByQuerySubmitRecyclerAdapter(this);
-        LinearLayoutManager suggestionsLayoutManager = new LinearLayoutManager(MapsActivity.this, LinearLayoutManager.VERTICAL, false);
-        suggestionsBySubmitRecycler.setLayoutManager(suggestionsLayoutManager);
-        suggestionsBySubmitRecycler.setAdapter(placesBySubmitAdapter);
-    }
 
-    public void toCurrentLocation(View view) {
-        Location location = getCurrentLocation();
-        if (location != null) {
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-            LatLng latLng = new LatLng(latitude, longitude);
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        }
+
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                switch (menuItem.getItemId()) {
+
+                    case R.id.action_map:
+                        fragmentTransaction.replace(R.id.fragment_container, new MapsFragment());
+                        fragmentTransaction.commit();
+                        break;
+                }
+                return false;
+            }
+        });
+
+
     }
 
     @Override
@@ -144,14 +140,6 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         String provider = locationManager.getBestProvider(criteria, true);
         Location location = locationManager.getLastKnownLocation(provider);
         return location;
-    }
-
-    public void zoomIn(View view) {
-        mMap.animateCamera(CameraUpdateFactory.zoomIn());
-    }
-
-    public void zoomOut(View view) {
-        mMap.animateCamera(CameraUpdateFactory.zoomOut());
     }
 
     @Override
@@ -166,6 +154,12 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
             @Override
             public boolean onQueryTextSubmit(String s) {
                 suggestionRecycler.setVisibility(View.GONE);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new VenuesByQuerySubmitFragment());
+                fragmentTransaction.commit();
+
+
                 presenter.getVenuesByQuerySubmit(s);
                 return true;
             }
@@ -184,12 +178,13 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
                 toolbar.setBackgroundColor(Color.WHITE);
                 categoryRecycler.setVisibility(View.VISIBLE);
+
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                toolbar.setBackground(ContextCompat.getDrawable(MapsActivity.this, R.drawable.rectangle_14_edited));
+                toolbar.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.rectangle_14_edited));
                 categoryRecycler.setVisibility(View.INVISIBLE);
                 return true;
             }
@@ -207,50 +202,17 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        MapsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
-    @Override
-    public void onMapClick(LatLng latLng) {
-        setMarker(latLng);
-        MapsActivityPermissionsDispatcher.setMarkerWithPermissionCheck(this, latLng);
-        Geocoder geocoder;
-        List<Address> addresses;
-        geocoder = new Geocoder(this, Locale.getDefault());
 
-        try {
-            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            String address = addresses.get(0).getAddressLine(0);
-            String[] splitedAdress = address.split(",");
-            address = splitedAdress[0] + "," + splitedAdress[1];
-            addressTW.setText(address);
-            String region = addresses.get(0).getCountryName() + ", " + addresses.get(0).getAdminArea();
-            regionTW.setText(region);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Location location = getCurrentLocation();
-        float[] results = new float[1];
-        Location.distanceBetween(latLng.latitude, latLng.longitude, location.getLatitude (), location.getLongitude(), results);
 
-        distanceTW.setText(String.format("%.0f", results[0]) + " м");
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
-
-    @Override
-    public void onMapLongClick(LatLng latLng) {
-        setMarker(latLng);
-        MapsActivityPermissionsDispatcher.setMarkerWithPermissionCheck(this, latLng);
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.053984, 38.981784), 15.0f));
-        mMap.setOnMapClickListener(this);
-        mMap.setOnMapLongClickListener(this);
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -259,7 +221,7 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     void setUpMap() {
         final MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.gmap);
         mapFragment.getMapAsync(this);
     }
 
@@ -298,17 +260,17 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
     public void showPlacesByCategory() {
         placesAdapter.notifyDataSetChanged();
         placesRecycler.setVisibility(View.VISIBLE);
-        locationBtn.setVisibility(View.GONE);
+     /*   locationBtn.setVisibility(View.GONE);
         zoomOutBtn.setVisibility(View.GONE);
-        zoomInBtn.setVisibility(View.GONE);
+        zoomInBtn.setVisibility(View.GONE);*/
     }
 
     @Override
     public void showPlacesByQuerySubmit(List<VenueEntity> venues){
-        suggestionsBySubmitRecycler.setVisibility(View.VISIBLE);
+     //   suggestionsBySubmitRecycler.setVisibility(View.VISIBLE);
         suggestionRecycler.setVisibility(View.GONE);
-        placesBySubmitAdapter.setVenues(venues);
-        placesBySubmitAdapter.notifyDataSetChanged();
+     //   placesBySubmitAdapter.setVenues(venues);
+     //   placesBySubmitAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -316,10 +278,10 @@ public class MapsActivity extends AppCompatActivity implements MapsContract.MapV
         suggestionRecycler.setVisibility(View.VISIBLE);
         suggestionAdapter.setMinivenues(minivenues);
         suggestionAdapter.notifyDataSetChanged();
-
+/*
         locationBtn.setVisibility(View.GONE);
         zoomOutBtn.setVisibility(View.GONE);
-        zoomInBtn.setVisibility(View.GONE);
+        zoomInBtn.setVisibility(View.GONE);*/
     }
 
 }

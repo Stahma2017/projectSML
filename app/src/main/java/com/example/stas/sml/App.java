@@ -6,6 +6,8 @@ import com.example.stas.sml.di.DaggerAppComponent;
 import com.example.stas.sml.presentation.feature.map.di.MapsComponent;
 import com.example.stas.sml.di.module.AppModule;
 import com.example.stas.sml.presentation.feature.map.di.MapsModule;
+import com.example.stas.sml.presentation.feature.map.map.di.MapsFragmentComponent;
+import com.example.stas.sml.presentation.feature.map.querysubmit.di.QueryVenuesComponent;
 import com.squareup.leakcanary.LeakCanary;
 
 public class App extends Application {
@@ -18,6 +20,9 @@ public class App extends Application {
 
     private  AppComponent component;
     private MapsComponent mapsComponent;
+
+    private QueryVenuesComponent queryVenuesComponent;
+    private MapsFragmentComponent mapsFragmentComponent;
 
     @Override
     public void onCreate() {
@@ -32,6 +37,8 @@ public class App extends Application {
         }
         LeakCanary.install(this);
     }
+
+
     public AppComponent getComponent() {
         return component;
     }
@@ -42,13 +49,35 @@ public class App extends Application {
 
     public MapsComponent addMapsComponent(){
         if (mapsComponent == null){
-            mapsComponent = component.addMapsComponent(new MapsModule());
+            mapsComponent = component.addMapsComponent();
         }
         return mapsComponent;
     }
 
     public void clearMapsComponent(){
         mapsComponent = null;
+    }
+
+    public QueryVenuesComponent addQueryVenuesComponent(){
+        if(queryVenuesComponent == null){
+            queryVenuesComponent = component.addQueryVenuesComponent();
+        }
+        return queryVenuesComponent;
+    }
+
+    public void clearQueryVenuesComponent(){
+        queryVenuesComponent = null;
+    }
+
+    public MapsFragmentComponent addMapsFragmentComponent(){
+        if (mapsFragmentComponent == null){
+            mapsFragmentComponent = component.addMapsFragmentComponent();
+        }
+        return mapsFragmentComponent;
+    }
+
+    public void clearMapsFragmentComponent(){
+        mapsFragmentComponent = null;
     }
 
 }

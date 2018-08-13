@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.feature.map.map.MapsFragment">
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <com.google.android.gms.maps.MapView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/map"/>
+    </FrameLayout>
+
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/bottom_sheet"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bottomsheet_height"
+                android:clipToPadding="true"
+                android:background="@drawable/bottomsheet_background"
+                app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/bottomsheet_boarder_padding">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/marker_in_bottomsheet_width"
+                            android:layout_height="@dimen/marker_in_bottomsheet_height"
+                            android:src="@drawable/marker"
+                            android:layout_marginStart="@dimen/marker_in_bottomsheet_marginstart"/>
+
+                        <TextView
+                            android:id="@+id/addressField"
+                            android:layout_marginStart="@dimen/address_marginstart"
+                            android:layout_width="@dimen/address_width"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/address_text_size"
+                            android:textAllCaps="true"/>
+
+                        <TextView
+                            android:paddingStart="@dimen/distance_paddingstart"
+                            android:id="@+id/distance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_marginTop="@dimen/region_margintop"
+                        android:id="@+id/regionField"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="@dimen/region_text_size"/>
+
+                    <ImageView
+                        android:layout_width="@dimen/distance_sign_width"
+                        android:layout_height="@dimen/distance_sign_height"
+                        android:src="@drawable/distance"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="@dimen/distance_sign_marginend"/>
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+            <Button
+                android:id="@+id/plusBtn"
+                android:layout_gravity="top"
+                android:layout_width="66dp"
+                android:layout_height="67dp"
+                android:background="@drawable/ic_zoom_plus"
+                app:layout_anchor="@id/minusBtn"
+                app:layout_anchorGravity="top|end"
+                android:layout_marginEnd="15dp"/>
+
+            <Button
+                android:id="@+id/minusBtn"
+                android:layout_gravity="top"
+                android:layout_width="66dp"
+                android:layout_height="67dp"
+                android:background="@drawable/ic_zoom_minus"
+                app:layout_anchor="@id/locationBtn"
+                app:layout_anchorGravity="top|end"
+                android:layout_marginEnd="15dp"/>
+
+            <Button
+                android:layout_gravity="top"
+                android:id="@+id/locationBtn"
+                android:layout_width="66dp"
+                android:layout_height="67dp"
+                android:background="@drawable/gps_arrow"
+                app:layout_anchor="@id/bottom_sheet"
+                app:layout_anchorGravity="top|end"
+                android:layout_marginEnd="15dp"/>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>

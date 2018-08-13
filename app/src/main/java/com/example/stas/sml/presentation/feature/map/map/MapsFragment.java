@@ -1,0 +1,197 @@
+package com.example.stas.sml.presentation.feature.map.map;
+
+
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.stas.sml.App;
+import com.example.stas.sml.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
+import static android.content.Context.LOCATION_SERVICE;
+
+
+public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener, View.OnClickListener {
+
+    GoogleMap map;
+    MapView mapView;
+
+    private Marker marker;
+    private BottomSheetBehavior bottomSheetBehavior;
+
+    @Inject
+    MapsPresenter presenter;
+
+    private Unbinder unbinder;
+    @BindView(R.id.addressField)TextView addressTW;
+    @BindView(R.id.regionField)TextView regionTW;
+    @BindView(R.id.distance)TextView distanceTW;
+    @BindView(R.id.bottom_sheet)View bottomSheet;
+    @BindView(R.id.locationBtn)Button locationBtn;
+    @BindView(R.id.minusBtn)Button zoomOutBtn;
+    @BindView(R.id.plusBtn)Button zoomInBtn;
+
+
+    public MapsFragment() {
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_maps, container, false);
+        App.getInstance().addMapsFragmentComponent().injectMapsFragment(this);
+        unbinder = ButterKnife.bind(this, view);
+        presenter.attachView(this);
+
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheetBehavior.setHideable(true);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        locationBtn.setOnClickListener(this);
+        zoomOutBtn.setOnClickListener(this);
+        zoomInBtn.setOnClickListener(this);
+
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mapView = (MapView)view.findViewById(R.id.map);
+        if (mapView != null){
+            mapView.onCreate(null);
+            mapView.onResume();
+            mapView.getMapAsync(this);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+        presenter.detachView();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        MapsInitializer.initialize(getContext());
+        map = googleMap;
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        map.setOnMapClickListener(this);
+        CameraPosition liberty = CameraPosition.builder().target(new LatLng(45.045583, 38.978452)).zoom(16).bearing(0).tilt(45).build();
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        setMarker(latLng);
+
+        List<Address> addresses = getAddress(latLng);
+        Location location = getCurrentLocation();
+        float[] results = new float[1];
+        Location.distanceBetween(latLng.latitude, latLng.longitude, location.getLatitude (), location.getLongitude(), results);
+        String[] splitedAddress = addresses.get(0).getAddressLine(0).split(",");
+        String address = splitedAddress[0] + "," + splitedAddress[1];
+        String region = addresses.get(0).getCountryName() + ", " + addresses.get(0).getAdminArea();
+
+        addressTW.setText(address);
+        regionTW.setText(region);
+        distanceTW.setText(String.format("%.0f", results[0]) + " м");
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+
+
+
+    private List<Address> getAddress(LatLng latLng){
+        List<Address> addresses = new ArrayList<>();
+
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return addresses;
+    }
+
+    public Location getCurrentLocation() {
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(provider);
+        return location;
+    }
+
+    void setMarker(LatLng latLng) {
+        if (marker != null) {
+            marker.remove();
+        }
+        MarkerOptions markerOptions = new MarkerOptions().
+                position(latLng).
+                title("Custom location")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
+        marker = map.addMarker(markerOptions);
+    }
+
+    private void toCurrentLocation() {
+        Location location = getCurrentLocation();
+        if (location != null) {
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            LatLng latLng = new LatLng(latitude, longitude);
+            map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.locationBtn:
+                toCurrentLocation();
+                break;
+            case R.id.minusBtn:
+                map.animateCamera(CameraUpdateFactory.zoomOut());
+                break;
+            case R.id.plusBtn:
+                map.animateCamera(CameraUpdateFactory.zoomIn());
+                break;
+        }
+    }
+}

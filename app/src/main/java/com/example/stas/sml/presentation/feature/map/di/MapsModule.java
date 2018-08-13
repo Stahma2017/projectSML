@@ -5,9 +5,9 @@ import com.example.stas.sml.data.network.Api;
 import com.example.stas.sml.di.annotations.MapsScope;
 import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
-import com.example.stas.sml.presentation.feature.map.MapsActivity;
+import com.example.stas.sml.presentation.feature.map.MainActivity;
 import com.example.stas.sml.presentation.feature.map.MapsContract;
-import com.example.stas.sml.presentation.feature.map.MapsPresenter;
+import com.example.stas.sml.presentation.feature.map.MainActivityPresenter;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.annotations.NonNull;
@@ -21,7 +21,7 @@ public class MapsModule {
     @Provides
     MapsContract.Presenter provideMapsPresenter(ErrorHandler errorHandler, CompositeDisposable compositeDisposable,
                                                 MapsContract.Model mapsModel) {
-        return new MapsPresenter(mapsModel, errorHandler, compositeDisposable);
+        return new MainActivityPresenter(mapsModel, errorHandler, compositeDisposable);
     }
 
     @MapsScope
@@ -34,7 +34,7 @@ public class MapsModule {
     @MapsScope
     @NonNull
     @Provides
-    MapsActivity provideMapsActivity(MapsActivity mapsActivity) {
-        return mapsActivity;
+    MainActivity provideMapsActivity(MainActivity mainActivity) {
+        return mainActivity;
     }
 }

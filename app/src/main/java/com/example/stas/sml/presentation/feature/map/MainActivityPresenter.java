@@ -19,9 +19,10 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MapsPresenter implements MapsContract.Presenter {
+public class MainActivityPresenter implements MapsContract.Presenter {
 
     private WeakReference<MapsContract.MapView> mapsView;
+
     private final MapsContract.Model model;
     private final ErrorHandler errorHandler;
     private final CompositeDisposable compositeDisposable;
@@ -29,9 +30,9 @@ public class MapsPresenter implements MapsContract.Presenter {
     private List<VenueEntity> venues = new ArrayList<>();
 
 
-    public MapsPresenter(MapsContract.Model model,
-                         ErrorHandler errorHandler,
-                         CompositeDisposable compositeDisposable) {
+    public MainActivityPresenter(MapsContract.Model model,
+                                 ErrorHandler errorHandler,
+                                 CompositeDisposable compositeDisposable) {
         this.model = model;
         this.errorHandler = errorHandler;
         this.compositeDisposable = compositeDisposable;
