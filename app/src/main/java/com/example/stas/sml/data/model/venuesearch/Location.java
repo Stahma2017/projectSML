@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class Location {
 
 
-
+  //Форматни, чтобы не было таких пробелов больших
 
     @SerializedName("distance")
     @Expose

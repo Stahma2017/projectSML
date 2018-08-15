@@ -45,7 +45,7 @@ public class VenuesByQuerySubmitFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,  //Тут короч перед инфлейтером поставь аннотацию NotNull, чтобы она не материлась, это типо стандарт такой
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_venues_by_query_submit, container, false);
@@ -76,7 +76,7 @@ public class VenuesByQuerySubmitFragment extends Fragment {
 
     void showToast(List<Minivenue> minivenues) {
         String s = minivenues.get(0).getName();
-        Toast.makeText(getActivity(),s, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),s, Toast.LENGTH_SHORT).show();   // Этот метод можешь вынести в какой-нибудь хелпер класс, чтобы его можно было переиспользовать
     }
 
 

@@ -31,7 +31,8 @@ public interface Api {
 
 
 
-    @GET("https://api.foursquare.com/v2/venues/suggestcompletion")
+    @GET("https://api.foursquare.com/v2/venues/suggestcompletion") // Тут по хорошему должны быть только роуты, а если у тебя два разных base url, то нужно зафигачить еще один
+    //интерфейс для ретрофита
     Observable<SuggestionResponse> searchSuggestions(@Query("ll") String ll, @Query("query") String query);
 }
 

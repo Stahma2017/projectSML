@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements MapsContract.MapV
 
         CategoryRecyclerAdapter categoryAdapter = new CategoryRecyclerAdapter(presenter);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        categoryRecycler.setLayoutManager(horizontalLayoutManager);
+        categoryRecycler.setLayoutManager(horizontalLayoutManager);  // Layout менеджеры можешь закинуть через DI
         categoryRecycler.setAdapter(categoryAdapter);
 
         placesAdapter = new VenuesByCategoryRecyclerAdapter(presenter);
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements MapsContract.MapV
 
 
 
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {  //Через лямбду
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements MapsContract.MapV
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         String provider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(provider);
+        Location location = locationManager.getLastKnownLocation(provider);   //SupressLint, если уверен, что пермишен точно будет к вызову этого метода
         return location;
     }
 
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements MapsContract.MapV
 
             @Override
             public boolean onQueryTextChange(String s) {
-                    if (s.length() >= 3){
+                    if (s.length() >= 3){  //Debounce и RxBindings, чтобы у тебя этот метод постоянно не тригерился, когда чувак начинает вводить и стирать быстро
                         presenter.getTextSuggestions(s);
                     }
                return true;
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements MapsContract.MapV
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.053984, 38.981784), 15.0f));
-        mMap.setMyLocationEnabled(true);
+        mMap.setMyLocationEnabled(true); //SupressLint, если уверен, что пермишен точно будет к вызову этого метода
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }

@@ -17,6 +17,8 @@ public class SearchSuggestionsRecyclerAdapter extends RecyclerView.Adapter<Searc
     private List<Minivenue> minivenues = new ArrayList<>();
     private Context context;
 
+    //Создай в пакете с каждой фичей пакет  adapter и закинь адаптеры для каждого экрана в эти пакеты
+
     public void setMinivenues(List<Minivenue> minivenues) {
         this.minivenues = minivenues;
     }

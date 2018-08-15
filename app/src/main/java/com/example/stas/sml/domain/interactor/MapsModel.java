@@ -47,7 +47,7 @@ public class MapsModel implements MapsContract.Model {
     @Override
     public Observable<List<Minivenue>> loadTextSuggestions(String querry){
         return serverApi.searchSuggestions("45.045583, 38.978452", querry)
-              .map(new Function<SuggestionResponse, List<Minivenue>>() {
+              .map(new Function<SuggestionResponse, List<Minivenue>>() {   // Тут есть вариант на лямбду заменить
                   @Override
                   public List<Minivenue> apply(SuggestionResponse suggestionResponse) throws Exception {
                     return suggestionResponse.getResponse().getMinivenues();

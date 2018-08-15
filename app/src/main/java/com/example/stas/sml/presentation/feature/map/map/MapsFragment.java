@@ -131,7 +131,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
         addressTW.setText(address);
         regionTW.setText(region);
-        distanceTW.setText(String.format("%.0f", results[0]) + " м");
+        distanceTW.setText(String.format("%.0f", results[0]) + " м");  //Тут студия ворнинг дает, лучше поправить, она обычно просто так не матерится
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
@@ -153,9 +153,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     public Location getCurrentLocation() {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
+        Criteria criteria = new Criteria();  //Тут в вызовах возможны нул поинтеры, лучше проверяй на налл, кода получится больше, но он будет безопаснее
         String provider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(provider);
+        Location location = locationManager.getLastKnownLocation(provider);   //Если уверен, что к вызову этого метода уже будет пермишен, то добавь suppressLint
         return location;
     }
 
@@ -165,7 +165,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         }
         MarkerOptions markerOptions = new MarkerOptions().
                 position(latLng).
-                title("Custom location")
+                title("Custom location")   //Такие штуки лучше выносить в переменные, чтобы не было хардкода
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
         marker = map.addMarker(markerOptions);
     }

@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class User_ {
 
+    // Не по стандарту именования нужно убрать _
+
     @SerializedName("id")
     @Expose
     private String id;

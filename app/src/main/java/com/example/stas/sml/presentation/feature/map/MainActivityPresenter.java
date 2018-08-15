@@ -45,7 +45,8 @@ public class MainActivityPresenter implements MapsContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(isConnected -> {
                     if (!isConnected) {
-                        mapsView.get().showError("internet connection lost");
+                        mapsView.get().showError("internet connection lost");   //Такое в строковый ресурс, либо сюда в конструктор контекст давай,
+                        // либо напиши свой враппер над контекстом и его фигач, у него проси нужную строку из ресурсов, такое должно лежать в строковых ресурсах
                     }
                 });
         compositeDisposable.add(networkConnectionDisposable);
@@ -83,13 +84,13 @@ public class MainActivityPresenter implements MapsContract.Presenter {
     @Override
     public void getTextSuggestions(String querry){
 
-        Disposable bla = model.loadTextSuggestions(querry)
+         compositeDisposable.add(model.loadTextSuggestions(querry)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())                      //Тут можно сразу закидывать без переменной, в остальных местах тоже
                 .subscribe(minivenues ->
                     mapsView.get().showSearchSuggestions(minivenues)
-                );
-        compositeDisposable.add(bla);
+                ));
+        //compositeDisposable.add(bla);
     }
 
     @Override
