@@ -1,13 +1,13 @@
-package com.example.stas.sml.presentation.feature.map.di;
+package com.example.stas.sml.presentation.feature.main.di;
 
 import com.example.stas.sml.data.mapper.VenueMapper;
 import com.example.stas.sml.data.network.Api;
 import com.example.stas.sml.di.annotations.MapsScope;
 import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
-import com.example.stas.sml.presentation.feature.map.MainActivity;
-import com.example.stas.sml.presentation.feature.map.MapsContract;
-import com.example.stas.sml.presentation.feature.map.MainActivityPresenter;
+import com.example.stas.sml.presentation.feature.main.MainActivity;
+import com.example.stas.sml.presentation.feature.main.MapsContract;
+import com.example.stas.sml.presentation.feature.main.MainActivityPresenter;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.annotations.NonNull;

@@ -1,7 +1,7 @@
-package com.example.stas.sml.presentation.feature.map.querysubmit.di;
+package com.example.stas.sml.presentation.feature.querysubmit.di;
 
 import com.example.stas.sml.di.annotations.QueryVenuesScope;
-import com.example.stas.sml.presentation.feature.map.querysubmit.VenuesByQuerySubmitFragment;
+import com.example.stas.sml.presentation.feature.querysubmit.VenuesByQuerySubmitFragment;
 
 import dagger.Subcomponent;
 

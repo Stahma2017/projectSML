@@ -3,11 +3,10 @@ import android.app.Application;
 
 import com.example.stas.sml.di.AppComponent;
 import com.example.stas.sml.di.DaggerAppComponent;
-import com.example.stas.sml.presentation.feature.map.di.MapsComponent;
+import com.example.stas.sml.presentation.feature.main.di.MapsComponent;
 import com.example.stas.sml.di.module.AppModule;
-import com.example.stas.sml.presentation.feature.map.di.MapsModule;
-import com.example.stas.sml.presentation.feature.map.map.di.MapsFragmentComponent;
-import com.example.stas.sml.presentation.feature.map.querysubmit.di.QueryVenuesComponent;
+import com.example.stas.sml.presentation.feature.map.di.MapsFragmentComponent;
+import com.example.stas.sml.presentation.feature.querysubmit.di.QueryVenuesComponent;
 import com.squareup.leakcanary.LeakCanary;
 
 public class App extends Application {

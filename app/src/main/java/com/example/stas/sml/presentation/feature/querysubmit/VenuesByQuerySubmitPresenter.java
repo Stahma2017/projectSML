@@ -1,11 +1,6 @@
-package com.example.stas.sml.presentation.feature.map.querysubmit;
+package com.example.stas.sml.presentation.feature.querysubmit;
 
-import com.example.stas.sml.data.mapper.VenueMapper;
-import com.example.stas.sml.domain.interactor.MapsModel;
-import com.example.stas.sml.presentation.base.ErrorHandler;
-import com.example.stas.sml.presentation.feature.map.MapsContract;
-
-import java.lang.ref.WeakReference;
+import com.example.stas.sml.presentation.feature.main.MapsContract;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

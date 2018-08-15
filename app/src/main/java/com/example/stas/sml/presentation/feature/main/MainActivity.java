@@ -1,28 +1,14 @@
-package com.example.stas.sml.presentation.feature.map;
+package com.example.stas.sml.presentation.feature.main;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.graphics.Color;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
-import android.net.Uri;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -32,24 +18,11 @@ import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 import com.example.stas.sml.App;
-import com.example.stas.sml.CategoryRecyclerAdapter;
-import com.example.stas.sml.VenuesByCategoryRecyclerAdapter;
 import com.example.stas.sml.R;
-import com.example.stas.sml.SearchSuggestionsRecyclerAdapter;
-import com.example.stas.sml.VenuesByQuerySubmitRecyclerAdapter;
-import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.base.ErrorHandler;
-import com.example.stas.sml.presentation.feature.map.map.MapsFragment;
-import com.example.stas.sml.presentation.feature.map.querysubmit.VenuesByQuerySubmitFragment;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.example.stas.sml.presentation.feature.map.MapsFragment;
+import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
 
 import java.util.List;
 
@@ -74,18 +47,15 @@ public class MainActivity extends AppCompatActivity implements MapsContract.MapV
         ButterKnife.bind(this);
         presenter.attachView(this);
         presenter.checkNetworkConnection();
+        displayMapsFragment(); // handle bottom navigation items states
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                 switch (menuItem.getItemId()) {
-
                     case R.id.action_map:
-                        fragmentTransaction.replace(R.id.fragment_container, new MapsFragment());
-                        fragmentTransaction.commit();
+                        displayMapsFragment();
                         break;
                 }
                 return false;
@@ -98,12 +68,23 @@ public class MainActivity extends AppCompatActivity implements MapsContract.MapV
         super.onDestroy();
         presenter.detachView();
     }
+    public void displayMapsFragment(){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_container, new MapsFragment());
+        ft.commit();
+    }
+
+    public void displayVenuelistFragment(){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_container, new VenuelistFragment());
+        ft.commit();
+    }
 
     @SuppressLint("NeedOnRequestPermissionsResult")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+          MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)

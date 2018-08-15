@@ -1,12 +1,11 @@
-package com.example.stas.sml.presentation.feature.map.querysubmit.di;
+package com.example.stas.sml.presentation.feature.querysubmit.di;
 
 import com.example.stas.sml.data.mapper.VenueMapper;
 import com.example.stas.sml.data.network.Api;
 import com.example.stas.sml.di.annotations.QueryVenuesScope;
 import com.example.stas.sml.domain.interactor.MapsModel;
-import com.example.stas.sml.presentation.feature.map.MapsContract;
-import com.example.stas.sml.presentation.feature.map.querysubmit.VenuesByQuerySubmitFragment;
-import com.example.stas.sml.presentation.feature.map.querysubmit.VenuesByQuerySubmitPresenter;
+import com.example.stas.sml.presentation.feature.querysubmit.VenuesByQuerySubmitFragment;
+import com.example.stas.sml.presentation.feature.querysubmit.VenuesByQuerySubmitPresenter;
 
 import dagger.Module;
 import dagger.Provides;

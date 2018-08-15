@@ -1,8 +1,8 @@
-package com.example.stas.sml.presentation.feature.map.map.di;
+package com.example.stas.sml.presentation.feature.map.di;
 
 
 import com.example.stas.sml.di.annotations.MapsFragmentScope;
-import com.example.stas.sml.presentation.feature.map.map.MapsFragment;
+import com.example.stas.sml.presentation.feature.map.MapsFragment;
 
 import dagger.Subcomponent;
 

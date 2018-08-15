@@ -1,4 +1,4 @@
-package com.example.stas.sml.presentation.feature.map.querysubmit;
+package com.example.stas.sml.presentation.feature.querysubmit;
 
 
 import android.content.Context;
@@ -16,7 +16,6 @@ import com.example.stas.sml.R;
 import com.example.stas.sml.VenuesByQuerySubmitRecyclerAdapter;
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
-import com.example.stas.sml.presentation.feature.map.MainActivity;
 
 import java.util.List;
 

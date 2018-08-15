@@ -4,7 +4,7 @@ import android.location.Location;
 
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.data.model.venuesuggestion.SuggestionResponse;
-import com.example.stas.sml.presentation.feature.map.MapsContract;
+import com.example.stas.sml.presentation.feature.main.MapsContract;
 import com.example.stas.sml.data.network.Api;
 import com.example.stas.sml.data.mapper.VenueMapper;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;

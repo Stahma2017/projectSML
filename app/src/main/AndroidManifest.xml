@@ -17,7 +17,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".presentation.feature.map.MainActivity"
+            android:name=".presentation.feature.main.MainActivity"
             android:theme="@style/MapActivityTheme"
             android:label=""
             android:windowSoftInputMode="adjustPan">
@@ -31,7 +31,7 @@
         </activity>
 
         <receiver
-            android:name=".GpsStateReceiver"
+            android:name=".service.GpsStateReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

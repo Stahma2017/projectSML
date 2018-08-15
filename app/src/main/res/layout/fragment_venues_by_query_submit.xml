@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.feature.map.querysubmit.VenuesByQuerySubmitFragment">
+    tools:context=".presentation.feature.querysubmit.VenuesByQuerySubmitFragment">
 
     <android.support.v7.widget.RecyclerView
         android:padding="10dp"

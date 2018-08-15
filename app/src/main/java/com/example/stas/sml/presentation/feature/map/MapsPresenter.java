@@ -1,10 +1,9 @@
-package com.example.stas.sml.presentation.feature.map.map;
+package com.example.stas.sml.presentation.feature.map;
 
 import android.location.Location;
 
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.domain.interactor.MapsModel;
-import com.example.stas.sml.presentation.feature.map.querysubmit.VenuesByQuerySubmitFragment;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

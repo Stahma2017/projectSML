@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.stas.sml.presentation.feature.map.MapsContract;
 import com.example.stas.sml.utils.CategoryList;
 
 import java.util.List;

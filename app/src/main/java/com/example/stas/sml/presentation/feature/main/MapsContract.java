@@ -1,4 +1,4 @@
-package com.example.stas.sml.presentation.feature.map;
+package com.example.stas.sml.presentation.feature.main;
 
 import android.location.Location;
 
@@ -48,20 +48,5 @@ public interface MapsContract {
         Observable<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> loadVenuesByQuerySubmition(Location location, String query);
 
 
-    }
-    interface CategoryRowView{
-        void setIcon(int icon);
-        void setName(String name);
-    }
-
-    interface CategorySuggestionRowView{
-        void setWorkIndicator(boolean flag);
-        void setLogo(String url);
-        void setName(String name);
-        void setDescription(String description);
-        void setAddress(String address);
-        void setWorkStatus(String workStatus);
-        void setDistance(String distance);
-        void setRating(float rating);
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.feature.map.map.MapsFragment">
+    tools:context="com.example.stas.sml.presentation.feature.map.MapsFragment">
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -34,6 +34,8 @@
                 android:background="@drawable/rectangle_14_edited"
                 app:menu="@menu/toolbar_menu"
                 android:layout_gravity="end"/>
+
+
 
             <android.support.v4.widget.NestedScrollView
                 android:id="@+id/bottom_sheet"
@@ -104,6 +106,13 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"/>
+            <Button
+                android:background="@drawable/venuelistbtn_background"
+                android:visibility="gone"
+                android:id="@+id/toVenueListBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"/>
 
             <Button
                 android:id="@+id/plusBtn"
@@ -134,14 +143,6 @@
                 app:layout_anchor="@id/bottom_sheet"
                 app:layout_anchorGravity="top|end"
                 android:layout_marginEnd="15dp"/>
-
-            <Button
-                android:background="@drawable/venuelistbtn_background"
-                android:visibility="gone"
-                android:id="@+id/toVenueListBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"/>
 
             <android.support.v7.widget.RecyclerView
                 android:background="#ffffff"

@@ -1,4 +1,4 @@
-package com.example.stas.sml.presentation.feature.map.map;
+package com.example.stas.sml.presentation.feature.map;
 
 
 import android.graphics.Color;
@@ -11,15 +11,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,8 +38,7 @@ import com.example.stas.sml.SearchSuggestionsRecyclerAdapter;
 import com.example.stas.sml.VenuesByCategoryRecyclerAdapter;
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
-import com.example.stas.sml.presentation.feature.map.MainActivity;
-import com.example.stas.sml.presentation.feature.map.querysubmit.VenuesByQuerySubmitFragment;
+import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -118,6 +117,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         locationBtn.setOnClickListener(this);
         zoomOutBtn.setOnClickListener(this);
         zoomInBtn.setOnClickListener(this);
+        venueListBtn.setOnClickListener(this);
 
         CategoryRecyclerAdapter categoryAdapter = new CategoryRecyclerAdapter(this);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -183,7 +183,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
                 }
                 return true;
             }
-
         });
 
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
@@ -193,7 +192,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
                 categoryRecycler.setVisibility(View.VISIBLE);
                 return true;
             }
-
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                 toolbar.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rectangle_14_edited));
@@ -287,7 +285,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
                 map.animateCamera(CameraUpdateFactory.zoomIn());
                 break;
             case R.id.toVenueListBtn:
-                // go to venuelist fragment
+                MainActivity activity = (MainActivity) getActivity();
+                activity.displayVenuelistFragment();
                 break;
         }
     }

@@ -1,4 +1,4 @@
-package com.example.stas.sml.presentation.feature.map;
+package com.example.stas.sml.presentation.feature.main;
 
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import java.lang.ref.WeakReference;

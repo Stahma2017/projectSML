@@ -1,4 +1,4 @@
-package com.example.stas.sml;
+package com.example.stas.sml.service;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
