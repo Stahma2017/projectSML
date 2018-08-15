@@ -7,101 +7,94 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.stas.sml.presentation.feature.map.MapsContract;
+
+import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class VenuesByCategoryRecyclerAdapter extends RecyclerView.Adapter<VenuesByCategoryRecyclerAdapter.SuggestionViewHolder> {
 
-    private final MapsContract.Presenter presenter;
+    private List<VenueEntity> venues = new ArrayList<>();
+    private OnItemClickListener onItemClickListener;
 
-    public VenuesByCategoryRecyclerAdapter(MapsContract.Presenter presenter) {
-        this.presenter = presenter;
+    public void setVenues(List<VenueEntity> venues) {
+        this.venues = venues;
+    }
+
+    public void insertVenue(VenueEntity venue){
+        venues.add(venue);
+    }
+
+    public void clearList(){
+        venues.clear();
+    }
+
+    public VenuesByCategoryRecyclerAdapter(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(VenueEntity venue);
     }
 
     @NonNull
     @Override
     public SuggestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new VenuesByCategoryRecyclerAdapter.SuggestionViewHolder(presenter, LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.suggestion_recycler_item, parent, false));
+        return new SuggestionViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.suggestion_recycler_item, parent, false), onItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VenuesByCategoryRecyclerAdapter.SuggestionViewHolder holder, int position) {
-        presenter.onBindSuggestionRowViewAtPosition(position, holder);
-
+    public void onBindViewHolder(@NonNull SuggestionViewHolder holder, int position) {
+        holder.bind(venues.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return presenter.getSuggestionRowCount();
+        return venues.size();
     }
 
+    class SuggestionViewHolder extends RecyclerView.ViewHolder {
 
-    public class SuggestionViewHolder extends RecyclerView.ViewHolder implements MapsContract.CategorySuggestionRowView {
-        ImageView logo;
-        TextView name;
-        AppCompatRatingBar rating;
-        TextView shortDescription;
-        TextView address;
-        TextView workStatus;
-        TextView distance;
-        ImageView workIndicator;
+        private OnItemClickListener onItemClickListener;
 
+        @BindView(R.id.placeLogo)ImageView logo;
+        @BindView(R.id.placeName)TextView name;
+        @BindView(R.id.placeRating)AppCompatRatingBar rating;
+        @BindView(R.id.placeShortDescription)TextView shortDescription;
+        @BindView(R.id.placeAddress)TextView address;
+        @BindView(R.id.workStatus)TextView workStatus;
+        @BindView(R.id.shortDistance)TextView distance;
+        @BindView(R.id.workIndicator)ImageView workIndicator;
 
-        public SuggestionViewHolder(MapsContract.Presenter presenter, @NonNull View itemView) {
+        SuggestionViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
-            logo = itemView.findViewById(R.id.placeLogo);
-            name = itemView.findViewById(R.id.placeName);
-            rating = itemView.findViewById(R.id.placeRating);
-            shortDescription = itemView.findViewById(R.id.placeShortDescription);
-            address = itemView.findViewById(R.id.placeAddress);
-            workStatus = itemView.findViewById(R.id.workStatus);
-            distance = itemView.findViewById(R.id.shortDistance);
-            workIndicator = itemView.findViewById(R.id.workIndicator);
+            ButterKnife.bind(this, itemView);
+            this.onItemClickListener = onItemClickListener;
         }
 
-        @Override
-        public void setLogo(String url) {
+        void bind(VenueEntity venue) {
+
             com.example.stas.sml.GlideApp.with(logo)
-                    .load(url)
+                    .load(venue.getPage().getPageInfo().getBanner())
                     .placeholder(R.drawable.ic_image_placeholder_24dp)
                     .into(logo);
+
+            name.setText(venue.getName());
+            rating.setRating((float)(venue.getRating()/2));
+            shortDescription.setText(venue.getDescription());
+            address.setText(venue.getLocation().getAddress());
+            workStatus.setText(venue.getHours().getStatus());
+            distance.setText(String.format(Locale.US,"%.1f км", ((double)venue.getDistance())/1000));
+            //TODO set logic for indicator
+
+            itemView.setOnClickListener(itemView -> onItemClickListener.onItemClick(venue));
         }
-
-        @Override
-        public void setWorkIndicator(boolean flag){
-            if (flag){
-                workIndicator.setImageResource(R.drawable.work_indicator);
-            }
-        }
-
-         @Override
-         public void setName(String name){
-            this.name.setText(name);
-         }
-
-         @Override
-         public void setDescription(String description){
-            shortDescription.setText(description);
-         }
-         @Override
-         public void setAddress(String address){
-             this.address.setText(address);
-
-         }
-         @Override
-         public void setWorkStatus(String workStatus){
-             this.workStatus.setText(workStatus);
-
-         }
-         @Override
-         public void setDistance(String distance){
-             this.distance.setText(distance);
-         }
-
-        @Override
-        public void setRating(float rating) {
-            this.rating.setRating(rating);
     }
-
-}
 }

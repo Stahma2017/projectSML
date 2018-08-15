@@ -13,29 +13,35 @@ import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SearchSuggestionsRecyclerAdapter extends RecyclerView.Adapter<SearchSuggestionsRecyclerAdapter.SearchSuggestionViewHolder> {
     private List<Minivenue> minivenues = new ArrayList<>();
-    private Context context;
+    private OnItemClickListener onItemClickListener;
 
     public void setMinivenues(List<Minivenue> minivenues) {
         this.minivenues = minivenues;
     }
 
-    public SearchSuggestionsRecyclerAdapter(Context context) {
-        this.context = context;
+    public SearchSuggestionsRecyclerAdapter(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Minivenue minivenue);
     }
 
     @NonNull
     @Override
     public SearchSuggestionsRecyclerAdapter.SearchSuggestionViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_suggestion_recycler_item, null);
-        SearchSuggestionViewHolder viewHolder = new SearchSuggestionViewHolder(view);
-        return viewHolder;
+        return new SearchSuggestionViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_suggestion_recycler_item, null), onItemClickListener);
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchSuggestionsRecyclerAdapter.SearchSuggestionViewHolder searchSuggestionViewHolder, int i) {
-        searchSuggestionViewHolder.textView.setText(minivenues.get(i).getName());
+    public void onBindViewHolder(@NonNull SearchSuggestionViewHolder holder, int position) {
+        holder.bind(minivenues.get(position));
     }
 
     @Override
@@ -44,12 +50,20 @@ public class SearchSuggestionsRecyclerAdapter extends RecyclerView.Adapter<Searc
     }
 
     public class SearchSuggestionViewHolder extends RecyclerView.ViewHolder  {
+        private OnItemClickListener onItemClickListener;
+        @BindView(R.id.searchSuggestionText)TextView textSuggestion;
 
-        private TextView textView;
 
-        public SearchSuggestionViewHolder(@NonNull View itemView) {
+        public SearchSuggestionViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
-            this.textView = (TextView) itemView.findViewById(R.id.searchSuggestionText);
+            ButterKnife.bind(this, itemView);
+            this.onItemClickListener = onItemClickListener;
+        }
+
+        void bind(Minivenue minivenue) {
+            textSuggestion.setText(minivenue.getName());
+             itemView.setOnClickListener(itemView -> onItemClickListener.onItemClick(minivenue));
         }
     }
+
 }

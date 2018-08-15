@@ -7,23 +7,10 @@
     tools:context=".presentation.feature.map.MainActivity">
 
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/fragment_container"
-        android:background="#000000">
-
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/gmap"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:name="com.google.android.gms.maps.MapFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:context=".presentation.feature.map.MainActivity" />
-
-
-    </FrameLayout>
-
-
+        android:background="#a07eff"/>
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -34,48 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".presentation.feature.map.MainActivity">
-
-
-
-
-
-        <android.support.v7.widget.RecyclerView
-            android:background="#ffffff"
-            android:visibility="invisible"
-            android:id="@+id/categoryRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:layout_marginTop="54dp"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:visibility="invisible"
-            android:layout_marginTop="135dp"
-            android:id="@+id/suggestion_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffff"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:visibility="invisible"
-            android:id="@+id/placesRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="230dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="60dp"/>
-
-
-
-
-        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/myTool"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/toolbar_height"
-            android:background="@drawable/rectangle_14_edited"
-            app:menu="@menu/toolbar_menu"
-            android:layout_gravity="end"/>
-
-
 
         <FrameLayout
             android:layout_width="@dimen/frame_of_bottomnavigation_width"

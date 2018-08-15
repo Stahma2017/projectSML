@@ -13,13 +13,10 @@ import io.reactivex.Observable;
 
 public interface MapsContract {
     interface MapView extends BaseView, CanShowError {
-        /* void goToPictureActivity(List<String> urls);*/
-       /* void showSlider(List<String> urls);*/
-       public void showPlacesByCategory();
 
-        Location getCurrentLocation();
-        void showSearchSuggestions(List<Minivenue> minivenues);
-        void showPlacesByQuerySubmit(List<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> venues);
+        /* void goToPictureActivity(List<String> urls);*/
+
+       // void showPlacesByQuerySubmit(List<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> venues);
     }
 
     interface Presenter {
@@ -29,15 +26,15 @@ public interface MapsContract {
 
         void checkNetworkConnection();
 
-        void onBindCategoryRowViewAtPosition(int position, MapsContract.CategoryRowView rowView);
-        int getCategoryRowCount();
-
-        void onBindSuggestionRowViewAtPosition(int position, MapsContract.CategorySuggestionRowView rowView);
-        int getSuggestionRowCount();
-        void getVenuesWithCategory(int position);
-
-        void getTextSuggestions(String querry);
-        void getVenuesByQuerySubmit(String querry);
+//        void onBindCategoryRowViewAtPosition(int position, MapsContract.CategoryRowView rowView);
+//        int getCategoryRowCount();
+//
+//        void onBindSuggestionRowViewAtPosition(int position, MapsContract.CategorySuggestionRowView rowView);
+//        int getSuggestionRowCount();
+//        void getVenuesWithCategory(int position);
+//
+//        void getTextSuggestions(String querry);
+//        void getVenuesByQuerySubmit(String querry);
     }
 
     interface Model {
