@@ -56,12 +56,11 @@ import butterknife.Unbinder;
 import static android.content.Context.LOCATION_SERVICE;
 
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener, View.OnClickListener,
-        CategoryRecyclerAdapter.OnItemClickListener, VenuesByCategoryRecyclerAdapter.OnItemClickListener, SearchSuggestionsRecyclerAdapter.OnItemClickListener{
+public class MapsFragment extends Fragment implements MapsContract.MapsView, OnMapReadyCallback, GoogleMap.OnMapClickListener, View.OnClickListener,
+        CategoryRecyclerAdapter.OnItemClickListener, VenuesByCategoryRecyclerAdapter.OnItemClickListener, SearchSuggestionsRecyclerAdapter.OnItemClickListener
+     {
 
     GoogleMap map;
-
-
     private Marker marker;
     private BottomSheetBehavior bottomSheetBehavior;
     private Unbinder unbinder;
@@ -91,6 +90,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     @BindView(R.id.map)MapView mapView;
 
     public MapsFragment() {
+
     }
 
 
@@ -133,6 +133,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         if (mapView != null){
             mapView.onCreate(null);
             mapView.onResume();
@@ -235,6 +236,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         return addresses;
     }
 
+    @Override
     public Location getCurrentLocation() {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -281,6 +283,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         }
     }
 
+    @Override
     public void showPlacesByCategory(VenueEntity venue) {
 
         placesAdapter.clearList();
@@ -296,6 +299,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         hideProgressbar();
     }
 
+    @Override
     public void showSearchSuggestions(List<Minivenue> minivenues){
         suggestionRecycler.setVisibility(View.VISIBLE);
         suggestionAdapter.setMinivenues(minivenues);

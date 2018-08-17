@@ -15,6 +15,8 @@ import io.reactivex.Observable;
 public interface ActivityContract {
     interface ActivityView extends BaseView, CanShowError {
 
+        void displayMapsFragment();
+
        // void showPlacesByQuerySubmit(List<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> venues);
     }
 

@@ -5,6 +5,7 @@ import com.example.stas.sml.data.network.Api;
 import com.example.stas.sml.di.annotations.MapsFragmentScope;
 import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
+import com.example.stas.sml.presentation.feature.map.MapsContract;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
 import com.example.stas.sml.presentation.feature.map.MapsPresenter;
 
@@ -35,7 +36,7 @@ public class MapsFragmentModule {
     @MapsFragmentScope
     @NonNull
     @Provides
-    MapsFragment provideMapsActivity(MapsFragment mapsFragment) {
+    MapsFragment provideMapsFragment(MapsFragment mapsFragment) {
         return mapsFragment;
     }
 

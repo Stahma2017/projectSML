@@ -6,6 +6,8 @@ import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
 
+import java.lang.ref.WeakReference;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -13,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MapsPresenter  {
 
-    private MapsFragment view;
+    private WeakReference<MapsContract.MapsView> view;
     private final MapsModel interactor;
     private final CompositeDisposable compositeDisposable;
     private final LocationGateway locationGateway;
@@ -23,8 +25,8 @@ public class MapsPresenter  {
         this.compositeDisposable = compositeDisposable;
         this.locationGateway = locationGateway;
     }
-    public void attachView(MapsFragment fragment) {
-        view = fragment;
+    public void attachView(MapsContract.MapsView fragment) {
+        view = new WeakReference<>(fragment);
     }
 
     public void detachView() {
@@ -33,13 +35,13 @@ public class MapsPresenter  {
     }
 
     public void getVenuesWithCategory(String categoryId){
-        Location currentLocation = view.getCurrentLocation();
+        Location currentLocation = view.get().getCurrentLocation();
 
         Disposable venueListDisposable = interactor.loadVenuesWithCategory(currentLocation, categoryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((VenueEntity venue) -> {
-                    view.showPlacesByCategory(venue);
+                    view.get().showPlacesByCategory(venue);
                 }
 //                ,errorHandler::proceed
                 );
@@ -52,7 +54,7 @@ public class MapsPresenter  {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(minivenues ->
-                        view.showSearchSuggestions(minivenues)
+                        view.get().showSearchSuggestions(minivenues)
                 );
         compositeDisposable.add(bla);
     }
