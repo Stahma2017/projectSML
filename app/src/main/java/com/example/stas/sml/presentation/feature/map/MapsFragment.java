@@ -1,6 +1,5 @@
 package com.example.stas.sml.presentation.feature.map;
 
-
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
@@ -11,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +17,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +26,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.example.stas.sml.App;
 import com.example.stas.sml.Category;
 import com.example.stas.sml.CategoryRecyclerAdapter;
@@ -49,18 +45,14 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
 import static android.content.Context.LOCATION_SERVICE;
 
 
@@ -68,7 +60,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         CategoryRecyclerAdapter.OnItemClickListener, VenuesByCategoryRecyclerAdapter.OnItemClickListener, SearchSuggestionsRecyclerAdapter.OnItemClickListener{
 
     GoogleMap map;
-    MapView mapView;
+
 
     private Marker marker;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -96,13 +88,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     @BindView(R.id.suggestion_list)RecyclerView suggestionRecycler;
     @BindView(R.id.progressBar)ProgressBar progressBar;
     @BindView(R.id.toVenueListBtn)Button venueListBtn;
+    @BindView(R.id.map)MapView mapView;
 
     public MapsFragment() {
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
         App.getInstance().addMapsFragmentComponent().injectMapsFragment(this);
@@ -140,8 +133,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mapView = (MapView)view.findViewById(R.id.map);
         if (mapView != null){
             mapView.onCreate(null);
             mapView.onResume();
@@ -195,7 +186,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                 toolbar.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rectangle_14_edited));
-                categoryRecycler.setVisibility(View.INVISIBLE);
+                categoryRecycler.setVisibility(View.GONE);
+                suggestionRecycler.setVisibility(View.GONE);
                 return true;
             }
         });
@@ -226,7 +218,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
         addressTW.setText(address);
         regionTW.setText(region);
-        distanceTW.setText(String.format("%.0f", results[0]) + " м");
+        distanceTW.setText(String.format(Locale.CANADA,"%.0f м", results[0]));
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
@@ -247,8 +239,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         String provider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(provider);
-        return location;
+        return locationManager.getLastKnownLocation(provider);
     }
 
     void setMarker(LatLng latLng) {
@@ -256,8 +247,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
             marker.remove();
         }
         MarkerOptions markerOptions = new MarkerOptions().
-                position(latLng).
-                title("Custom location")
+                position(latLng)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
         marker = map.addMarker(markerOptions);
     }

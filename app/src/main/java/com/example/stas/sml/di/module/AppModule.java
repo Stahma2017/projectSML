@@ -1,6 +1,7 @@
 package com.example.stas.sml.di.module;
 
 import android.content.Context;
+import android.location.LocationManager;
 
 import javax.inject.Singleton;
 import dagger.Module;
@@ -20,4 +21,11 @@ public class AppModule {
     public Context provideContext(){
         return appContext;
     }
+
+    @Provides
+    @Singleton
+    public LocationManager provideLocationManager(Context context){
+        return (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+    }
+
 }

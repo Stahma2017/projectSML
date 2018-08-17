@@ -9,7 +9,6 @@ public class VenueDetailed {
     @Expose
     private com.example.stas.sml.data.model.venuedetailedmodel.Response response;
 
-
     public com.example.stas.sml.data.model.venuedetailedmodel.Response getResponse() {
         return response;
     }

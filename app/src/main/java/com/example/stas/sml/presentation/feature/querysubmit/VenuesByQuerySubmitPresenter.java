@@ -1,21 +1,18 @@
 package com.example.stas.sml.presentation.feature.querysubmit;
 
-import com.example.stas.sml.presentation.feature.main.MapsContract;
+import com.example.stas.sml.presentation.feature.main.ActivityContract;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 
 public class VenuesByQuerySubmitPresenter {
 
     private VenuesByQuerySubmitFragment view;
 
-    private final MapsContract.Model model;
+    private final ActivityContract.Model model;
     private final CompositeDisposable compositeDisposable;
 
-    public VenuesByQuerySubmitPresenter(MapsContract.Model model, CompositeDisposable compositeDisposable) {
+    public VenuesByQuerySubmitPresenter(ActivityContract.Model model, CompositeDisposable compositeDisposable) {
         this.model = model;
         this.compositeDisposable = compositeDisposable;
     }
@@ -29,16 +26,6 @@ public class VenuesByQuerySubmitPresenter {
     public void detachView() {
         view = null;
         compositeDisposable.dispose();
-    }
-
-    public void getSmth(){
-        Disposable bla = model.loadTextSuggestions("Магнит")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(minivenues ->
-                        view.showToast(minivenues)
-                );
-        compositeDisposable.add(bla);
     }
 
     /*

@@ -5,8 +5,8 @@ import com.example.stas.sml.data.network.Api;
 import com.example.stas.sml.di.annotations.MapsScope;
 import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
+import com.example.stas.sml.presentation.feature.main.ActivityContract;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
-import com.example.stas.sml.presentation.feature.main.MapsContract;
 import com.example.stas.sml.presentation.feature.main.MainActivityPresenter;
 import dagger.Module;
 import dagger.Provides;
@@ -19,15 +19,15 @@ public class MapsModule {
     @MapsScope
     @NonNull
     @Provides
-    MapsContract.Presenter provideMapsPresenter(ErrorHandler errorHandler, CompositeDisposable compositeDisposable,
-                                                MapsContract.Model mapsModel) {
+    ActivityContract.Presenter provideMapsPresenter(ErrorHandler errorHandler, CompositeDisposable compositeDisposable,
+                                                    ActivityContract.Model mapsModel) {
         return new MainActivityPresenter(mapsModel, errorHandler, compositeDisposable);
     }
 
     @MapsScope
     @NonNull
     @Provides
-    MapsContract.Model provideMapsModel(Api api, VenueMapper venueMapper) {
+    ActivityContract.Model provideMapsModel(Api api, VenueMapper venueMapper) {
         return new MapsModel(api, venueMapper);
     }
 

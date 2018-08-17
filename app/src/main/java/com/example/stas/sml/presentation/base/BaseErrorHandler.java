@@ -2,7 +2,7 @@ package com.example.stas.sml.presentation.base;
 
 import android.content.Context;
 import android.util.Log;
-import com.example.stas.sml.CanShowError;
+
 import com.example.stas.sml.R;
 import java.io.IOException;
 import java.lang.ref.WeakReference;

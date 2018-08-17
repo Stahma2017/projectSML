@@ -3,7 +3,7 @@ package com.example.stas.sml.data.model.venuedetailedmodel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User_ {
+public class User {
 
     @SerializedName("id")
     @Expose
@@ -20,8 +20,6 @@ public class User_ {
     @SerializedName("type")
     @Expose
     private String type;
-
-
     @SerializedName("homeCity")
     @Expose
     private String homeCity;

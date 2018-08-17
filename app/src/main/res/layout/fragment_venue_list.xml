@@ -11,13 +11,16 @@
         android:id="@+id/ToolbarVenuelistFragment"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/toolbar_height"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/rectangle_14_edited"
         app:menu="@menu/toolbar_menu"
-        android:layout_gravity="end"/>
+      />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="VenuelistFragment" />
+        android:text="VenuelistFragment"
+        android:gravity="center"/>
 
 </android.support.constraint.ConstraintLayout>

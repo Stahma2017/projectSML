@@ -1,7 +1,5 @@
 package com.example.stas.sml.data.model.venuedetailedmodel;
 
-import android.graphics.pdf.PdfDocument;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,17 +8,17 @@ public class Page {
 
     @SerializedName("user")
     @Expose
-    private User_ user;
+    private User user;
 
     @SerializedName("pageInfo")
     @Expose
     private PageInfo pageInfo = new PageInfo();
 
-    public User_ getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(User_ user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

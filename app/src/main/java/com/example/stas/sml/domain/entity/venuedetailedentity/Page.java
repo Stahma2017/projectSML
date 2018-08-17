@@ -1,21 +1,19 @@
 package com.example.stas.sml.domain.entity.venuedetailedentity;
 
 import com.example.stas.sml.data.model.venuedetailedmodel.PageInfo;
-import com.example.stas.sml.data.model.venuedetailedmodel.User_;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.example.stas.sml.data.model.venuedetailedmodel.User;
 
 public class Page {
 
-    private User_ user;
+    private User user;
 
     private PageInfo pageInfo = new PageInfo();
 
-    public User_ getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(User_ user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

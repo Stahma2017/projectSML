@@ -26,8 +26,6 @@ public class Venue {
     @Expose
     private Location location;
 
-
-
     public String getId() {
         return id;
     }

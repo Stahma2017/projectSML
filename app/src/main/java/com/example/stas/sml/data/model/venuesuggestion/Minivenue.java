@@ -17,7 +17,7 @@ public class Minivenue {
     private Location location;
     @SerializedName("categories")
     @Expose
-    private List<Category> categories = null;
+    private List<Category> categories;
     @SerializedName("hasPerk")
     @Expose
     private Boolean hasPerk;

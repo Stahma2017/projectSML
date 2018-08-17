@@ -4,7 +4,7 @@ import android.location.Location;
 
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.data.model.venuesuggestion.SuggestionResponse;
-import com.example.stas.sml.presentation.feature.main.MapsContract;
+import com.example.stas.sml.presentation.feature.main.ActivityContract;
 import com.example.stas.sml.data.network.Api;
 import com.example.stas.sml.data.mapper.VenueMapper;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
@@ -15,7 +15,7 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 
 
-public class MapsModel implements MapsContract.Model {
+public class MapsModel implements ActivityContract.Model {
     private final Api serverApi;
     private final VenueMapper mapper;
 

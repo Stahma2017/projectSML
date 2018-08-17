@@ -3,6 +3,7 @@ package com.example.stas.sml.presentation.feature.map;
 import android.location.Location;
 
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
+import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -15,10 +16,12 @@ public class MapsPresenter  {
     private MapsFragment view;
     private final MapsModel interactor;
     private final CompositeDisposable compositeDisposable;
+    private final LocationGateway locationGateway;
 
-    public MapsPresenter(MapsModel interactor, CompositeDisposable compositeDisposable) {
+    public MapsPresenter(MapsModel interactor, CompositeDisposable compositeDisposable, LocationGateway locationGateway) {
         this.interactor = interactor;
         this.compositeDisposable = compositeDisposable;
+        this.locationGateway = locationGateway;
     }
     public void attachView(MapsFragment fragment) {
         view = fragment;

@@ -2,13 +2,14 @@ package com.example.stas.sml.presentation.feature.main;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -29,10 +30,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 @RuntimePermissions
-public class MainActivity extends AppCompatActivity implements MapsContract.MapView {
+public class MainActivity extends AppCompatActivity implements ActivityContract.ActivityView {
 
     @Inject
-    MapsContract.Presenter presenter;
+    ActivityContract.Presenter presenter;
     @Inject
     ErrorHandler errorHandler;
 
@@ -46,21 +47,27 @@ public class MainActivity extends AppCompatActivity implements MapsContract.MapV
         App.getInstance().addMapsComponent().injectMainActivity(this);
         ButterKnife.bind(this);
         presenter.attachView(this);
-        presenter.checkNetworkConnection();
+        presenter.checkNetworkConnection(this);
         displayMapsFragment(); // handle bottom navigation items states
 
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-                switch (menuItem.getItemId()) {
-                    case R.id.action_map:
-                        displayMapsFragment();
-                        break;
-                }
-                return false;
+        bottomNavigation.setOnNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.action_map:
+                    displayMapsFragment();
+                    break;
+                case R.id.action_account:
+                    //to Fragment()
+                    break;
             }
+            return false;
         });
+
+        BroadcastReceiver br = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+            }
+        };
     }
 
     @Override

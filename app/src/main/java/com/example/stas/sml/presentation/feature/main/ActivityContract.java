@@ -1,8 +1,9 @@
 package com.example.stas.sml.presentation.feature.main;
 
+import android.content.Context;
 import android.location.Location;
 
-import com.example.stas.sml.CanShowError;
+import com.example.stas.sml.presentation.base.CanShowError;
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.presentation.base.BaseView;
 
@@ -11,25 +12,23 @@ import java.util.List;
 import io.reactivex.Observable;
 
 
-public interface MapsContract {
-    interface MapView extends BaseView, CanShowError {
-
-        /* void goToPictureActivity(List<String> urls);*/
+public interface ActivityContract {
+    interface ActivityView extends BaseView, CanShowError {
 
        // void showPlacesByQuerySubmit(List<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> venues);
     }
 
     interface Presenter {
-        void attachView(MapView view);
+        void attachView(ActivityView view);
 
         void detachView();
 
-        void checkNetworkConnection();
+        void checkNetworkConnection(Context context);
 
-//        void onBindCategoryRowViewAtPosition(int position, MapsContract.CategoryRowView rowView);
+//        void onBindCategoryRowViewAtPosition(int position, ActivityContract.CategoryRowView rowView);
 //        int getCategoryRowCount();
 //
-//        void onBindSuggestionRowViewAtPosition(int position, MapsContract.CategorySuggestionRowView rowView);
+//        void onBindSuggestionRowViewAtPosition(int position, ActivityContract.CategorySuggestionRowView rowView);
 //        int getSuggestionRowCount();
 //        void getVenuesWithCategory(int position);
 //

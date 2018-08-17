@@ -16,7 +16,6 @@ public interface Api {
     Observable<PlaceResponce> search(@Query("ll") String ll,
                                  @Query("llAcc") double llAcc);
 
-
     @GET("v2/venues/{VENUE_ID}")
     Observable<VenueDetailsResponse> getVenue(@Path("VENUE_ID") String id);
 
@@ -29,9 +28,7 @@ public interface Api {
     Observable<SearchResponse> searchWithQueryParam(@Query("ll") String ll,
                                          @Query("llAcc") double llAcc, @Query("query") String query, @Query("limit") Integer limit);
 
-
-
-    @GET("https://api.foursquare.com/v2/venues/suggestcompletion")
+    @GET("/v2/venues/suggestcompletion")
     Observable<SuggestionResponse> searchSuggestions(@Query("ll") String ll, @Query("query") String query);
 }
 

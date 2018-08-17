@@ -21,27 +21,21 @@ public class Venue {
     @SerializedName("name")
     @Expose
     private String name;
-
     @SerializedName("page")
     @Expose
     private Page page = new Page();
-
     @SerializedName("location")
     @Expose
     private Location location;
-
     @SerializedName("canonicalUrl")
     @Expose
     private String canonicalUrl;
-
     @SerializedName("verified")
     @Expose
     private Boolean verified;
-
     @SerializedName("url")
     @Expose
     private String url;
-
     @SerializedName("rating")
     @Expose
     private Double rating = 0d;
@@ -51,25 +45,21 @@ public class Venue {
     @SerializedName("ratingSignals")
     @Expose
     private Integer ratingSignals;
-
     @SerializedName("description")
     @Expose
     private String description;
     @SerializedName("storeId")
     @Expose
     private String storeId;
-
     @SerializedName("createdAt")
     @Expose
     private Integer createdAt;
-
     @SerializedName("shortUrl")
     @Expose
     private String shortUrl;
     @SerializedName("timeZone")
     @Expose
     private String timeZone;
-
     @SerializedName("hours")
     @Expose
     private Hours hours = new Hours();
@@ -105,7 +95,6 @@ public class Venue {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public String getCanonicalUrl() {
         return canonicalUrl;
@@ -155,8 +144,6 @@ public class Venue {
         this.ratingSignals = ratingSignals;
     }
 
-
-
     public String getDescription() {
         return description;
     }
@@ -172,8 +159,6 @@ public class Venue {
     public void setStoreId(String storeId) {
         this.storeId = storeId;
     }
-
-
 
     public Integer getCreatedAt() {
         return createdAt;
