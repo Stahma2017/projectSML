@@ -6,4 +6,5 @@ import io.reactivex.Single;
 
 public interface LocationGateway {
     Single<Location> getCurrentLocation();
+
 }

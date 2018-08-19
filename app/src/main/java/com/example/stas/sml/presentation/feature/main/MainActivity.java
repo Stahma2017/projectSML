@@ -5,25 +5,32 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.functions.Consumer;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
+import com.example.stas.sml.data.repository.LocationRepository;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
+import com.google.android.gms.maps.GoogleMap;
 
 import java.util.List;
 
@@ -40,6 +47,10 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     @BindView(R.id.bottomAppBar)BottomNavigationView bottomNavigation;
     @BindView(R.id.fragment_container)FrameLayout fragmentContainer;
 
+   // private Animation mFadeInAnimation, mFadeOutAnimation;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,14 +60,20 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         presenter.attachView(this);
         presenter.checkNetworkConnection(this);
         displayMapsFragment(); // handle bottom navigation items states
-
         bottomNavigation.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.action_map:
                     displayMapsFragment();
                     break;
                 case R.id.action_account:
-                    //to Fragment()
+                   /*locationRepository.getCurrentLocation()
+                           .subscribe(new Consumer<Location>() {
+                               @Override
+                               public void accept(Location location) throws Exception {
+                                   str = location.toString();
+                               }
+                           });*/
+
                     break;
             }
             return false;
@@ -68,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
 
             }
         };
+
     }
 
     @Override
@@ -76,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         presenter.detachView();
     }
     public void displayMapsFragment(){
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, new MapsFragment());
         ft.commit();

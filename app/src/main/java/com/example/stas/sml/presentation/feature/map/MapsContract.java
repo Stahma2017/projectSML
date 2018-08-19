@@ -14,6 +14,7 @@ public interface MapsContract {
         Location getCurrentLocation();
         void showPlacesByCategory(VenueEntity venue);
         void showSearchSuggestions(List<Minivenue> minivenues);
+        void showLocation(Location location);
     }
 
 

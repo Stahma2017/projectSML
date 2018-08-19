@@ -23,9 +23,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.stas.sml.App;
 import com.example.stas.sml.Category;
 import com.example.stas.sml.CategoryRecyclerAdapter;
@@ -40,12 +45,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -58,7 +65,7 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class MapsFragment extends Fragment implements MapsContract.MapsView, OnMapReadyCallback, GoogleMap.OnMapClickListener, View.OnClickListener,
         CategoryRecyclerAdapter.OnItemClickListener, VenuesByCategoryRecyclerAdapter.OnItemClickListener, SearchSuggestionsRecyclerAdapter.OnItemClickListener
-     {
+{
 
     GoogleMap map;
     private Marker marker;
@@ -93,7 +100,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
 
     }
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -102,6 +108,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         unbinder = ButterKnife.bind(this, view);
         presenter.attachView(this);
         setHasOptionsMenu(true);
+
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
@@ -111,6 +118,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         zoomOutBtn.setOnClickListener(this);
         zoomInBtn.setOnClickListener(this);
         venueListBtn.setOnClickListener(this);
+
 
         CategoryRecyclerAdapter categoryAdapter = new CategoryRecyclerAdapter(this);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -128,6 +136,30 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         suggestionRecycler.setAdapter(suggestionAdapter);
 
         return view;
+    }
+
+
+    @Override
+    public void showLocation(Location location) {
+        Toast.makeText(getContext(), location.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
@@ -164,7 +196,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, new VenuesByQuerySubmitFragment());
                 fragmentTransaction.commit();*/
-           /*     presenter.getVenuesByQuerySubmit(s);*/
+                /*     presenter.getVenuesByQuerySubmit(s);*/
                 return true;
             }
 
@@ -182,13 +214,16 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
                 toolbar.setBackgroundColor(Color.WHITE);
                 categoryRecycler.setVisibility(View.VISIBLE);
+                Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
+                toolbar.startAnimation(anim);
+                categoryRecycler.startAnimation(anim);
                 return true;
             }
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                suggestionRecycler.setVisibility(View.GONE);
                 toolbar.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rectangle_14_edited));
                 categoryRecycler.setVisibility(View.GONE);
-                suggestionRecycler.setVisibility(View.GONE);
                 return true;
             }
         });
@@ -201,6 +236,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.setOnMapClickListener(this);
+        map.getUiSettings().setCompassEnabled(false);
         CameraPosition liberty = CameraPosition.builder().target(new LatLng(45.045583, 38.978452)).zoom(16).bearing(0).tilt(45).build();
         map.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
     }

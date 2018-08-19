@@ -1,7 +1,10 @@
 package com.example.stas.sml.presentation.feature.map.di;
 
+import android.support.v7.app.AppCompatActivity;
+
 import com.example.stas.sml.data.mapper.VenueMapper;
 import com.example.stas.sml.data.network.Api;
+import com.example.stas.sml.data.repository.LocationRepository;
 import com.example.stas.sml.di.annotations.MapsFragmentScope;
 import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
@@ -40,5 +43,11 @@ public class MapsFragmentModule {
         return mapsFragment;
     }
 
+    @MapsFragmentScope
+    @NonNull
+    @Provides
+    LocationGateway provideLocationRepository(AppCompatActivity appCompatActivity){
+        return new LocationRepository(appCompatActivity);
+    }
 
 }

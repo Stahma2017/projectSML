@@ -11,6 +11,7 @@ import java.lang.ref.WeakReference;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class MapsPresenter  {
@@ -46,6 +47,21 @@ public class MapsPresenter  {
 //                ,errorHandler::proceed
                 );
         compositeDisposable.add(venueListDisposable);
+    }
+
+    public void getLocation(){
+        Disposable dis = locationGateway.getCurrentLocation()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Location>() {
+                    @Override
+                    public void accept(Location location) throws Exception {
+                       view.get().showLocation(location);
+                    }
+                });
+        compositeDisposable.add(dis);
+
+
     }
 
     public void getTextSuggestions(String querry){

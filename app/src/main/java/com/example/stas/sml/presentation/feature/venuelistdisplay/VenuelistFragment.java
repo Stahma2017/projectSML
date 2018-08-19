@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.stas.sml.R;
+import com.example.stas.sml.data.repository.LocationRepository;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.example.stas.sml.service.GpsTracker;
 
@@ -29,6 +30,7 @@ public class VenuelistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
 
 
 

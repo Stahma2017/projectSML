@@ -1,4 +1,5 @@
 package com.example.stas.sml.di;
+import com.example.stas.sml.di.module.AppCompatModule;
 import com.example.stas.sml.di.module.AppModule;
 import com.example.stas.sml.di.module.ErrorHandlerModule;
 import com.example.stas.sml.di.module.GatewayModule;
@@ -11,7 +12,7 @@ import com.example.stas.sml.presentation.feature.querysubmit.di.QueryVenuesCompo
 import javax.inject.Singleton;
 import dagger.Component;
 
-@Component(modules = {ErrorHandlerModule.class, AppModule.class, RxModule.class, NetworkModule.class, GatewayModule.class})
+@Component(modules = {ErrorHandlerModule.class, AppModule.class, RxModule.class, NetworkModule.class, AppCompatModule.class})
 @Singleton
 public interface AppComponent {
 

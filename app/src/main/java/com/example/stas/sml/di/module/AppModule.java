@@ -22,10 +22,4 @@ public class AppModule {
         return appContext;
     }
 
-    @Provides
-    @Singleton
-    public LocationManager provideLocationManager(Context context){
-        return (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-    }
-
 }

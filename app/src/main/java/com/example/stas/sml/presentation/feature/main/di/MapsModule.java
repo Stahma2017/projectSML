@@ -1,7 +1,10 @@
 package com.example.stas.sml.presentation.feature.main.di;
 
+import android.support.v7.app.AppCompatActivity;
+
 import com.example.stas.sml.data.mapper.VenueMapper;
 import com.example.stas.sml.data.network.Api;
+import com.example.stas.sml.data.repository.LocationRepository;
 import com.example.stas.sml.di.annotations.MapsScope;
 import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
@@ -37,4 +40,5 @@ public class MapsModule {
     MainActivity provideMapsActivity(MainActivity mainActivity) {
         return mainActivity;
     }
+
 }

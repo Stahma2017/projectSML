@@ -38,9 +38,7 @@
         android:layout_marginStart="@dimen/placerating_marginstart"
         android:layout_marginTop="@dimen/placerating_margintop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/placeShortDescription"
