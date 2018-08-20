@@ -2,9 +2,11 @@ package com.example.stas.sml.presentation.feature.map;
 
 import android.location.Location;
 
+import com.example.stas.sml.Category;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.lang.ref.WeakReference;
 
@@ -15,6 +17,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class MapsPresenter  {
+
 
     private WeakReference<MapsContract.MapsView> view;
     private final MapsModel interactor;
@@ -35,8 +38,7 @@ public class MapsPresenter  {
         compositeDisposable.dispose();
     }
 
-    public void getVenuesWithCategory(String categoryId){
-        Location currentLocation = view.get().getCurrentLocation();
+    public void getVenuesWithCategory(String categoryId, Location currentLocation){
 
         Disposable venueListDisposable = interactor.loadVenuesWithCategory(currentLocation, categoryId)
                 .subscribeOn(Schedulers.io())
@@ -49,23 +51,46 @@ public class MapsPresenter  {
         compositeDisposable.add(venueListDisposable);
     }
 
-    public void getLocation(){
+    public void getLocation(LatLng latLng){
         Disposable dis = locationGateway.getCurrentLocation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Location>() {
                     @Override
                     public void accept(Location location) throws Exception {
-                       view.get().showLocation(location);
+                       view.get().showBottomSheet(location, latLng);
                     }
                 });
         compositeDisposable.add(dis);
+    }
 
+    public void getLocationForCategories(String category){
+        Disposable dis = locationGateway.getCurrentLocation()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Location>() {
+                    @Override
+                    public void accept(Location location) throws Exception {
+                        view.get().deliverLocationToCategories(location, category);
+                    }
+                });
+        compositeDisposable.add(dis);
+    }
 
+    public void getLocationForLocationButton(){
+        Disposable dis = locationGateway.getCurrentLocation()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Location>() {
+                    @Override
+                    public void accept(Location location) throws Exception {
+                        view.get().toCurrentLocation(location);
+                    }
+                });
+        compositeDisposable.add(dis);
     }
 
     public void getTextSuggestions(String querry){
-
         Disposable bla = interactor.loadTextSuggestions(querry)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

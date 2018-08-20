@@ -5,8 +5,11 @@ import com.example.stas.sml.di.AppComponent;
 import com.example.stas.sml.di.DaggerAppComponent;
 import com.example.stas.sml.presentation.feature.main.di.MapsComponent;
 import com.example.stas.sml.di.module.AppModule;
+import com.example.stas.sml.presentation.feature.map.MapsFragment;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentComponent;
+import com.example.stas.sml.presentation.feature.map.di.MapsFragmentModule;
 import com.example.stas.sml.presentation.feature.querysubmit.di.QueryVenuesComponent;
+import com.squareup.haha.guava.collect.Maps;
 import com.squareup.leakcanary.LeakCanary;
 
 public class App extends Application {
@@ -68,9 +71,9 @@ public class App extends Application {
         queryVenuesComponent = null;
     }
 
-    public MapsFragmentComponent addMapsFragmentComponent(){
+    public MapsFragmentComponent addMapsFragmentComponent(MapsFragment mapsFragment){
         if (mapsFragmentComponent == null){
-            mapsFragmentComponent = component.addMapsFragmentComponent();
+            mapsFragmentComponent = mapsComponent.addMapsFragmentComponent(new MapsFragmentModule(mapsFragment));
         }
         return mapsFragmentComponent;
     }

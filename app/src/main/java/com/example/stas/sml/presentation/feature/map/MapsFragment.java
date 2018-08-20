@@ -40,6 +40,7 @@ import com.example.stas.sml.VenuesByCategoryRecyclerAdapter;
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
+import com.example.stas.sml.presentation.feature.map.di.MapsFragmentModule;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -104,7 +105,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
-        App.getInstance().addMapsFragmentComponent().injectMapsFragment(this);
+        App.getInstance().addMapsFragmentComponent(this).injectMapsFragment(this);
         unbinder = ButterKnife.bind(this, view);
         presenter.attachView(this);
         setHasOptionsMenu(true);
@@ -118,7 +119,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         zoomOutBtn.setOnClickListener(this);
         zoomInBtn.setOnClickListener(this);
         venueListBtn.setOnClickListener(this);
-
 
         CategoryRecyclerAdapter categoryAdapter = new CategoryRecyclerAdapter(this);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -140,26 +140,8 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
 
 
     @Override
-    public void showLocation(Location location) {
-        Toast.makeText(getContext(), location.toString(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
-
-
-        try {
-            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
-            childFragmentManager.setAccessible(true);
-            childFragmentManager.set(this, null);
-
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     @Override
@@ -244,11 +226,14 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     @Override
     public void onMapClick(LatLng latLng) {
         setMarker(latLng);
+        presenter.getLocation(latLng);
+    }
 
+    @Override
+    public void showBottomSheet(Location location, LatLng latLng) {
         List<Address> addresses = getAddress(latLng);
-        Location location = getCurrentLocation();
         float[] results = new float[1];
-        Location.distanceBetween(latLng.latitude, latLng.longitude, location.getLatitude (), location.getLongitude(), results);
+        Location.distanceBetween(latLng.latitude, latLng.longitude, location.getLatitude(), location.getLongitude(), results);
         String[] splitedAddress = addresses.get(0).getAddressLine(0).split(",");
         String address = splitedAddress[0] + "," + splitedAddress[1];
         String region = addresses.get(0).getCountryName() + ", " + addresses.get(0).getAdminArea();
@@ -256,7 +241,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         addressTW.setText(address);
         regionTW.setText(region);
         distanceTW.setText(String.format(Locale.CANADA,"%.0f м", results[0]));
-
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
@@ -272,14 +256,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         return addresses;
     }
 
-    @Override
-    public Location getCurrentLocation() {
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, true);
-        return locationManager.getLastKnownLocation(provider);
-    }
-
     void setMarker(LatLng latLng) {
         if (marker != null) {
             marker.remove();
@@ -290,8 +266,8 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         marker = map.addMarker(markerOptions);
     }
 
-    private void toCurrentLocation() {
-        Location location = getCurrentLocation();
+    @Override
+    public void toCurrentLocation(Location location) {
         if (location != null) {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
@@ -304,7 +280,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.locationBtn:
-                toCurrentLocation();
+                presenter.getLocationForLocationButton();
                 break;
             case R.id.minusBtn:
                 map.animateCamera(CameraUpdateFactory.zoomOut());
@@ -346,13 +322,20 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         zoomInBtn.setVisibility(View.GONE);
     }
 
+    public void deliverLocationToCategories(Location location, String category){
+        presenter.getVenuesWithCategory(category, location);
+
+    }
 
     @Override
     public void onItemClick(Category category) {
         suggestionRecycler.setVisibility(View.GONE);
         displayProgressbar();
-        presenter.getVenuesWithCategory(category.getCategoryId());
+        presenter.getLocationForCategories(category.getCategoryId());
+
+      //  presenter.getVenuesWithCategory(category.getCategoryId());
     }
+
 
     @Override
     public void onItemClick(VenueEntity venue) {

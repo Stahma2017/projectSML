@@ -12,5 +12,4 @@ public interface MapsFragmentComponent {
 
     void injectMapsFragment(MapsFragment mapsFragment);
 
-
 }
