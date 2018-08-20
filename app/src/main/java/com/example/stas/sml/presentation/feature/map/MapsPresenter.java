@@ -3,12 +3,15 @@ package com.example.stas.sml.presentation.feature.map;
 import android.location.Location;
 
 import com.example.stas.sml.Category;
+import com.example.stas.sml.data.model.venuesearch.Venue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -17,7 +20,6 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class MapsPresenter  {
-
 
     private WeakReference<MapsContract.MapsView> view;
     private final MapsModel interactor;
@@ -40,11 +42,14 @@ public class MapsPresenter  {
 
     public void getVenuesWithCategory(String categoryId, Location currentLocation){
 
+        List<VenueEntity> venues = new ArrayList<>();
         Disposable venueListDisposable = interactor.loadVenuesWithCategory(currentLocation, categoryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((VenueEntity venue) -> {
-                    view.get().showPlacesByCategory(venue);
+                    venues.add(venue);
+                    view.get().showPlacesByCategory(venues);
+
                 }
 //                ,errorHandler::proceed
                 );
@@ -55,12 +60,7 @@ public class MapsPresenter  {
         Disposable dis = locationGateway.getCurrentLocation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Location>() {
-                    @Override
-                    public void accept(Location location) throws Exception {
-                       view.get().showBottomSheet(location, latLng);
-                    }
-                });
+                .subscribe(location -> view.get().showBottomSheet(location, latLng));
         compositeDisposable.add(dis);
     }
 
@@ -68,12 +68,7 @@ public class MapsPresenter  {
         Disposable dis = locationGateway.getCurrentLocation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Location>() {
-                    @Override
-                    public void accept(Location location) throws Exception {
-                        view.get().deliverLocationToCategories(location, category);
-                    }
-                });
+                .subscribe(location -> view.get().deliverLocationToCategories(location, category));
         compositeDisposable.add(dis);
     }
 
@@ -81,12 +76,7 @@ public class MapsPresenter  {
         Disposable dis = locationGateway.getCurrentLocation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Location>() {
-                    @Override
-                    public void accept(Location location) throws Exception {
-                        view.get().toCurrentLocation(location);
-                    }
-                });
+                .subscribe(location -> view.get().toCurrentLocation(location));
         compositeDisposable.add(dis);
     }
 

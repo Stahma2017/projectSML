@@ -3,6 +3,7 @@ package com.example.stas.sml.presentation.feature.main;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -12,12 +13,15 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.Binds;
 import io.reactivex.functions.Consumer;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -47,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     @BindView(R.id.bottomAppBar)BottomNavigationView bottomNavigation;
     @BindView(R.id.fragment_container)FrameLayout fragmentContainer;
 
-   // private Animation mFadeInAnimation, mFadeOutAnimation;
+
+
 
 
 
@@ -59,13 +64,19 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         ButterKnife.bind(this);
         presenter.attachView(this);
         presenter.checkNetworkConnection(this);
-        displayMapsFragment(); // handle bottom navigation items states
-        bottomNavigation.setOnNavigationItemSelectedListener(menuItem -> {
-            switch (menuItem.getItemId()) {
-                case R.id.action_map:
-                    displayMapsFragment();
-                    break;
-                case R.id.action_account:
+        bottomNavigation.setSelectedItemId(R.id.action_map);
+        displayMapsFragment();
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                switch (menuItem.getItemId()) {
+                    case R.id.action_map:
+                        menuItem.setChecked(true);
+                        MainActivity.this.displayMapsFragment();
+                        break;
+                    case R.id.action_account:
+                        menuItem.setChecked(true);
                    /*locationRepository.getCurrentLocation()
                            .subscribe(new Consumer<Location>() {
                                @Override
@@ -73,10 +84,12 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
                                    str = location.toString();
                                }
                            });*/
-
-                    break;
+                        break;
+                    case R.id.action_places:
+                        menuItem.setChecked(true);
+                }
+                return false;
             }
-            return false;
         });
 
         BroadcastReceiver br = new BroadcastReceiver() {
@@ -85,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
 
             }
         };
-
     }
 
     @Override
@@ -94,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         presenter.detachView();
     }
     public void displayMapsFragment(){
-
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, new MapsFragment());
         ft.commit();
@@ -108,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
 
     @SuppressLint("NeedOnRequestPermissionsResult")
     @Override
+
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
           MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);

@@ -9,6 +9,9 @@ import com.example.stas.sml.presentation.feature.map.MapsFragment;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentComponent;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentModule;
 import com.example.stas.sml.presentation.feature.querysubmit.di.QueryVenuesComponent;
+import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
+import com.example.stas.sml.presentation.feature.venuelistdisplay.di.VenuelistComponent;
+import com.example.stas.sml.presentation.feature.venuelistdisplay.di.VenuelistModule;
 import com.squareup.haha.guava.collect.Maps;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -25,6 +28,7 @@ public class App extends Application {
 
     private QueryVenuesComponent queryVenuesComponent;
     private MapsFragmentComponent mapsFragmentComponent;
+    private VenuelistComponent venuelistComponent;
 
     @Override
     public void onCreate() {
@@ -80,6 +84,13 @@ public class App extends Application {
 
     public void clearMapsFragmentComponent(){
         mapsFragmentComponent = null;
+    }
+
+    public VenuelistComponent addVenuelistComponent(VenuelistFragment venuelistFragment){
+        if (venuelistComponent == null){
+            venuelistComponent = mapsComponent.addVenuelistComponent(new VenuelistModule(venuelistFragment));
+        }
+        return venuelistComponent;
     }
 
 }

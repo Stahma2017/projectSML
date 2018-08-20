@@ -7,9 +7,11 @@ public class Hours {
     @SerializedName("status")
     @Expose
     private String status;
+
     @SerializedName("isOpen")
     @Expose
     private Boolean isOpen = false;
+
     @SerializedName("isLocalHoliday")
     @Expose
     private Boolean isLocalHoliday;

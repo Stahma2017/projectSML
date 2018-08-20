@@ -18,9 +18,19 @@ import com.example.stas.sml.service.GpsTracker;
 
 import java.security.Provider;
 
+import javax.inject.Inject;
 
-public class VenuelistFragment extends Fragment {
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
+
+public class VenuelistFragment extends Fragment implements VenuelistContract.VenuelistView {
+
+
+    private Unbinder unbinder;
+
+    @Inject
+    VenuelistPresenter presenter;
 
     public VenuelistFragment() {
         // Required empty public constructor
@@ -30,12 +40,17 @@ public class VenuelistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        presenter.attachView(this);
 
-
-
-
-
-        return inflater.inflate(R.layout.fragment_venue_list, container, false);
+        return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+        presenter.detachView();
+    }
 }

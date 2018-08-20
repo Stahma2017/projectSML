@@ -41,6 +41,7 @@ import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentModule;
+import com.example.stas.sml.utils.CategoryList;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -53,6 +54,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +77,9 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
 
     @Inject
     MapsPresenter presenter;
+
+    //New dependency
+    private CategoryRecyclerAdapter categoryAdapter;
 
     //New dependency
     private VenuesByCategoryRecyclerAdapter placesAdapter;
@@ -120,7 +125,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         zoomInBtn.setOnClickListener(this);
         venueListBtn.setOnClickListener(this);
 
-        CategoryRecyclerAdapter categoryAdapter = new CategoryRecyclerAdapter(this);
+        categoryAdapter = new CategoryRecyclerAdapter(this);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         categoryRecycler.setLayoutManager(horizontalLayoutManager);
         categoryRecycler.setAdapter(categoryAdapter);
@@ -137,7 +142,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
 
         return view;
     }
-
 
     @Override
     public void onDetach() {
@@ -206,6 +210,9 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
                 suggestionRecycler.setVisibility(View.GONE);
                 toolbar.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rectangle_14_edited));
                 categoryRecycler.setVisibility(View.GONE);
+                locationBtn.setVisibility(View.VISIBLE);
+                zoomInBtn.setVisibility(View.VISIBLE);
+                zoomOutBtn.setVisibility(View.VISIBLE);
                 return true;
             }
         });
@@ -296,10 +303,9 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     }
 
     @Override
-    public void showPlacesByCategory(VenueEntity venue) {
+    public void showPlacesByCategory(List<VenueEntity> venues) {
+        placesAdapter.setVenues(venues);
 
-        placesAdapter.clearList();
-        placesAdapter.insertVenue(venue);
         placesAdapter.notifyDataSetChanged();
         placesRecycler.setVisibility(View.VISIBLE);
 
@@ -324,16 +330,17 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
 
     public void deliverLocationToCategories(Location location, String category){
         presenter.getVenuesWithCategory(category, location);
-
     }
 
     @Override
     public void onItemClick(Category category) {
+        categoryAdapter.refreshList();
+        category.setEnabled(true);
+        categoryAdapter.notifyDataSetChanged();
+
         suggestionRecycler.setVisibility(View.GONE);
         displayProgressbar();
         presenter.getLocationForCategories(category.getCategoryId());
-
-      //  presenter.getVenuesWithCategory(category.getCategoryId());
     }
 
 

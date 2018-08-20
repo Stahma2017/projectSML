@@ -12,7 +12,7 @@ public interface MapsContract {
 
     interface MapsView {
 
-        void showPlacesByCategory(VenueEntity venue);
+        void showPlacesByCategory(List<VenueEntity> venues);
         void showSearchSuggestions(List<Minivenue> minivenues);
         void showBottomSheet(Location location, LatLng latLng);
         void toCurrentLocation(Location location);

@@ -27,8 +27,8 @@ public class VenuesByCategoryRecyclerAdapter extends RecyclerView.Adapter<Venues
         this.venues = venues;
     }
 
-    public void insertVenue(VenueEntity venue){
-        venues.add(venue);
+    public void setList(List<VenueEntity> venues){
+        this.venues = venues;
     }
 
     public void clearList(){
@@ -92,7 +92,9 @@ public class VenuesByCategoryRecyclerAdapter extends RecyclerView.Adapter<Venues
             address.setText(venue.getLocation().getAddress());
             workStatus.setText(venue.getHours().getStatus());
             distance.setText(String.format(Locale.US,"%.1f км", ((double)venue.getDistance())/1000));
-            //TODO set logic for indicator
+            if (venue.getHours().getOpen()){
+                workIndicator.setImageResource(R.drawable.work_indicator);
+            }
 
             itemView.setOnClickListener(itemView -> onItemClickListener.onItemClick(venue));
         }

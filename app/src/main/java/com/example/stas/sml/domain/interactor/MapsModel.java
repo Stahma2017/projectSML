@@ -2,6 +2,8 @@ package com.example.stas.sml.domain.interactor;
 
 import android.location.Location;
 
+import com.example.stas.sml.data.model.venuesearch.SearchResponse;
+import com.example.stas.sml.data.model.venuesearch.Venue;
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.data.model.venuesuggestion.SuggestionResponse;
 import com.example.stas.sml.presentation.feature.main.ActivityContract;
@@ -34,7 +36,7 @@ public class MapsModel implements ActivityContract.Model {
 
         String ll = location.getLatitude() + ", " + location.getLongitude();
 
-        return serverApi.searchWithCategory(ll, 1000.0, categoryId, 1)
+        return serverApi.searchWithCategory(ll, 1000.0, categoryId, 4)
                 .map(searchResponce -> searchResponce.getResponse().getVenues())
                 .flatMapIterable(items -> items)
                 .flatMap(venuesearch -> serverApi.getVenue(venuesearch.getId())

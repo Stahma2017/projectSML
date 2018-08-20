@@ -13,11 +13,10 @@
         android:background="@drawable/suggestion_card_background">
 
         <ImageView
-            android:src="@drawable/meatlove"
             android:id="@+id/placeLogoFromSubmitSuggestion"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="1dp"
             android:layout_marginTop="@dimen/placelogo_margintop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -44,7 +43,6 @@
             android:layout_marginTop="30dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
-
 
         <TextView
             android:id="@+id/placeShortDescriptionFromSubmitSuggestion"

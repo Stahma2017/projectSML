@@ -1,7 +1,5 @@
 package com.example.stas.sml.data.mapper;
 
-
-
 import com.example.stas.sml.data.model.venuedetailedmodel.PageInfo;
 import com.example.stas.sml.data.model.venuedetailedmodel.Venue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.Hours;
@@ -24,9 +22,10 @@ public class VenueMapper {
         venueEntity.setRating(from.getRating());
         venueEntity.setDescription(from.getDescription());
         venueEntity.setDistance(from.getDistance());
-        // to realize map in appropriate way )
+        // to realize map in a appropriate way
         venueEntity.setHours(new Hours());
         venueEntity.getHours().setStatus(from.getHours().getStatus());
+        venueEntity.getHours().setOpen(from.getHours().getOpen());
 
         venueEntity.setPage(new Page());
         venueEntity.getPage().setPageInfo(new PageInfo());

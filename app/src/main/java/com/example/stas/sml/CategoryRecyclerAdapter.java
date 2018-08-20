@@ -29,6 +29,12 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
         void onItemClick(Category category);
     }
 
+    public void refreshList(){
+        for (Category category:categories) {
+            category.setEnabled(false);
+        }
+    }
+
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -66,16 +72,13 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
 
         void bind(Category category) {
 
-            categoryIcon.setImageResource(category.getCategoryImage());
+          if (category.isEnabled()){
+              categoryIcon.setImageResource(category.getCategoryImageEnabled());
+          } else {
+              categoryIcon.setImageResource(category.getCategoryImage());
+          }
             categoryName.setText(category.getCategoryName());
-
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View itemView) {
-                    onItemClickListener.onItemClick(category);
-                }
-            });
+            itemView.setOnClickListener(itemView -> onItemClickListener.onItemClick(category));
 
         }
 

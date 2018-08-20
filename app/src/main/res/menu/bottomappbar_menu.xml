@@ -4,26 +4,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <item
         android:id="@+id/action_places"
         android:icon="@drawable/ic_action_person"
         android:title=""
-        app:showAsAction="ifRoom"
-        />
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_map"
         android:icon="@drawable/ic_action_map"
         android:title=""
-        app:showAsAction="ifRoom"
-
-        />
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_account"
         android:icon="@drawable/ic_action_room"
         android:title=""
         app:showAsAction="ifRoom"
-        android:gravity = "start"
-     />
+        android:gravity = "start"/>
 
 </menu>
 

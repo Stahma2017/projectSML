@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mask">
+    android:background="@drawable/suggestion_card_background"
+    android:layout_margin="20dp">
 
     <ImageView
-        android:src="@drawable/meatlove"
         android:id="@+id/placeLogo"
         android:layout_width="@dimen/placelogo_width"
         android:layout_height="@dimen/placelogo_height"
@@ -43,7 +43,7 @@
     <TextView
         android:id="@+id/placeShortDescription"
         android:layout_width="@dimen/placeshortdescription_width"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginStart="@dimen/placeshortdescription_marginstart"
         android:layout_marginTop="@dimen/placeshortdescription_margintop"
         android:text="Ресторан, где любят мясо"
