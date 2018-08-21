@@ -11,5 +11,4 @@ import dagger.Subcomponent;
 public interface MapsFragmentComponent {
 
     void injectMapsFragment(MapsFragment mapsFragment);
-
 }

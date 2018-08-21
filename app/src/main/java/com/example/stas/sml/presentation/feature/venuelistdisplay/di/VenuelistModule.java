@@ -8,6 +8,7 @@ import com.example.stas.sml.data.repository.LocationRepository;
 import com.example.stas.sml.di.annotations.VenuelistFragmentScope;
 import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
+import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistPresenter;
 
@@ -36,8 +37,8 @@ public class VenuelistModule {
     @NonNull
     @Provides
     VenuelistPresenter provideMapsPresenter(CompositeDisposable compositeDisposable,
-                                            MapsModel mapsModel, LocationGateway locationGateway) {
-        return new VenuelistPresenter(mapsModel, compositeDisposable, locationGateway);
+                                            MapsModel mapsModel, LocationGateway locationGateway, ErrorHandler errorHandler) {
+        return new VenuelistPresenter(mapsModel, compositeDisposable, locationGateway, errorHandler);
     }
 
     @VenuelistFragmentScope

@@ -17,6 +17,7 @@ public interface ActivityContract {
 
         void displayMapsFragment();
 
+
        // void showPlacesByQuerySubmit(List<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> venues);
     }
 

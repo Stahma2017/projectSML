@@ -20,11 +20,11 @@
     <TextView
         android:id="@+id/placeName"
         android:layout_width="@dimen/placename_width"
-        android:layout_height="25dp"
-        android:layout_marginStart="@dimen/placename_marginstart"
+        android:layout_height="30dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="@dimen/placename_margintop"
-        android:textSize="@dimen/placename_text_size"
         android:text="Мясо Love"
+        android:textSize="@dimen/placename_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

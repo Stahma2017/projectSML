@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     @Inject
     ErrorHandler errorHandler;
 
+    @BindView(R.id.bottomContainer)FrameLayout bottomContainer;
     @BindView(R.id.bottomAppBar)BottomNavigationView bottomNavigation;
     @BindView(R.id.fragment_container)FrameLayout fragmentContainer;
 
@@ -107,14 +109,24 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     }
     public void displayMapsFragment(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container, new MapsFragment());
+        ft.addToBackStack("map");
+        ft.replace(R.id.fragment_container, new MapsFragment(), "map");
         ft.commit();
     }
 
     public void displayVenuelistFragment(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container, new VenuelistFragment());
+        ft.add(R.id.fragment_container, new VenuelistFragment(), "listFragment");
+        ft.addToBackStack("listFragment");
         ft.commit();
+    }
+
+    public void hideToolbar(){
+        bottomContainer.setVisibility(View.GONE);
+    }
+
+    public void showToolbar(){
+        bottomContainer.setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")

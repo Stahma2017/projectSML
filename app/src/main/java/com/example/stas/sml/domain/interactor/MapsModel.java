@@ -36,7 +36,7 @@ public class MapsModel implements ActivityContract.Model {
 
         String ll = location.getLatitude() + ", " + location.getLongitude();
 
-        return serverApi.searchWithCategory(ll, 1000.0, categoryId, 4)
+        return serverApi.searchWithCategory(ll, 1000.0, categoryId, 1)
                 .map(searchResponce -> searchResponce.getResponse().getVenues())
                 .flatMapIterable(items -> items)
                 .flatMap(venuesearch -> serverApi.getVenue(venuesearch.getId())
@@ -49,12 +49,7 @@ public class MapsModel implements ActivityContract.Model {
     @Override
     public Observable<List<Minivenue>> loadTextSuggestions(String querry){
         return serverApi.searchSuggestions("45.045583, 38.978452", querry)
-              .map(new Function<SuggestionResponse, List<Minivenue>>() {
-                  @Override
-                  public List<Minivenue> apply(SuggestionResponse suggestionResponse) throws Exception {
-                    return suggestionResponse.getResponse().getMinivenues();
-                  }
-              });
+              .map(suggestionResponse -> suggestionResponse.getResponse().getMinivenues());
     }
 
     @Override

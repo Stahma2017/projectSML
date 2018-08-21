@@ -10,6 +10,7 @@ import com.example.stas.sml.data.repository.LocationRepository;
 import com.example.stas.sml.di.annotations.MapsFragmentScope;
 import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
+import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.example.stas.sml.presentation.feature.map.MapsContract;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
@@ -40,8 +41,8 @@ public class MapsFragmentModule {
     @NonNull
     @Provides
     MapsPresenter provideMapsPresenter(CompositeDisposable compositeDisposable,
-                                       MapsModel mapsModel, LocationGateway locationGateway) {
-        return new MapsPresenter(mapsModel, compositeDisposable, locationGateway);
+                                       MapsModel mapsModel, LocationGateway locationGateway, ErrorHandler errorHandler ) {
+        return new MapsPresenter(mapsModel, compositeDisposable, locationGateway, errorHandler);
     }
 
     @MapsFragmentScope

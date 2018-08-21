@@ -9,5 +9,5 @@ import dagger.Subcomponent;
 @VenuelistFragmentScope
 public interface VenuelistComponent {
 
-    void injectVenuelistFragment(VenuelistFragment venuelistFragmentFragment);
+    void injectVenuelistFragment(VenuelistFragment venuelistFragment);
 }

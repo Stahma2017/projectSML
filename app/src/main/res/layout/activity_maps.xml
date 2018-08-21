@@ -23,6 +23,7 @@
         tools:context=".presentation.feature.main.MainActivity">
 
         <FrameLayout
+            android:id="@+id/bottomContainer"
             android:layout_width="@dimen/frame_of_bottomnavigation_width"
             android:layout_height="@dimen/frame_of_bottomnavigation_height"
             android:layout_gravity="bottom"

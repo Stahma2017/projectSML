@@ -14,6 +14,9 @@ public class Category {
         this.categoryId = categoryId;
         this.categoryImageEnabled = categoryImageEnabled;
     }
+    public Category(String categoryId){
+        this.categoryId = categoryId;
+    }
 
     public int getCategoryImage() {
         return categoryImage;

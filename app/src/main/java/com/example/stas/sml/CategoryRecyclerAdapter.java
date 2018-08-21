@@ -21,6 +21,7 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
     private OnItemClickListener onItemClickListener;
 
 
+
     public CategoryRecyclerAdapter(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
@@ -33,6 +34,32 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
         for (Category category:categories) {
             category.setEnabled(false);
         }
+    }
+
+    public int getEnabledCategory(){
+        for (Category category:categories
+             ) {
+            if (category.isEnabled()){
+                return categories.indexOf(category);
+            }
+        }
+        return -1;
+    }
+
+    public String getEnabledCategoryId(){
+        for (Category category:categories
+                ) {
+            if (category.isEnabled()){
+                return category.getCategoryId();
+            }
+        }
+        return null;
+    }
+
+    public void setEnabledCategory(int index){
+        Category category =  categories.get(index);
+        category.setEnabled(true);
+        categories.set(index, category);
     }
 
     @NonNull
