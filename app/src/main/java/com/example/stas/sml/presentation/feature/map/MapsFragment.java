@@ -378,9 +378,11 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
                 break;
             case R.id.toVenueListBtn:
                 int categoryIndex = categoryAdapter.getEnabledCategory();
-                SharedPreferences.Editor editor = getActivity().getSharedPreferences(VenuelistFragment.CATEGORY_PREFS, MODE_PRIVATE).edit();
-                editor.putInt("index", categoryIndex);
-                editor.apply();
+                if (categoryIndex != -1) {
+                    SharedPreferences.Editor editor = getActivity().getSharedPreferences(VenuelistFragment.CATEGORY_PREFS, MODE_PRIVATE).edit();
+                    editor.putInt("index", categoryIndex);
+                    editor.apply();
+                }
 
                 MainActivity activity = (MainActivity) getActivity();
                 activity.hideToolbar();

@@ -30,6 +30,7 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
+import com.example.stas.sml.VenueSelectedFragment;
 import com.example.stas.sml.data.repository.LocationRepository;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.base.ErrorHandler;
@@ -79,6 +80,11 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
                         break;
                     case R.id.action_account:
                         menuItem.setChecked(true);
+
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.add(R.id.fragment_container, new VenueSelectedFragment());
+
+                        ft.commit();
                    /*locationRepository.getCurrentLocation()
                            .subscribe(new Consumer<Location>() {
                                @Override
@@ -109,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     }
     public void displayMapsFragment(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.addToBackStack("map");
+       // ft.addToBackStack("map");
         ft.replace(R.id.fragment_container, new MapsFragment(), "map");
         ft.commit();
     }
@@ -117,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     public void displayVenuelistFragment(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_container, new VenuelistFragment(), "listFragment");
-        ft.addToBackStack("listFragment");
+        ft.addToBackStack(null);
         ft.commit();
     }
 

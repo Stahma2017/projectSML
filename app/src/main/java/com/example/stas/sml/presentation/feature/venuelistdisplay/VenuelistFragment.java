@@ -67,11 +67,8 @@ PreviousPlacesByCategoryAdapter.OnItemClickListener{
 
 
 
-    @BindView(R.id.toolbarVenuelist)
-    Toolbar toolbar;
-    @BindView(R.id.categoryRecyclerVenuelist)
-    RecyclerView categoryRecycler;
-
+    @BindView(R.id.toolbarVenuelist)Toolbar toolbar;
+    @BindView(R.id.categoryRecyclerVenuelist)RecyclerView categoryRecycler;
     @BindView(R.id.placesRecyclerPrev)RecyclerView placesRecycler;
     @BindView(R.id.search_view)SearchView searchView;
 
@@ -90,7 +87,6 @@ PreviousPlacesByCategoryAdapter.OnItemClickListener{
         presenter.attachView(this);
         searchView.setIconified(false);
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
        SharedPreferences prefs = getActivity().getSharedPreferences(CATEGORY_PREFS, MODE_PRIVATE);
         int enabledIndex = prefs.getInt("index", -1);
@@ -106,7 +102,10 @@ PreviousPlacesByCategoryAdapter.OnItemClickListener{
         placesRecycler.setLayoutManager(placesLayoutManager);
         placesRecycler.setAdapter(placesAdapter);
 
-       presenter.getLocationForCategories(categoryAdapter.getEnabledCategoryId());
+        if (categoryAdapter.getEnabledCategoryId() != null){
+            presenter.getLocationForCategories(categoryAdapter.getEnabledCategoryId());
+        }
+
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -168,6 +167,7 @@ PreviousPlacesByCategoryAdapter.OnItemClickListener{
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        App.getInstance().clearVenuComponent();
         presenter.detachView();
     }
 

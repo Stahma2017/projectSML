@@ -93,4 +93,8 @@ public class App extends Application {
         return venuelistComponent;
     }
 
+    public void clearVenuComponent(){
+        venuelistComponent = null;
+    }
+
 }
