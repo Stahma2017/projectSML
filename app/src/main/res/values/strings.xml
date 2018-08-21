@@ -14,8 +14,13 @@
     <string name="units"> м</string>
     <string name="netError">internet connection lost</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="lorem">Learn how to customize Material Design to change the look
+        and feel of your UI, expressing brand and style through elements like color,
+        shape, typography, and iconography. The latest Material Design updates and guidance.
+        New: Expanded guidance and high-emphasis text fields. New: Expanded guidance and high-emphasis text fields.
+        Learn techniques for creating effective dense UIs.
+    </string>
 
 
 </resources>
