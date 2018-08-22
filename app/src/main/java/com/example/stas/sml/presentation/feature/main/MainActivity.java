@@ -117,6 +117,15 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         ft.commit();
     }
 
+    public void displayVenueSelectedFragment(){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.fragment_container, new VenueSelectedFragment(), "SelectFragment");
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+
+
     public void hideToolbar(){
         bottomContainer.setVisibility(View.GONE);
     }

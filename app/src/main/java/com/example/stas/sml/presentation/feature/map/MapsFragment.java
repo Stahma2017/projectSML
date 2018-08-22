@@ -46,6 +46,7 @@ import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentModule;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
+import com.example.stas.sml.presentation.feature.venueselected.VenueSelectedFragment;
 import com.example.stas.sml.utils.CategoryList;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -367,7 +368,14 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
 
     @Override
     public void onItemClick(VenueEntity venue) {
-        //go to venuelist fragment
+        String venueId = venue.getId();
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences(VenueSelectedFragment.VENUEID_PREFS, MODE_PRIVATE).edit();
+        editor.putString("venueId", venueId);
+        editor.apply();
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.displayVenueSelectedFragment();
+
     }
 
     @Override

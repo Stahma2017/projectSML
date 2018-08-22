@@ -2,10 +2,12 @@ package com.example.stas.sml.domain.interactor;
 
 import android.location.Location;
 
+import com.example.stas.sml.data.model.venuedetailedmodel.VenueDetailsResponse;
 import com.example.stas.sml.data.model.venuesearch.SearchResponse;
 import com.example.stas.sml.data.model.venuesearch.Venue;
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.data.model.venuesuggestion.SuggestionResponse;
+import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.feature.main.ActivityContract;
 import com.example.stas.sml.data.network.Api;
 import com.example.stas.sml.data.mapper.VenueMapper;
@@ -61,10 +63,29 @@ public class MapsModel implements ActivityContract.Model {
                 .map(searchResponce -> searchResponce.getResponse().getVenues())
                 .flatMapIterable(items -> items)
                 .flatMap(venuesearch -> serverApi.getVenue(venuesearch.getId())
-                        .map(venueDetailsResponse -> {
-                            venueDetailsResponse.getVenueDto().getVenue().setDistance(venuesearch.getLocation().getDistance());
-                            return mapper.map(venueDetailsResponse.getVenueDto().getVenue());
+                        .map(new Function<VenueDetailsResponse, VenueEntity>() {
+                            @Override
+                            public VenueEntity apply(VenueDetailsResponse venueDetailsResponse) throws Exception {
+                                venueDetailsResponse.getVenueDto().getVenue().setDistance(venuesearch.getLocation().getDistance());
+                                return mapper.map(venueDetailsResponse.getVenueDto().getVenue());
+                            }
                         }));
+    }
+
+    @Override
+    public Observable<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> loadDetailedVenues(String venueId){
+
+        return serverApi.getVenue(venueId)
+                .map(new Function<VenueDetailsResponse, VenueEntity>() {
+                    @Override
+                    public VenueEntity apply(VenueDetailsResponse venueDetailsResponse) throws Exception {
+                        return mapper.map(venueDetailsResponse.getVenueDto().getVenue());
+                    }
+                });
+
+
+
+
     }
 }
 

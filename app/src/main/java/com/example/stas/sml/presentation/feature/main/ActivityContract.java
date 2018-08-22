@@ -49,6 +49,8 @@ public interface ActivityContract {
 
         Observable<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> loadVenuesByQuerySubmition(Location location, String query);
 
+        Observable<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> loadDetailedVenues(String venueId);
+
 
     }
 }

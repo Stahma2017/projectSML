@@ -18,6 +18,9 @@ public class Venue {
     @SerializedName("id")
     @Expose
     private String id;
+    @SerializedName("contact")
+    @Expose
+    private Contact contact = new Contact();
     @SerializedName("name")
     @Expose
     private String name;
@@ -82,6 +85,13 @@ public class Venue {
 
     public String getId() {
         return id;
+    }
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     public void setId(String id) {

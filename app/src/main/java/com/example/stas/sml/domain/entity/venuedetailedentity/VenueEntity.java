@@ -3,6 +3,8 @@ package com.example.stas.sml.domain.entity.venuedetailedentity;
 
 public class VenueEntity {
 
+    private Contact contact;
+
     private Integer distance;
 
     private String id;
@@ -172,5 +174,13 @@ public class VenueEntity {
 
     public void setPage(Page page) {
         this.page = page;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 }
