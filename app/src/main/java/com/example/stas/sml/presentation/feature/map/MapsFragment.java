@@ -241,65 +241,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         presenter.detachView();
     }
 
-
-
-
-
-   /* @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.toolbar_menu, toolbar.getMenu());
-
-            searchView = (SearchView) toolbar.getMenu().findItem(R.id.action_search).getActionView();
-
-            searchItem = toolbar.getMenu().findItem(R.id.action_search);
-
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-           *//*     suggestionRecycler.setVisibility(View.GONE);
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new VenuesByQuerySubmitFragment());
-                fragmentTransaction.commit();*//*
-                *//*     presenter.getVenuesByQuerySubmit(s);*//*
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                if (s.length() >= 3){
-                    presenter.getTextSuggestions(s);
-                }
-                return true;
-            }
-        });
-
-        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                toolbar.setBackgroundColor(Color.WHITE);
-                categoryRecycler.setVisibility(View.VISIBLE);
-                Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
-                toolbar.startAnimation(anim);
-                categoryRecycler.startAnimation(anim);
-                return true;
-            }
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                suggestionRecycler.setVisibility(View.GONE);
-                toolbar.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rectangle_14_edited));
-                categoryRecycler.setVisibility(View.GONE);
-                locationBtn.setVisibility(View.VISIBLE);
-                zoomInBtn.setVisibility(View.VISIBLE);
-                zoomOutBtn.setVisibility(View.VISIBLE);
-                return true;
-            }
-        });
-        super.onCreateOptionsMenu(menu, inflater);
-    }*/
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());

@@ -14,5 +14,16 @@
         <attr name="behavior_header_layout" format="reference" />
         <attr name="behavior_content_layout" format="reference" />
         <attr name="behavior_parallax_layout" format="reference" />
+
+
+    </declare-styleable>
+
+
+    <declare-styleable name="AvatarImageBehavior">
+        <attr name="finalYPosition" format="dimension"/>
+        <attr name="startXPosition" format="dimension"/>
+        <attr name="startToolbarPosition" format="dimension"/>
+        <attr name="startHeight" format="dimension"/>
+        <attr name="finalHeight" format="dimension"/>
     </declare-styleable>
 </resources>

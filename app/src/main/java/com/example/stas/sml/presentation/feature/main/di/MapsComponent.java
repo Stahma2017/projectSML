@@ -6,6 +6,8 @@ import com.example.stas.sml.presentation.feature.map.di.MapsFragmentComponent;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentModule;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.di.VenuelistComponent;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.di.VenuelistModule;
+import com.example.stas.sml.presentation.feature.venueselected.di.VenueSelectedComponent;
+import com.example.stas.sml.presentation.feature.venueselected.di.VenueSelectedModule;
 
 import dagger.Subcomponent;
 
@@ -15,5 +17,6 @@ public interface MapsComponent {
     void injectMainActivity(MainActivity mainActivity);
     MapsFragmentComponent addMapsFragmentComponent(MapsFragmentModule mapsFragmentModule);
     VenuelistComponent addVenuelistComponent(VenuelistModule venuelistModule);
+    VenueSelectedComponent addVenueSelectedComponent(VenueSelectedModule venueSelectedModule);
 }
 
