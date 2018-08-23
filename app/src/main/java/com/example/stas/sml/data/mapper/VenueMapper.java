@@ -35,6 +35,8 @@ public class VenueMapper {
 
         venueEntity.setLocation(new Location());
         venueEntity.getLocation().setAddress(from.getLocation().getAddress());
+        venueEntity.getLocation().setLat(from.getLocation().getLat());
+        venueEntity.getLocation().setLng(from.getLocation().getLng());
 
         venueEntity.setContact(new Contact());
         venueEntity.getContact().setPhone(from.getContact().getPhone());

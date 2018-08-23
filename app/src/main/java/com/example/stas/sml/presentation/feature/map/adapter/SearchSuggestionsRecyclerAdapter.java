@@ -1,6 +1,5 @@
-package com.example.stas.sml;
+package com.example.stas.sml.presentation.feature.map.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.stas.sml.R;
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 
 import java.util.ArrayList;

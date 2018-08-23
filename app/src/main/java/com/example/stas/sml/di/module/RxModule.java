@@ -9,7 +9,6 @@ import io.reactivex.disposables.CompositeDisposable;
 @Module
 public class RxModule {
 
-    @Singleton
     @Provides
     CompositeDisposable provideCompositeDisposable() {
         return new CompositeDisposable();

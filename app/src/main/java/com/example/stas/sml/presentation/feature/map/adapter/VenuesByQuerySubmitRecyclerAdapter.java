@@ -1,4 +1,4 @@
-package com.example.stas.sml;
+package com.example.stas.sml.presentation.feature.map.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.stas.sml.R;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 
 import java.util.ArrayList;

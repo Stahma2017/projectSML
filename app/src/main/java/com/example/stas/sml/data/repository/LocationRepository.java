@@ -8,11 +8,14 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.stas.sml.di.annotations.MapsFragmentScope;
 import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -37,11 +40,19 @@ public class LocationRepository implements LocationGateway {
         return rxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION)
                 .map(aBoolean -> {
                     if (aBoolean) {
+                        Location location;
                         LocationManager locationManager = (LocationManager)fragment.getContext().getSystemService(LOCATION_SERVICE);
-                        Criteria criteria = new Criteria();
-                        String provider = locationManager.getBestProvider(criteria, true);
-                        return locationManager.getLastKnownLocation(provider);
-                    } else {
+                        List<String> providers = locationManager.getAllProviders();
+                        for (String provider: providers) {
+                                location = locationManager.getLastKnownLocation(provider);
+                            if (location != null){
+                                Log.d("PREF", "check location: " + location.toString());
+                                    return location;
+                            }
+                        }
+                        throw new Exception("Providers unvailable");
+                    }
+                    else {
                         throw new Exception("Not Granted");
                     }
                 }).singleOrError();

@@ -98,7 +98,6 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
         }
 
         void bind(Category category) {
-
           if (category.isEnabled()){
               categoryIcon.setImageResource(category.getCategoryImageEnabled());
           } else {

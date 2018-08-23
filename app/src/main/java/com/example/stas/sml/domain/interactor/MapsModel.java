@@ -34,7 +34,7 @@ public class MapsModel implements ActivityContract.Model {
     }
 
     @Override
-    public Observable<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> loadVenuesWithCategory(Location location, String categoryId) {
+    public Observable<VenueEntity> loadVenuesWithCategory(Location location, String categoryId) {
 
         String ll = location.getLatitude() + ", " + location.getLongitude();
 
@@ -63,12 +63,9 @@ public class MapsModel implements ActivityContract.Model {
                 .map(searchResponce -> searchResponce.getResponse().getVenues())
                 .flatMapIterable(items -> items)
                 .flatMap(venuesearch -> serverApi.getVenue(venuesearch.getId())
-                        .map(new Function<VenueDetailsResponse, VenueEntity>() {
-                            @Override
-                            public VenueEntity apply(VenueDetailsResponse venueDetailsResponse) throws Exception {
-                                venueDetailsResponse.getVenueDto().getVenue().setDistance(venuesearch.getLocation().getDistance());
-                                return mapper.map(venueDetailsResponse.getVenueDto().getVenue());
-                            }
+                        .map(venueDetailsResponse -> {
+                            venueDetailsResponse.getVenueDto().getVenue().setDistance(venuesearch.getLocation().getDistance());
+                            return mapper.map(venueDetailsResponse.getVenueDto().getVenue());
                         }));
     }
 
@@ -76,12 +73,7 @@ public class MapsModel implements ActivityContract.Model {
     public Observable<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> loadDetailedVenues(String venueId){
 
         return serverApi.getVenue(venueId)
-                .map(new Function<VenueDetailsResponse, VenueEntity>() {
-                    @Override
-                    public VenueEntity apply(VenueDetailsResponse venueDetailsResponse) throws Exception {
-                        return mapper.map(venueDetailsResponse.getVenueDto().getVenue());
-                    }
-                });
+                .map(venueDetailsResponse -> mapper.map(venueDetailsResponse.getVenueDto().getVenue()));
 
 
 

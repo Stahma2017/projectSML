@@ -1,4 +1,4 @@
-package com.example.stas.sml;
+package com.example.stas.sml.presentation.feature.map.adapter;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.stas.sml.R;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 
 
@@ -80,12 +81,10 @@ public class VenuesByCategoryRecyclerAdapter extends RecyclerView.Adapter<Venues
         }
 
         void bind(VenueEntity venue) {
-
             com.example.stas.sml.GlideApp.with(logo)
                     .load(venue.getPage().getPageInfo().getBanner())
                     .placeholder(R.drawable.ic_image_placeholder_24dp)
                     .into(logo);
-
             name.setText(venue.getName());
             rating.setRating((float)(venue.getRating()/2));
             shortDescription.setText(venue.getDescription());
@@ -95,7 +94,6 @@ public class VenuesByCategoryRecyclerAdapter extends RecyclerView.Adapter<Venues
             if (venue.getHours().getOpen()){
                 workIndicator.setImageResource(R.drawable.work_indicator);
             }
-
             itemView.setOnClickListener(itemView -> onItemClickListener.onItemClick(venue));
         }
     }

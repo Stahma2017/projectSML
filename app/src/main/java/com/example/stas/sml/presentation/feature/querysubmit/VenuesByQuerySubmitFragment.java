@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
-import com.example.stas.sml.VenuesByQuerySubmitRecyclerAdapter;
+import com.example.stas.sml.presentation.feature.map.adapter.VenuesByQuerySubmitRecyclerAdapter;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import java.util.List;
 import javax.inject.Inject;

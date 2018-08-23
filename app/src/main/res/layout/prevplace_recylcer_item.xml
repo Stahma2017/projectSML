@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/prev_places_item_background"
-    android:layout_margin="20dp">
+    android:layout_margin="20dp"
+    android:paddingBottom="10dp">
 
     <ImageView
         android:id="@+id/placeLogoPrev"
@@ -52,7 +53,7 @@
 
     <TextView
         android:id="@+id/placeAddressPrev"
-        android:layout_width="wrap_content"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginTop="90dp"

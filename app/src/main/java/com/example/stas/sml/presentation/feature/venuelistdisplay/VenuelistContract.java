@@ -11,12 +11,8 @@ import java.util.List;
 public interface VenuelistContract {
 
     interface VenuelistView extends CanShowError {
-
-        void showPreviousCategories(Location location);
         void deliverLocationForpreveious(Location location, String categoryId);
         void showPlacesByCategory(List<VenueEntity> venues);
-
-
     }
 
 

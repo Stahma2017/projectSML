@@ -1,15 +1,11 @@
 package com.example.stas.sml.presentation.feature.map;
 
 import android.location.Location;
-
-import com.example.stas.sml.Category;
-import com.example.stas.sml.data.model.venuesearch.Venue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.google.android.gms.maps.model.LatLng;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +13,6 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class MapsPresenter  {
@@ -60,7 +55,7 @@ public class MapsPresenter  {
         Disposable dis = locationGateway.getCurrentLocation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(location -> {view.get().showBottomSheet(location, latLng);}
+                .subscribe(location -> view.get().showBottomSheet(location, latLng)
                 , errorHandler::proceed);
         compositeDisposable.add(dis);
     }
@@ -69,7 +64,7 @@ public class MapsPresenter  {
         Disposable dis = locationGateway.getCurrentLocation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(location -> {view.get().deliverLocationToCategories(location, category);}
+                .subscribe(location -> view.get().deliverLocationToCategories(location, category)
                 , errorHandler::proceed);
         compositeDisposable.add(dis);
     }
@@ -78,7 +73,7 @@ public class MapsPresenter  {
         Disposable dis = locationGateway.getCurrentLocation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(location -> {view.get().toCurrentLocation(location);}
+                .subscribe(location -> view.get().toCurrentLocation(location)
                 , errorHandler::proceed);
         compositeDisposable.add(dis);
     }
@@ -87,7 +82,7 @@ public class MapsPresenter  {
         Disposable bla = interactor.loadTextSuggestions(querry)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(minivenues -> { view.get().showSearchSuggestions(minivenues);},
+                .subscribe(minivenues -> view.get().showSearchSuggestions(minivenues),
                         errorHandler::proceed);
         compositeDisposable.add(bla);
     }

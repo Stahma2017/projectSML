@@ -9,7 +9,8 @@
         android:id="@+id/action_places"
         android:icon="@drawable/ic_action_person"
         android:title=""
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        android:enabled="false"/>
     <item
         android:id="@+id/action_map"
         android:icon="@drawable/ic_action_map"
@@ -19,6 +20,7 @@
         android:id="@+id/action_account"
         android:icon="@drawable/ic_action_room"
         android:title=""
+        android:enabled="false"
         app:showAsAction="ifRoom"
         android:gravity = "start"/>
 

@@ -1,6 +1,7 @@
 package com.example.stas.sml.presentation.feature.venuelistdisplay;
 
 import android.location.Location;
+import android.util.Log;
 
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.domain.gateway.LocationGateway;
@@ -43,14 +44,14 @@ public class VenuelistPresenter {
     }
 
     public void getLocationForCategories(String category){
-        Disposable dis = locationGateway.getCurrentLocation()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(location -> {
-                    view.get().deliverLocationForpreveious(location, category);
-                    }
-                        , errorHandler::proceed);
-        compositeDisposable.add(dis);
+
+            Disposable dis = locationGateway.getCurrentLocation()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(location ->
+                                view.get().deliverLocationForpreveious(location, category)
+                            ,errorHandler::proceed);
+            compositeDisposable.add(dis);
     }
 
     public void getVenuesWithCategory(String categoryId, Location currentLocation){

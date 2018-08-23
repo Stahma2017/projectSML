@@ -4,31 +4,24 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -39,29 +32,22 @@ import com.example.stas.sml.App;
 import com.example.stas.sml.Category;
 import com.example.stas.sml.CategoryRecyclerAdapter;
 import com.example.stas.sml.R;
-import com.example.stas.sml.SearchSuggestionsRecyclerAdapter;
-import com.example.stas.sml.VenuesByCategoryRecyclerAdapter;
+import com.example.stas.sml.presentation.feature.map.adapter.SearchSuggestionsRecyclerAdapter;
+import com.example.stas.sml.presentation.feature.map.adapter.VenuesByCategoryRecyclerAdapter;
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
-import com.example.stas.sml.presentation.feature.map.di.MapsFragmentModule;
-import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
-import com.example.stas.sml.presentation.feature.venueselected.VenueSelectedFragment;
-import com.example.stas.sml.utils.CategoryList;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -69,18 +55,20 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import static android.content.Context.LOCATION_SERVICE;
+
 import static android.content.Context.MODE_PRIVATE;
 
 
 public class MapsFragment extends Fragment implements MapsContract.MapsView, OnMapReadyCallback, GoogleMap.OnMapClickListener, View.OnClickListener,
         CategoryRecyclerAdapter.OnItemClickListener, VenuesByCategoryRecyclerAdapter.OnItemClickListener, SearchSuggestionsRecyclerAdapter.OnItemClickListener
 {
+    public static String MY_PREFS = "mapsPreferences";
 
     GoogleMap map;
     private Marker marker;
     private BottomSheetBehavior bottomSheetBehavior;
     private Unbinder unbinder;
+
 
     @Inject
     MapsPresenter presenter;
@@ -123,7 +111,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         App.getInstance().addMapsFragmentComponent(this).injectMapsFragment(this);
         unbinder = ButterKnife.bind(this, view);
         presenter.attachView(this);
-
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setHideable(true);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -148,7 +135,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         suggestionRecycler.setLayoutManager(suggestionManager);
         suggestionRecycler.setAdapter(suggestionAdapter);
 
-
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -169,21 +155,12 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
             }
         });
 
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchView.setIconified(true);
-            }
-        });
-
+        btnHome.setOnClickListener(view1 -> searchView.setIconified(true));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
             @Override
             public boolean onQueryTextSubmit(String s) {
-
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String query) {
                 if (query.length() >= 3){
@@ -191,7 +168,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
                 }
                 return true;
             }
-
         });
 
         searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
@@ -199,17 +175,14 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
             public boolean onSuggestionSelect(int i) {
                 return false;
             }
-
             @Override
             public boolean onSuggestionClick(int i) {
-
-
                 return true;
             }
         });
-
         return view;
     }
+
 
     @Override
     public void onDetach() {
@@ -219,26 +192,34 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         if (mapView != null){
             mapView.onCreate(null);
             mapView.onResume();
             mapView.getMapAsync(this);
-
         }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+            int enabledIndex = prefs.getInt("toMap", -1);
 
-
+            if (enabledIndex != -1) {
+                categoryAdapter.refreshList();
+                categoryAdapter.setEnabledCategory(enabledIndex);
+                categoryAdapter.notifyDataSetChanged();
+                presenter.getLocationForCategories(categoryAdapter.getEnabledCategoryId());
+            }
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        App.getInstance().clearMapsComponent();
         presenter.detachView();
     }
 
@@ -267,7 +248,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         String[] splitedAddress = addresses.get(0).getAddressLine(0).split(",");
         String address = splitedAddress[0] + "," + splitedAddress[1];
         String region = addresses.get(0).getCountryName() + ", " + addresses.get(0).getAdminArea();
-
         addressTW.setText(address);
         regionTW.setText(region);
         distanceTW.setText(String.format(Locale.CANADA,"%.0f м", results[0]));
@@ -321,11 +301,10 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
             case R.id.toVenueListBtn:
                 int categoryIndex = categoryAdapter.getEnabledCategory();
                 if (categoryIndex != -1) {
-                    SharedPreferences.Editor editor = getActivity().getSharedPreferences(VenuelistFragment.CATEGORY_PREFS, MODE_PRIVATE).edit();
+                    SharedPreferences.Editor editor = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE).edit();
                     editor.putInt("index", categoryIndex);
                     editor.apply();
                 }
-
                 MainActivity activity = (MainActivity) getActivity();
                 activity.hideToolbar();
                 activity.displayVenuelistFragment();
@@ -369,13 +348,12 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     @Override
     public void onItemClick(VenueEntity venue) {
         String venueId = venue.getId();
-        SharedPreferences.Editor editor = getActivity().getSharedPreferences(VenueSelectedFragment.VENUEID_PREFS, MODE_PRIVATE).edit();
-        editor.putString("venueId", venueId);
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE).edit();
+        editor.putString("venueSelect", venueId);
         editor.apply();
 
         MainActivity activity = (MainActivity) getActivity();
         activity.displayVenueSelectedFragment();
-
     }
 
     @Override

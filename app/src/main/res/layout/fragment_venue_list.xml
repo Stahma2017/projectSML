@@ -15,10 +15,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-
-
-
+        <Button
+            android:background="@drawable/to_map_btn"
+            android:id="@+id/toMapBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"/>
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -55,8 +57,6 @@
             android:foregroundGravity="center_vertical"
             android:src="@drawable/ic_search_black_24dp" />
     </android.support.v7.widget.Toolbar>
-
-
 
         <android.support.v7.widget.RecyclerView
             android:background="#ffffff"

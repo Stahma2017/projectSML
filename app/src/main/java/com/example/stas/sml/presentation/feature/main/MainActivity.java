@@ -5,11 +5,13 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -35,6 +37,8 @@ import javax.inject.Inject;
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity implements ActivityContract.ActivityView {
 
+
+
     @Inject
     ActivityContract.Presenter presenter;
     @Inject
@@ -44,10 +48,9 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     @BindView(R.id.bottomAppBar)BottomNavigationView bottomNavigation;
     @BindView(R.id.fragment_container)FrameLayout fragmentContainer;
 
-
-
-
-
+    MapsFragment mapsFragment = new MapsFragment();
+    VenuelistFragment venuelistFragment = new VenuelistFragment();
+    VenueSelectedFragment venueSelectedFragment = new VenueSelectedFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,13 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         presenter.attachView(this);
         presenter.checkNetworkConnection(this);
         bottomNavigation.setSelectedItemId(R.id.action_map);
-        displayMapsFragment();
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.fragment_container, mapsFragment);
+        ft.commit();
+
+
+
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -70,18 +79,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
                         break;
                     case R.id.action_account:
                         menuItem.setChecked(true);
-
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.add(R.id.fragment_container, new VenueSelectedFragment());
-
-                        ft.commit();
-                   /*locationRepository.getCurrentLocation()
-                           .subscribe(new Consumer<Location>() {
-                               @Override
-                               public void accept(Location location) throws Exception {
-                                   str = location.toString();
-                               }
-                           });*/
                         break;
                     case R.id.action_places:
                         menuItem.setChecked(true);
@@ -93,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         BroadcastReceiver br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
             }
         };
     }
@@ -102,24 +98,27 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     protected void onDestroy() {
         super.onDestroy();
         presenter.detachView();
+
     }
     public void displayMapsFragment(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-       // ft.addToBackStack("map");
-        ft.replace(R.id.fragment_container, new MapsFragment(), "map");
+        ft.show(mapsFragment);
+        ft.remove(venuelistFragment);
+        ft.remove(venueSelectedFragment);
         ft.commit();
     }
 
     public void displayVenuelistFragment(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment_container, new VenuelistFragment(), "listFragment");
+        ft.add(R.id.fragment_container, venuelistFragment);
+        ft.hide(mapsFragment);
         ft.addToBackStack(null);
         ft.commit();
     }
 
     public void displayVenueSelectedFragment(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment_container, new VenueSelectedFragment(), "SelectFragment");
+        ft.add(R.id.fragment_container, venueSelectedFragment);
         ft.addToBackStack(null);
         ft.commit();
     }
