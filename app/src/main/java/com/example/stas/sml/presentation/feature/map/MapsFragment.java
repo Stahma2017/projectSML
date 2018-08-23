@@ -183,12 +183,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         return view;
     }
 
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -351,14 +345,18 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         SharedPreferences.Editor editor = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE).edit();
         editor.putString("venueSelect", venueId);
         editor.apply();
-
         MainActivity activity = (MainActivity) getActivity();
         activity.displayVenueSelectedFragment();
     }
 
     @Override
     public void onItemClick(Minivenue minivenue) {
-        //handle click on suggestion
+        String venueId = minivenue.getId();
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE).edit();
+        editor.putString("venueSelect", venueId);
+        editor.apply();
+        MainActivity activity = (MainActivity) getActivity();
+        activity.displayVenueSelectedFragment();
     }
 
     private void displayProgressbar(){

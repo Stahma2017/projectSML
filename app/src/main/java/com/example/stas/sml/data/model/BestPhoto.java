@@ -14,9 +14,6 @@ public class BestPhoto {
     @SerializedName("createdAt")
     @Expose
     private Integer createdAt;
-    //@SerializedName("source")
-    //@Expose
-    //private Source_ source;
     @SerializedName("prefix")
     @Expose
     private String prefix;
@@ -48,14 +45,6 @@ public class BestPhoto {
     public void setCreatedAt(Integer createdAt) {
         this.createdAt = createdAt;
     }
-
-   // public Source_ getSource() {
-   //     return source;
-   // }
-//
-   // public void setSource(Source_ source) {
-   //     this.source = source;
-   // }
 
     public String getPrefix() {
         return prefix;

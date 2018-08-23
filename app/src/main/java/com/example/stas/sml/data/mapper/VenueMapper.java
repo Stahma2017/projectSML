@@ -24,7 +24,7 @@ public class VenueMapper {
         venueEntity.setDescription(from.getDescription());
         venueEntity.setDistance(from.getDistance());
         venueEntity.setId(from.getId());
-        // to realize map in a appropriate way
+        // to implement map in a appropriate way
         venueEntity.setHours(new Hours());
         venueEntity.getHours().setStatus(from.getHours().getStatus());
         venueEntity.getHours().setOpen(from.getHours().getOpen());
