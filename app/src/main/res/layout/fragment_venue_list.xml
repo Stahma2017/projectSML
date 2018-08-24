@@ -71,5 +71,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="164dp"/>
 
+        <android.support.v7.widget.RecyclerView
+            android:visibility="invisible"
+            android:layout_marginTop="135dp"
+            android:id="@+id/suggestion_listPrev"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"/>
+
     </android.support.design.widget.CoordinatorLayout>
 </android.support.constraint.ConstraintLayout>

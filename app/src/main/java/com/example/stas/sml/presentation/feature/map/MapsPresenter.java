@@ -13,6 +13,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class MapsPresenter  {
@@ -39,7 +40,6 @@ public class MapsPresenter  {
     }
 
     public void getVenuesWithCategory(String categoryId, Location currentLocation){
-
         List<VenueEntity> venues = new ArrayList<>();
         Disposable venueListDisposable = interactor.loadVenuesWithCategory(currentLocation, categoryId)
                 .subscribeOn(Schedulers.io())
@@ -74,7 +74,16 @@ public class MapsPresenter  {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(location -> view.get().toCurrentLocation(location)
-                , errorHandler::proceed);
+                        ,errorHandler::proceed);
+        compositeDisposable.add(dis);
+    }
+
+    public void getLocationForSubmit(String submit){
+        Disposable dis = locationGateway.getCurrentLocation()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(location -> view.get().deliverLocationToSumbit(location, submit)
+                        , errorHandler::proceed);
         compositeDisposable.add(dis);
     }
 
@@ -86,5 +95,18 @@ public class MapsPresenter  {
                         errorHandler::proceed);
         compositeDisposable.add(bla);
     }
+
+    public void getVenuesBySubmit(Location location, String submit){
+        List<VenueEntity> venues = new ArrayList<>();
+        Disposable bla = interactor.loadVenuesByQuerySubmition(location, submit)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(venue -> {
+                    venues.add(venue);
+                    view.get().showPlacesBySubmit(venues);
+                }, errorHandler::proceed);
+              compositeDisposable.add(bla);
+    }
+
 
 }

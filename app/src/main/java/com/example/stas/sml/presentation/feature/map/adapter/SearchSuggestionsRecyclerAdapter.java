@@ -36,7 +36,6 @@ public class SearchSuggestionsRecyclerAdapter extends RecyclerView.Adapter<Searc
     @Override
     public SearchSuggestionsRecyclerAdapter.SearchSuggestionViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         return new SearchSuggestionViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_suggestion_recycler_item, null), onItemClickListener);
-
     }
 
     @Override

@@ -16,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +26,9 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.stas.sml.App;
 import com.example.stas.sml.Category;
-import com.example.stas.sml.CategoryRecyclerAdapter;
+import com.example.stas.sml.presentation.feature.map.adapter.CategoryRecyclerAdapter;
 import com.example.stas.sml.R;
 import com.example.stas.sml.presentation.feature.map.adapter.SearchSuggestionsRecyclerAdapter;
 import com.example.stas.sml.presentation.feature.map.adapter.VenuesByCategoryRecyclerAdapter;
@@ -69,7 +67,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     private BottomSheetBehavior bottomSheetBehavior;
     private Unbinder unbinder;
 
-
     @Inject
     MapsPresenter presenter;
 
@@ -96,7 +93,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     @BindView(R.id.progressBar)ProgressBar progressBar;
     @BindView(R.id.toVenueListBtn)Button venueListBtn;
     @BindView(R.id.map)MapView mapView;
-
     @BindView(R.id.search_viewMaps)SearchView searchView;
     @BindView(R.id.homeBtnMaps)ImageButton btnHome;
 
@@ -135,23 +131,20 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         suggestionRecycler.setLayoutManager(suggestionManager);
         suggestionRecycler.setAdapter(suggestionAdapter);
 
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b){
-                    toolbar.setBackgroundColor(Color.WHITE);
-                    btnHome.setVisibility(View.VISIBLE);
-                    categoryRecycler.setVisibility(View.VISIBLE);
-                    Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
-                    toolbar.startAnimation(anim);
-                    categoryRecycler.startAnimation(anim);
-                }else {
-                    searchView.setIconified(true);
-                    toolbar.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rectangle_14_edited));
-                    btnHome.setVisibility(View.GONE);
-                    categoryRecycler.setVisibility(View.GONE);
-                    suggestionRecycler.setVisibility(View.GONE);
-                }
+        searchView.setOnQueryTextFocusChangeListener((view12, b) -> {
+            if (b){
+                toolbar.setBackgroundColor(Color.WHITE);
+                btnHome.setVisibility(View.VISIBLE);
+                categoryRecycler.setVisibility(View.VISIBLE);
+                Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
+                toolbar.startAnimation(anim);
+                categoryRecycler.startAnimation(anim);
+            }else {
+                searchView.setIconified(true);
+                toolbar.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rectangle_14_edited));
+                btnHome.setVisibility(View.GONE);
+                categoryRecycler.setVisibility(View.GONE);
+                suggestionRecycler.setVisibility(View.GONE);
             }
         });
 
@@ -159,24 +152,14 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                presenter.getLocationForSubmit(s);
                 return true;
             }
             @Override
             public boolean onQueryTextChange(String query) {
-                if (query.length() >= 3){
+                if ((query.length() % 3 == 0) && (query.length() != 0)){
                     presenter.getTextSuggestions(query);
                 }
-                return true;
-            }
-        });
-
-        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
-            @Override
-            public boolean onSuggestionSelect(int i) {
-                return false;
-            }
-            @Override
-            public boolean onSuggestionClick(int i) {
                 return true;
             }
         });
@@ -197,15 +180,23 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS, MODE_PRIVATE);
-            int enabledIndex = prefs.getInt("toMap", -1);
-
+            SharedPreferences indexPrefs = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE);
+            int enabledIndex = indexPrefs.getInt("toMap", -1);
+            categoryAdapter.refreshList();
             if (enabledIndex != -1) {
-                categoryAdapter.refreshList();
                 categoryAdapter.setEnabledCategory(enabledIndex);
                 categoryAdapter.notifyDataSetChanged();
                 presenter.getLocationForCategories(categoryAdapter.getEnabledCategoryId());
+            }else {
+                SharedPreferences qieryPrefs = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE);
+                String query = qieryPrefs.getString("query", "none");
+                if (!query.equals("none")){
+                    categoryAdapter.notifyDataSetChanged();
+                    presenter.getLocationForSubmit(query);
+                }
             }
+            MainActivity activity = (MainActivity) getActivity();
+            activity.showToolbar();
         }
     }
 
@@ -250,7 +241,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
 
     private List<Address> getAddress(LatLng latLng){
         List<Address> addresses = new ArrayList<>();
-
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
@@ -294,11 +284,10 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
                 break;
             case R.id.toVenueListBtn:
                 int categoryIndex = categoryAdapter.getEnabledCategory();
-                if (categoryIndex != -1) {
                     SharedPreferences.Editor editor = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE).edit();
                     editor.putInt("index", categoryIndex);
                     editor.apply();
-                }
+
                 MainActivity activity = (MainActivity) getActivity();
                 activity.hideToolbar();
                 activity.displayVenuelistFragment();
@@ -331,6 +320,31 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     }
 
     @Override
+    public void deliverLocationToSumbit(Location location, String submit) {
+        categoryAdapter.setEnabledCategory(-1);
+        categoryAdapter.notifyDataSetChanged();
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE).edit();
+        editor.putString("query", submit);
+        editor.apply();
+        presenter.getVenuesBySubmit(location, submit);
+    }
+
+    @Override
+    public void showPlacesBySubmit(List<VenueEntity> venues) {
+        placesAdapter.setVenues(venues);
+        placesAdapter.notifyDataSetChanged();
+        placesRecycler.setVisibility(View.VISIBLE);
+        venueListBtn.setVisibility(View.VISIBLE);
+        hideProgressbar();
+        locationBtn.setVisibility(View.GONE);
+        zoomOutBtn.setVisibility(View.GONE);
+        zoomInBtn.setVisibility(View.GONE);
+        suggestionRecycler.setVisibility(View.GONE);
+       // saveArray(venues, "venues", getContext());
+        categoryAdapter.setEnabledCategory(-1);
+    }
+
+    @Override
     public void onItemClick(Category category) {
         categoryAdapter.refreshList();
         category.setEnabled(true);
@@ -357,6 +371,15 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         editor.apply();
         MainActivity activity = (MainActivity) getActivity();
         activity.displayVenueSelectedFragment();
+    }
+
+    private boolean saveArray(List<VenueEntity> array, String arrayName, Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("preferencename", 0);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(arrayName +"_size", array.size());
+        for(int i=0;i<array.size();i++)
+            editor.putString(arrayName + "_" + i, array.get(i).getId());
+        return editor.commit();
     }
 
     private void displayProgressbar(){

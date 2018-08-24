@@ -1,23 +1,14 @@
 package com.example.stas.sml.domain.interactor;
 
 import android.location.Location;
-
-import com.example.stas.sml.data.model.venuedetailedmodel.VenueDetailsResponse;
-import com.example.stas.sml.data.model.venuesearch.SearchResponse;
-import com.example.stas.sml.data.model.venuesearch.Venue;
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
-import com.example.stas.sml.data.model.venuesuggestion.SuggestionResponse;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.feature.main.ActivityContract;
 import com.example.stas.sml.data.network.Api;
 import com.example.stas.sml.data.mapper.VenueMapper;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
-
 import java.util.List;
-
 import io.reactivex.Observable;
-import io.reactivex.functions.Function;
-
 
 public class MapsModel implements ActivityContract.Model {
     private final Api serverApi;
@@ -35,9 +26,7 @@ public class MapsModel implements ActivityContract.Model {
 
     @Override
     public Observable<VenueEntity> loadVenuesWithCategory(Location location, String categoryId) {
-
         String ll = location.getLatitude() + ", " + location.getLongitude();
-
         return serverApi.searchWithCategory(ll, 1000.0, categoryId, 1)
                 .map(searchResponce -> searchResponce.getResponse().getVenues())
                 .flatMapIterable(items -> items)
@@ -55,11 +44,9 @@ public class MapsModel implements ActivityContract.Model {
     }
 
     @Override
-    public Observable<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> loadVenuesByQuerySubmition(Location location, String query){
-
+    public Observable<VenueEntity> loadVenuesByQuerySubmition(Location location, String query){
         String ll = location.getLatitude() + ", " + location.getLongitude();
-
-        return serverApi.searchWithQueryParam(ll, 1000.0, query, 1)
+        return serverApi.searchWithQueryParam(ll, 1000.0, query, 2)
                 .map(searchResponce -> searchResponce.getResponse().getVenues())
                 .flatMapIterable(items -> items)
                 .flatMap(venuesearch -> serverApi.getVenue(venuesearch.getId())
@@ -71,12 +58,8 @@ public class MapsModel implements ActivityContract.Model {
 
     @Override
     public Observable<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> loadDetailedVenues(String venueId){
-
         return serverApi.getVenue(venueId)
                 .map(venueDetailsResponse -> mapper.map(venueDetailsResponse.getVenueDto().getVenue()));
-
-
-
 
     }
 }

@@ -33,6 +33,7 @@
                 android:layout_width="@dimen/bottomnavigation_width"
                 android:layout_height="@dimen/bottomnavigation_height"
                 android:layout_marginTop="@dimen/bottomnavigation_margintop"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:menu="@menu/bottomappbar_menu" />
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>

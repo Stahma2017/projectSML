@@ -32,6 +32,13 @@ public class PreviousPlacesByCategoryAdapter extends RecyclerView.Adapter<Previo
     public void setVenues(List<VenueEntity> venues) {
         this.venues = venues;
     }
+    public void refreshList(){
+        venues.clear();
+    }
+
+    public void addVenue(VenueEntity venue){
+        venues.add(venue);
+    }
 
     public PreviousPlacesByCategoryAdapter(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;

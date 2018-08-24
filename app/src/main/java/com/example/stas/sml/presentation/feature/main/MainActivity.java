@@ -94,6 +94,11 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         };
     }
 
+    public void deleteAllPrefs(){
+        SharedPreferences preferences = getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE);
+        preferences.edit().clear().apply();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

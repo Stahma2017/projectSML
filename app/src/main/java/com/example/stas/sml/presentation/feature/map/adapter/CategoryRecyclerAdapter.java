@@ -1,4 +1,4 @@
-package com.example.stas.sml;
+package com.example.stas.sml.presentation.feature.map.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.stas.sml.Category;
+import com.example.stas.sml.R;
 import com.example.stas.sml.utils.CategoryList;
 
 import java.util.List;
@@ -57,9 +59,13 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
     }
 
     public void setEnabledCategory(int index){
-        Category category =  categories.get(index);
-        category.setEnabled(true);
-        categories.set(index, category);
+        if (index == -1){
+            refreshList();
+        }else{
+            Category category =  categories.get(index);
+            category.setEnabled(true);
+            categories.set(index, category);
+        }
     }
 
     @NonNull

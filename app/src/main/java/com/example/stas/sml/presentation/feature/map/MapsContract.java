@@ -18,6 +18,9 @@ public interface MapsContract {
         void showBottomSheet(Location location, LatLng latLng);
         void toCurrentLocation(Location location);
         void deliverLocationToCategories(Location location, String category);
+        void deliverLocationToSumbit(Location location,String submit);
+        void showPlacesBySubmit(List<VenueEntity> venues);
+
     }
 
 
