@@ -1,12 +1,18 @@
 package com.example.stas.sml.data.mapper;
 
+import com.example.stas.sml.data.model.venuedetailedmodel.Group;
+import com.example.stas.sml.data.model.venuedetailedmodel.Item;
 import com.example.stas.sml.data.model.venuedetailedmodel.PageInfo;
 import com.example.stas.sml.data.model.venuedetailedmodel.Venue;
+import com.example.stas.sml.domain.entity.venuedetailedentity.BestPhoto;
 import com.example.stas.sml.domain.entity.venuedetailedentity.Contact;
 import com.example.stas.sml.domain.entity.venuedetailedentity.Hours;
 import com.example.stas.sml.domain.entity.venuedetailedentity.Location;
 import com.example.stas.sml.domain.entity.venuedetailedentity.Page;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -42,7 +48,27 @@ public class VenueMapper {
         venueEntity.getContact().setPhone(from.getContact().getPhone());
         venueEntity.getContact().setTwitter(from.getContact().getTwitter());
 
+        venueEntity.setBestPhoto(new BestPhoto());
+        venueEntity.getBestPhoto().setPrefix(from.getBestPhoto().getPrefix());
+        venueEntity.getBestPhoto().setSuffix(from.getBestPhoto().getSuffix());
 
+
+        List<com.example.stas.sml.domain.entity.venuedetailedentity.Group> groupsEntity = new ArrayList<>();
+        for (Group group :from.getPhotos().getGroups()) {
+            List<com.example.stas.sml.domain.entity.venuedetailedentity.Item> itemsEntity = new ArrayList<>();
+
+            for (Item item: group.getItems()) {
+                com.example.stas.sml.domain.entity.venuedetailedentity.Item itemEntity = new com.example.stas.sml.domain.entity.venuedetailedentity.Item();
+                itemEntity.setPrefix(item.getPrefix());
+                itemEntity.setSuffix(item.getSuffix());
+                itemsEntity.add(itemEntity);
+            }
+            com.example.stas.sml.domain.entity.venuedetailedentity.Group groupEntity = new com.example.stas.sml.domain.entity.venuedetailedentity.Group();
+            groupEntity.setItems(itemsEntity);
+            groupsEntity.add(groupEntity);
+        }
+        venueEntity.getPhotos().setGroups(groupsEntity);
+        venueEntity.getPhotos().setCount(from.getPhotos().getCount());
 
         return venueEntity;
     }

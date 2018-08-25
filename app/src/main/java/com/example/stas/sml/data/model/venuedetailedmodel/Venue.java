@@ -66,6 +66,28 @@ public class Venue {
     @SerializedName("hours")
     @Expose
     private Hours hours = new Hours();
+    @SerializedName("bestPhoto")
+    @Expose
+    private BestPhoto bestPhoto = new BestPhoto();
+    @SerializedName("photos")
+    @Expose
+    private Photos photos = new Photos();
+
+    public Photos getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Photos photos) {
+        this.photos = photos;
+    }
+
+    public BestPhoto getBestPhoto() {
+        return bestPhoto;
+    }
+
+    public void setBestPhoto(BestPhoto bestPhoto) {
+        this.bestPhoto = bestPhoto;
+    }
 
     public Location getLocation() {
         return location;

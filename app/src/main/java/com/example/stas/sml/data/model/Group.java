@@ -1,5 +1,6 @@
 package com.example.stas.sml.data.model;
 
+import com.example.stas.sml.data.model.venuedetailedmodel.Item;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

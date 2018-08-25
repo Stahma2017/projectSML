@@ -1,6 +1,5 @@
 package com.example.stas.sml.domain.entity.venuedetailedentity;
 
-
 public class VenueEntity {
 
     private Contact contact;
@@ -38,6 +37,18 @@ public class VenueEntity {
     private String timeZone;
 
     private Hours hours = new Hours();
+
+    private BestPhoto bestPhoto = new BestPhoto();
+
+    private Photos photos = new Photos();
+
+    public BestPhoto getBestPhoto() {
+        return bestPhoto;
+    }
+
+    public void setBestPhoto(BestPhoto bestPhoto) {
+        this.bestPhoto = bestPhoto;
+    }
 
 
     public Location getLocation() {
@@ -182,5 +193,13 @@ public class VenueEntity {
 
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    public Photos getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Photos photos) {
+        this.photos = photos;
     }
 }

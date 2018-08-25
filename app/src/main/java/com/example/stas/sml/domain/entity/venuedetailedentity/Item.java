@@ -1,14 +1,9 @@
-package com.example.stas.sml.data.model;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package com.example.stas.sml.domain.entity.venuedetailedentity;
 
 public class Item {
-    @SerializedName("prefix")
-    @Expose
+
     private String prefix;
-    @SerializedName("suffix")
-    @Expose
+
     private String suffix;
 
     public String getPrefix() {
@@ -26,5 +21,4 @@ public class Item {
     public void setSuffix(String suffix) {
         this.suffix = suffix;
     }
-
 }

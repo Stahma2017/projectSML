@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
+import com.example.stas.sml.utils.UrlHelper;
 
 import java.util.Locale;
 
@@ -51,6 +53,7 @@ VenueSelectContract.VenueSelectView{
     @BindView(R.id.number)TextView number;
     @BindView(R.id.twitter)TextView twitter;
     @BindView(R.id.kmSelected)TextView distanceTW;
+    @BindView(R.id.placeRatingSelected)RatingBar rating;
 
     public VenueSelectedFragment() {
 
@@ -79,21 +82,27 @@ VenueSelectContract.VenueSelectView{
 
     @Override
     public void showVenueSelected(VenueEntity venue, Location location) {
-        //TODO set bold font according design
+
         //TODO add gallery
-        //TODO find rounded placeholder for avatar image
         //TODO set rating
+
+        rating.setRating((float)(venue.getRating()/2));
 
         double distance = presenter.distanceBetweenPoints(venue.getLocation().getLat(), venue.getLocation().getLng(), location.getLatitude(), location.getLongitude());
         distanceTW.setText(String.format(Locale.US,"%.1f км", (distance)));
 
-        com.example.stas.sml.GlideApp.with(circleImageView)
+       /* com.example.stas.sml.GlideApp.with(circleImageView)
                 .load(venue.getPage().getPageInfo().getBanner())
+                .placeholder(R.drawable.circle_no_image)
+                .into(circleImageView);*/
+
+        com.example.stas.sml.GlideApp.with(circleImageView)
+                .load(UrlHelper.getUrlToPhoto(venue.getBestPhoto().getPrefix(), venue.getBestPhoto().getSuffix()))
                 .placeholder(R.drawable.circle_no_image)
                 .into(circleImageView);
 
         com.example.stas.sml.GlideApp.with(imageViewMain)
-                .load(venue.getPage().getPageInfo().getBanner())
+                .load(UrlHelper.getUrlToPhoto(venue.getBestPhoto().getPrefix(), venue.getBestPhoto().getSuffix()))
                 .placeholder(R.drawable.no_image)
                 .into(imageViewMain);
 
@@ -105,8 +114,18 @@ VenueSelectContract.VenueSelectView{
             workIndicator.setImageResource(R.drawable.work_indicator);
         }
         workStatus.setText(venue.getHours().getStatus());
-        number.setText(venue.getContact().getPhone());
-        twitter.setText(venue.getContact().getTwitter());
+        if (venue.getContact().getPhone() != null){
+            number.setText(venue.getContact().getPhone());
+        }else {
+            number.setText("-");
+        }
+        if (venue.getContact().getTwitter() != null){
+            twitter.setText(venue.getContact().getTwitter());
+        }else {
+            twitter.setText("-");
+        }
+
+
     }
 
     @Override

@@ -1,11 +1,9 @@
-package com.example.stas.sml.data.model;
+package com.example.stas.sml.data.model.venuedetailedmodel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by abakarmagomedov on 13/07/2018 at project projectSML.
- */
+
 public class BestPhoto {
 
     @SerializedName("id")
