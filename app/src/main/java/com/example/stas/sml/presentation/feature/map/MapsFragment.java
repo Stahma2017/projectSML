@@ -218,6 +218,13 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     public void onMapClick(LatLng latLng) {
         setMarker(latLng);
         presenter.getLocation(latLng);
+        placesRecycler.setVisibility(View.GONE);
+        venueListBtn.setVisibility(View.GONE);
+        categoryAdapter.setEnabledCategory(-1);
+        categoryAdapter.notifyDataSetChanged();
+        locationBtn.setVisibility(View.VISIBLE);
+        zoomInBtn.setVisibility(View.VISIBLE);
+        zoomOutBtn.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -304,6 +311,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         locationBtn.setVisibility(View.GONE);
         zoomOutBtn.setVisibility(View.GONE);
         zoomInBtn.setVisibility(View.GONE);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     @Override
@@ -340,6 +348,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         zoomInBtn.setVisibility(View.GONE);
         suggestionRecycler.setVisibility(View.GONE);
         categoryAdapter.setEnabledCategory(-1);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     @Override
