@@ -26,8 +26,9 @@ public class MapsModel implements ActivityContract.Model {
 
     @Override
     public Observable<VenueEntity> loadVenuesWithCategory(Location location, String categoryId) {
-      //  String ll = location.getLatitude() + ", " + location.getLongitude();
-        String ll = "48.878396" + ", " + "2.354611";
+       String ll = location.getLatitude() + ", " + location.getLongitude();
+      //  String ll = "48.878396" + ", " + "2.354611";
+      //  String ll = "40.725208" + ", " + "-73.862760";
         return serverApi.searchWithCategory(ll, 1000.0, categoryId, 1)
                 .map(searchResponce -> searchResponce.getResponse().getVenues())
                 .flatMapIterable(items -> items)

@@ -42,6 +42,17 @@ public class VenueEntity {
 
     private Photos photos = new Photos();
 
+    private Listed listed = new Listed();
+
+    public Listed getListed() {
+        return listed;
+    }
+
+    public void setListed(Listed listed) {
+        this.listed = listed;
+    }
+
+
     public BestPhoto getBestPhoto() {
         return bestPhoto;
     }

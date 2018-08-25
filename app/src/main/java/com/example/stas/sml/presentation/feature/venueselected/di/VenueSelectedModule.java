@@ -11,6 +11,7 @@ import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.example.stas.sml.presentation.feature.venueselected.VenueSelectedFragment;
 import com.example.stas.sml.presentation.feature.venueselected.VenueSelectedPresenter;
+import com.example.stas.sml.presentation.feature.venueselected.adapter.GalleryRecyclerAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -31,6 +32,12 @@ public class VenueSelectedModule {
     @Provides
     LocationGateway provideLocationGateway(){
         return new LocationRepository(venueSelectedFragment);
+    }
+
+    @NonNull
+    @Provides
+    GalleryRecyclerAdapter provideGalleryRecyclerAdapter(){
+        return new GalleryRecyclerAdapter();
     }
 
     @VenueSelectScope

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,10 +20,17 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
+import com.example.stas.sml.domain.entity.venuedetailedentity.Group;
+import com.example.stas.sml.domain.entity.venuedetailedentity.GroupListed;
+import com.example.stas.sml.domain.entity.venuedetailedentity.Item;
+import com.example.stas.sml.domain.entity.venuedetailedentity.ItemListed;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
+import com.example.stas.sml.presentation.feature.venueselected.adapter.GalleryRecyclerAdapter;
 import com.example.stas.sml.utils.UrlHelper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -54,6 +63,9 @@ VenueSelectContract.VenueSelectView{
     @BindView(R.id.twitter)TextView twitter;
     @BindView(R.id.kmSelected)TextView distanceTW;
     @BindView(R.id.placeRatingSelected)RatingBar rating;
+    @BindView(R.id.galleryRecycler)RecyclerView galleryRecycler;
+    @Inject
+    GalleryRecyclerAdapter galleryRecyclerAdapter;
 
     public VenueSelectedFragment() {
 
@@ -72,6 +84,9 @@ VenueSelectContract.VenueSelectView{
         if (!venueId.equals("none")){
             presenter.getLocationForVenueDetailed(venueId);
         }
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        galleryRecycler.setLayoutManager(horizontalLayoutManager);
+        galleryRecycler.setAdapter(galleryRecyclerAdapter);
         return view;
     }
 
@@ -82,30 +97,46 @@ VenueSelectContract.VenueSelectView{
 
     @Override
     public void showVenueSelected(VenueEntity venue, Location location) {
+        List<String> galleryUrls = new ArrayList<>();
 
-        //TODO add gallery
-        //TODO set rating
+
+        if (venue.getListed().getGroups()!= null) {
+            for (GroupListed groupListed : venue.getListed().getGroups()) {
+                if (groupListed.getItems() != null) {
+                    for (ItemListed itemListed : groupListed.getItems()) {
+                        if (itemListed.getPhoto().getPrefix() != null) {
+                            galleryUrls.add(UrlHelper.getUrlToPhoto(itemListed.getPhoto().getPrefix(), itemListed.getPhoto().getSuffix()));
+                            com.example.stas.sml.GlideApp.with(imageViewMain)
+                                    .load(UrlHelper.getUrlToPhoto(itemListed.getPhoto().getPrefix(), itemListed.getPhoto().getSuffix()))
+                                    .placeholder(R.drawable.no_image)
+                                    .into(imageViewMain);
+                        }
+                    }
+                }
+            }
+        }
+                if (venue.getPhotos().getGroups() != null){
+                    for (Group group :venue.getPhotos().getGroups()) {
+                        if (group.getItems() != null){
+                            for (Item item:group.getItems()) {
+                                if(item.getPrefix() != null){
+                                    galleryUrls.add(UrlHelper.getUrlToPhoto(item.getPrefix(), item.getSuffix()));
+                                }
+                            }
+                        }
+                    }
+                }
+
+        galleryRecyclerAdapter.setList(galleryUrls);
+        galleryRecyclerAdapter.notifyDataSetChanged();
 
         rating.setRating((float)(venue.getRating()/2));
-
         double distance = presenter.distanceBetweenPoints(venue.getLocation().getLat(), venue.getLocation().getLng(), location.getLatitude(), location.getLongitude());
         distanceTW.setText(String.format(Locale.US,"%.1f км", (distance)));
-
-       /* com.example.stas.sml.GlideApp.with(circleImageView)
-                .load(venue.getPage().getPageInfo().getBanner())
-                .placeholder(R.drawable.circle_no_image)
-                .into(circleImageView);*/
-
         com.example.stas.sml.GlideApp.with(circleImageView)
                 .load(UrlHelper.getUrlToPhoto(venue.getBestPhoto().getPrefix(), venue.getBestPhoto().getSuffix()))
                 .placeholder(R.drawable.circle_no_image)
                 .into(circleImageView);
-
-        com.example.stas.sml.GlideApp.with(imageViewMain)
-                .load(UrlHelper.getUrlToPhoto(venue.getBestPhoto().getPrefix(), venue.getBestPhoto().getSuffix()))
-                .placeholder(R.drawable.no_image)
-                .into(imageViewMain);
-
         title.setText(venue.getName());
         description.setText(venue.getDescription());
         address.setText(venue.getLocation().getAddress());
@@ -124,8 +155,6 @@ VenueSelectContract.VenueSelectView{
         }else {
             twitter.setText("-");
         }
-
-
     }
 
     @Override

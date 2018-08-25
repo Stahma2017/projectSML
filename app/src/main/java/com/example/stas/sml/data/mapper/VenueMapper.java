@@ -1,8 +1,12 @@
 package com.example.stas.sml.data.mapper;
 
 import com.example.stas.sml.data.model.venuedetailedmodel.Group;
+import com.example.stas.sml.data.model.venuedetailedmodel.GroupListed;
 import com.example.stas.sml.data.model.venuedetailedmodel.Item;
+import com.example.stas.sml.data.model.venuedetailedmodel.ItemListed;
 import com.example.stas.sml.data.model.venuedetailedmodel.PageInfo;
+import com.example.stas.sml.data.model.venuedetailedmodel.Photo;
+import com.example.stas.sml.data.model.venuedetailedmodel.PhotoListed;
 import com.example.stas.sml.data.model.venuedetailedmodel.Venue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.BestPhoto;
 import com.example.stas.sml.domain.entity.venuedetailedentity.Contact;
@@ -56,7 +60,6 @@ public class VenueMapper {
         List<com.example.stas.sml.domain.entity.venuedetailedentity.Group> groupsEntity = new ArrayList<>();
         for (Group group :from.getPhotos().getGroups()) {
             List<com.example.stas.sml.domain.entity.venuedetailedentity.Item> itemsEntity = new ArrayList<>();
-
             for (Item item: group.getItems()) {
                 com.example.stas.sml.domain.entity.venuedetailedentity.Item itemEntity = new com.example.stas.sml.domain.entity.venuedetailedentity.Item();
                 itemEntity.setPrefix(item.getPrefix());
@@ -69,6 +72,24 @@ public class VenueMapper {
         }
         venueEntity.getPhotos().setGroups(groupsEntity);
         venueEntity.getPhotos().setCount(from.getPhotos().getCount());
+
+
+        List<com.example.stas.sml.domain.entity.venuedetailedentity.GroupListed> groupsListedEntity = new ArrayList<>();
+        for (GroupListed groupListed: from.getListed().getGroups()) {
+            List<com.example.stas.sml.domain.entity.venuedetailedentity.ItemListed> itemsListedEntity = new ArrayList<>();
+            for (ItemListed itemListed: groupListed.getItems()) {
+                com.example.stas.sml.domain.entity.venuedetailedentity.ItemListed itemListedEntity = new com.example.stas.sml.domain.entity.venuedetailedentity.ItemListed();
+                com.example.stas.sml.domain.entity.venuedetailedentity.PhotoListed photoListedEntity = new com.example.stas.sml.domain.entity.venuedetailedentity.PhotoListed();
+                photoListedEntity.setPrefix(itemListed.getPhoto().getPrefix());
+                photoListedEntity.setSuffix(itemListed.getPhoto().getSuffix());
+                itemListedEntity.setPhoto(photoListedEntity);
+                itemsListedEntity.add(itemListedEntity);
+            }
+            com.example.stas.sml.domain.entity.venuedetailedentity.GroupListed groupListedEntity = new com.example.stas.sml.domain.entity.venuedetailedentity.GroupListed();
+            groupListedEntity.setItems(itemsListedEntity);
+            groupsListedEntity.add(groupListedEntity);
+        }
+        venueEntity.getListed().setGroups(groupsListedEntity);
 
         return venueEntity;
     }

@@ -367,9 +367,12 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         SharedPreferences.Editor editor = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE).edit();
         editor.putString("venueSelect", venueId);
         editor.apply();
+     /*   categoryAdapter.setEnabledCategory(-1);
+        categoryAdapter.notifyDataSetChanged();*/
         MainActivity activity = (MainActivity) getActivity();
         activity.displayVenueSelectedFragment();
         activity.hideToolbar();
+
     }
 
     @Override

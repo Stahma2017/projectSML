@@ -72,6 +72,17 @@ public class Venue {
     @SerializedName("photos")
     @Expose
     private Photos photos = new Photos();
+    @SerializedName("listed")
+    @Expose
+    private Listed listed = new Listed();
+
+    public Listed getListed() {
+        return listed;
+    }
+
+    public void setListed(Listed listed) {
+        this.listed = listed;
+    }
 
     public Photos getPhotos() {
         return photos;
