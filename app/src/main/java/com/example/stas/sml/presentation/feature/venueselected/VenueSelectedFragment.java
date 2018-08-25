@@ -89,12 +89,12 @@ VenueSelectContract.VenueSelectView{
 
         com.example.stas.sml.GlideApp.with(circleImageView)
                 .load(venue.getPage().getPageInfo().getBanner())
-                .placeholder(R.drawable.ic_image_placeholder_24dp)
+                .placeholder(R.drawable.circle_no_image)
                 .into(circleImageView);
 
         com.example.stas.sml.GlideApp.with(imageViewMain)
                 .load(venue.getPage().getPageInfo().getBanner())
-                .placeholder(R.drawable.placeholder_main)
+                .placeholder(R.drawable.no_image)
                 .into(imageViewMain);
 
         title.setText(venue.getName());

@@ -161,7 +161,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         return view;
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -360,6 +359,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         editor.apply();
         MainActivity activity = (MainActivity) getActivity();
         activity.displayVenueSelectedFragment();
+        activity.hideToolbar();
     }
 
     @Override

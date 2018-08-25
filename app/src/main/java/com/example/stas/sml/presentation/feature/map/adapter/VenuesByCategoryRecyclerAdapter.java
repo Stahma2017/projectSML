@@ -83,7 +83,7 @@ public class VenuesByCategoryRecyclerAdapter extends RecyclerView.Adapter<Venues
         void bind(VenueEntity venue) {
             com.example.stas.sml.GlideApp.with(logo)
                     .load(venue.getPage().getPageInfo().getBanner())
-                    .placeholder(R.drawable.ic_image_placeholder_24dp)
+                    .placeholder(R.drawable.circle_no_image)
                     .into(logo);
             name.setText(venue.getName());
             rating.setRating((float)(venue.getRating()/2));

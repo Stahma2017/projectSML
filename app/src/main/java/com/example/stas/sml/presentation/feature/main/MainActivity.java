@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     public void displayVenueSelectedFragment(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_container, venueSelectedFragment);
+        ft.hide(mapsFragment);
         ft.addToBackStack(null);
         ft.commit();
     }
