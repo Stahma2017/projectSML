@@ -1,21 +1,22 @@
 package com.example.stas.sml;
 import android.app.Application;
-
 import com.example.stas.sml.di.AppComponent;
 import com.example.stas.sml.di.DaggerAppComponent;
 import com.example.stas.sml.presentation.feature.main.di.MapsComponent;
 import com.example.stas.sml.di.module.AppModule;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
+import com.example.stas.sml.presentation.feature.map.adapter.CategoryRecyclerAdapter;
+import com.example.stas.sml.presentation.feature.map.adapter.SearchSuggestionsRecyclerAdapter;
+import com.example.stas.sml.presentation.feature.map.adapter.VenuesByCategoryRecyclerAdapter;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentComponent;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentModule;
-import com.example.stas.sml.presentation.feature.querysubmit.di.QueryVenuesComponent;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
+import com.example.stas.sml.presentation.feature.venuelistdisplay.adapter.PreviousPlacesByCategoryAdapter;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.di.VenuelistComponent;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.di.VenuelistModule;
 import com.example.stas.sml.presentation.feature.venueselected.VenueSelectedFragment;
 import com.example.stas.sml.presentation.feature.venueselected.di.VenueSelectedComponent;
 import com.example.stas.sml.presentation.feature.venueselected.di.VenueSelectedModule;
-import com.squareup.haha.guava.collect.Maps;
 import com.squareup.leakcanary.LeakCanary;
 
 public class App extends Application {
@@ -29,7 +30,7 @@ public class App extends Application {
     private  AppComponent component;
     private MapsComponent mapsComponent;
 
-    private QueryVenuesComponent queryVenuesComponent;
+
     private MapsFragmentComponent mapsFragmentComponent;
     private VenuelistComponent venuelistComponent;
     private VenueSelectedComponent venueSelectedComponent;
@@ -68,20 +69,12 @@ public class App extends Application {
         mapsComponent = null;
     }
 
-    public QueryVenuesComponent addQueryVenuesComponent(){
-        if(queryVenuesComponent == null){
-            queryVenuesComponent = component.addQueryVenuesComponent();
-        }
-        return queryVenuesComponent;
-    }
-
-    public void clearQueryVenuesComponent(){
-        queryVenuesComponent = null;
-    }
-
-    public MapsFragmentComponent addMapsFragmentComponent(MapsFragment mapsFragment){
+    public MapsFragmentComponent addMapsFragmentComponent(MapsFragment mapsFragment, CategoryRecyclerAdapter.OnItemClickListener onItemClickListenerCategory,
+                                                          VenuesByCategoryRecyclerAdapter.OnItemClickListener onItemClickListenerByCategory,
+                                                          SearchSuggestionsRecyclerAdapter.OnItemClickListener onItemClickListenerSuggest){
         if (mapsFragmentComponent == null){
-            mapsFragmentComponent = mapsComponent.addMapsFragmentComponent(new MapsFragmentModule(mapsFragment));
+            mapsFragmentComponent = mapsComponent.addMapsFragmentComponent(new MapsFragmentModule(mapsFragment, onItemClickListenerCategory,
+                    onItemClickListenerByCategory, onItemClickListenerSuggest));
         }
         return mapsFragmentComponent;
     }
@@ -90,9 +83,12 @@ public class App extends Application {
         mapsFragmentComponent = null;
     }
 
-    public VenuelistComponent addVenuelistComponent(VenuelistFragment venuelistFragment){
+    public VenuelistComponent addVenuelistComponent(VenuelistFragment venuelistFragment, PreviousPlacesByCategoryAdapter.OnItemClickListener onItemClickListener,
+                                                    CategoryRecyclerAdapter.OnItemClickListener onItemClickListenerCategory,
+                                                    SearchSuggestionsRecyclerAdapter.OnItemClickListener onItemClickListenerSuggest){
         if (venuelistComponent == null){
-            venuelistComponent = mapsComponent.addVenuelistComponent(new VenuelistModule(venuelistFragment));
+            venuelistComponent = mapsComponent.addVenuelistComponent(new VenuelistModule(venuelistFragment, onItemClickListener,
+                    onItemClickListenerCategory, onItemClickListenerSuggest));
         }
         return venuelistComponent;
     }

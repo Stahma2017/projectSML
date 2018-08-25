@@ -11,6 +11,10 @@ import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.example.stas.sml.presentation.feature.main.ActivityContract;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.example.stas.sml.presentation.feature.main.MainActivityPresenter;
+import com.example.stas.sml.presentation.feature.map.MapsFragment;
+import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
+import com.example.stas.sml.presentation.feature.venueselected.VenueSelectedFragment;
+
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.annotations.NonNull;
@@ -40,5 +44,25 @@ public class MapsModule {
     MainActivity provideMapsActivity(MainActivity mainActivity) {
         return mainActivity;
     }
+
+    @NonNull
+    @Provides
+    MapsFragment provideMapsFragment(){
+        return new MapsFragment();
+    }
+
+    @NonNull
+    @Provides
+    VenuelistFragment provideVenulistFragment(){
+        return new VenuelistFragment();
+    }
+
+    @NonNull
+    @Provides
+    VenueSelectedFragment provideVenueSelectedFragment(){
+        return new VenueSelectedFragment();
+    }
+
+
 
 }

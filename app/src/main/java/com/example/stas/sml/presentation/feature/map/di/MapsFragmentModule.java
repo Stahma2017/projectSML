@@ -15,6 +15,9 @@ import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.example.stas.sml.presentation.feature.map.MapsContract;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
 import com.example.stas.sml.presentation.feature.map.MapsPresenter;
+import com.example.stas.sml.presentation.feature.map.adapter.CategoryRecyclerAdapter;
+import com.example.stas.sml.presentation.feature.map.adapter.SearchSuggestionsRecyclerAdapter;
+import com.example.stas.sml.presentation.feature.map.adapter.VenuesByCategoryRecyclerAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -25,10 +28,38 @@ import io.reactivex.disposables.CompositeDisposable;
 public class MapsFragmentModule {
 
     private Fragment mapsFragment;
+    private CategoryRecyclerAdapter.OnItemClickListener onItemClickListenerCategory;
+    private VenuesByCategoryRecyclerAdapter.OnItemClickListener onItemClickListenerByCategory;
+    private SearchSuggestionsRecyclerAdapter.OnItemClickListener onItemClickListenerSuggest;
 
-    public MapsFragmentModule(Fragment mapsFragment){
+    public MapsFragmentModule(Fragment mapsFragment, CategoryRecyclerAdapter.OnItemClickListener onItemClickListenerCategory,
+    VenuesByCategoryRecyclerAdapter.OnItemClickListener onItemClickListenerByCategory, SearchSuggestionsRecyclerAdapter.OnItemClickListener onItemClickListenerSuggest){
         this.mapsFragment = mapsFragment;
+        this.onItemClickListenerCategory = onItemClickListenerCategory;
+        this.onItemClickListenerByCategory = onItemClickListenerByCategory;
+        this.onItemClickListenerSuggest = onItemClickListenerSuggest;
     }
+    @NonNull
+    @Provides
+    CategoryRecyclerAdapter provideCategoryRecyclerAdapter(){
+        return new CategoryRecyclerAdapter(onItemClickListenerCategory);
+    }
+
+    @NonNull
+    @Provides
+    VenuesByCategoryRecyclerAdapter provideVenuesByCategoryRecyclerAdapter(){
+        return new VenuesByCategoryRecyclerAdapter(onItemClickListenerByCategory);
+    }
+
+    @NonNull
+    @Provides
+    SearchSuggestionsRecyclerAdapter provideSearchSuggestionsRecyclerAdapter(){
+        return new SearchSuggestionsRecyclerAdapter(onItemClickListenerSuggest);
+    }
+
+
+
+
 
     @MapsFragmentScope
     @NonNull

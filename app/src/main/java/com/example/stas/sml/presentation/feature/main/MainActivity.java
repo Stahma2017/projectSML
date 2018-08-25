@@ -37,20 +37,19 @@ import javax.inject.Inject;
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity implements ActivityContract.ActivityView {
 
-
-
     @Inject
     ActivityContract.Presenter presenter;
     @Inject
     ErrorHandler errorHandler;
-
+    @Inject
+    MapsFragment mapsFragment;
+    @Inject
+    VenuelistFragment venuelistFragment;
+    @Inject
+    VenueSelectedFragment venueSelectedFragment;
     @BindView(R.id.bottomContainer)FrameLayout bottomContainer;
     @BindView(R.id.bottomAppBar)BottomNavigationView bottomNavigation;
     @BindView(R.id.fragment_container)FrameLayout fragmentContainer;
-
-    MapsFragment mapsFragment = new MapsFragment();
-    VenuelistFragment venuelistFragment = new VenuelistFragment();
-    VenueSelectedFragment venueSelectedFragment = new VenueSelectedFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +64,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_container, mapsFragment);
         ft.commit();
-
-
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -92,11 +89,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
             public void onReceive(Context context, Intent intent) {
             }
         };
-    }
-
-    public void deleteAllPrefs(){
-        SharedPreferences preferences = getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE);
-        preferences.edit().clear().apply();
     }
 
     @Override
@@ -128,8 +120,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         ft.commit();
     }
 
-
-
     public void hideToolbar(){
         bottomContainer.setVisibility(View.GONE);
     }
@@ -140,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
 
     @SuppressLint("NeedOnRequestPermissionsResult")
     @Override
-
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
           MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);

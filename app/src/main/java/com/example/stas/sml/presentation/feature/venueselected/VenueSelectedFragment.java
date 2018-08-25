@@ -31,12 +31,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class VenueSelectedFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener,
 VenueSelectContract.VenueSelectView{
-
     private Unbinder unbinder;
-
     @Inject
     VenueSelectedPresenter presenter;
-
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
     private static final int ALPHA_ANIMATIONS_DURATION              = 200;
@@ -66,7 +63,6 @@ VenueSelectContract.VenueSelectView{
         App.getInstance().addVenueSelectComponent(this).injectVenueSelectedFragment(this);
         unbinder = ButterKnife.bind(this, view);
         presenter.attachView(this);
-
         SharedPreferences prefs = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE);
         String venueId = prefs.getString("venueSelect", "none");
         Log.d("PREF", venueId);
@@ -143,9 +139,7 @@ VenueSelectContract.VenueSelectView{
                 startAlphaAnimation(title, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
                 mIsTheTitleVisible = true;
             }
-
         } else {
-
             if (mIsTheTitleVisible) {
                 startAlphaAnimation(title, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
                 mIsTheTitleVisible = false;

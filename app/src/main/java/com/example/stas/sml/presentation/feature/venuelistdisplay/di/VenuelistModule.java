@@ -9,8 +9,11 @@ import com.example.stas.sml.di.annotations.VenuelistFragmentScope;
 import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
+import com.example.stas.sml.presentation.feature.map.adapter.CategoryRecyclerAdapter;
+import com.example.stas.sml.presentation.feature.map.adapter.SearchSuggestionsRecyclerAdapter;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistPresenter;
+import com.example.stas.sml.presentation.feature.venuelistdisplay.adapter.PreviousPlacesByCategoryAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -22,8 +25,17 @@ public class VenuelistModule {
 
     private Fragment venulistFragment;
 
-    public VenuelistModule(VenuelistFragment venulistFragment){
+    private PreviousPlacesByCategoryAdapter.OnItemClickListener onItemClickListener;
+    private SearchSuggestionsRecyclerAdapter.OnItemClickListener onItemClickListenerSuggest;
+    private CategoryRecyclerAdapter.OnItemClickListener onItemClickListenerCategory;
+
+    public VenuelistModule(VenuelistFragment venulistFragment, PreviousPlacesByCategoryAdapter.OnItemClickListener onItemClickListener,
+                           CategoryRecyclerAdapter.OnItemClickListener onItemClickListenerCategory,
+                           SearchSuggestionsRecyclerAdapter.OnItemClickListener onItemClickListenerSuggest){
         this.venulistFragment = venulistFragment;
+        this.onItemClickListener = onItemClickListener;
+        this.onItemClickListenerCategory = onItemClickListenerCategory;
+        this.onItemClickListenerSuggest = onItemClickListenerSuggest;
     }
 
     @VenuelistFragmentScope
@@ -31,6 +43,25 @@ public class VenuelistModule {
     @Provides
     LocationGateway provideLocationGateway(){
         return new LocationRepository(venulistFragment);
+    }
+
+
+    @NonNull
+    @Provides
+    PreviousPlacesByCategoryAdapter providePlacesAdapter(){
+        return new PreviousPlacesByCategoryAdapter(onItemClickListener);
+    }
+
+    @NonNull
+    @Provides
+    SearchSuggestionsRecyclerAdapter provideSuggestAdapter(){
+        return new SearchSuggestionsRecyclerAdapter(onItemClickListenerSuggest);
+    }
+
+    @NonNull
+    @Provides
+    CategoryRecyclerAdapter provideCategoryAdapter(){
+        return new CategoryRecyclerAdapter(onItemClickListenerCategory);
     }
 
     @VenuelistFragmentScope

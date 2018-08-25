@@ -1,7 +1,5 @@
 package com.example.stas.sml.presentation.feature.venuelistdisplay;
 
-
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
@@ -27,35 +25,25 @@ import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
 import com.example.stas.sml.presentation.feature.map.adapter.SearchSuggestionsRecyclerAdapter;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.adapter.PreviousPlacesByCategoryAdapter;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
 import static android.content.Context.MODE_PRIVATE;
 
 
 public class VenuelistFragment extends Fragment implements VenuelistContract.VenuelistView,  CategoryRecyclerAdapter.OnItemClickListener,
 PreviousPlacesByCategoryAdapter.OnItemClickListener, SearchSuggestionsRecyclerAdapter.OnItemClickListener{
-
-
     private Unbinder unbinder;
-
     @Inject
     VenuelistPresenter presenter;
-
-    //New dependency
-    private SearchSuggestionsRecyclerAdapter suggestionAdapter;
-    //New dependency
-    private CategoryRecyclerAdapter categoryAdapter;
-    //New dependency
-    private PreviousPlacesByCategoryAdapter placesAdapter;
-
+    @Inject
+    SearchSuggestionsRecyclerAdapter suggestionAdapter;
+    @Inject
+    CategoryRecyclerAdapter categoryAdapter;
+    @Inject
+    PreviousPlacesByCategoryAdapter placesAdapter;
     @BindView(R.id.toolbarVenuelist)Toolbar toolbar;
     @BindView(R.id.categoryRecyclerVenuelist)RecyclerView categoryRecycler;
     @BindView(R.id.placesRecyclerPrev)RecyclerView placesRecycler;
@@ -72,26 +60,23 @@ PreviousPlacesByCategoryAdapter.OnItemClickListener, SearchSuggestionsRecyclerAd
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
-        App.getInstance().addVenuelistComponent(this).injectVenuelistFragment(this);
+        App.getInstance().addVenuelistComponent(this, this, this, this).injectVenuelistFragment(this);
         unbinder = ButterKnife.bind(this, view);
         presenter.attachView(this);
         searchView.setIconified(false);
         SharedPreferences prefs = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE);
 
         int enabledIndex = prefs.getInt("index", -1);
-        categoryAdapter = new CategoryRecyclerAdapter(this);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         categoryRecycler.setLayoutManager(horizontalLayoutManager);
         categoryRecycler.setAdapter(categoryAdapter);
         categoryAdapter.setEnabledCategory(enabledIndex);
         categoryAdapter.notifyDataSetChanged();
 
-        placesAdapter = new PreviousPlacesByCategoryAdapter(this);
         LinearLayoutManager placesLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         placesRecycler.setLayoutManager(placesLayoutManager);
         placesRecycler.setAdapter(placesAdapter);
 
-        suggestionAdapter = new SearchSuggestionsRecyclerAdapter(this);
         LinearLayoutManager suggestionManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         suggestionRecycler.setLayoutManager(suggestionManager);
         suggestionRecycler.setAdapter(suggestionAdapter);
