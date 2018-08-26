@@ -24,12 +24,16 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
+import com.example.stas.sml.data.database.AppDatabase;
+import com.example.stas.sml.data.database.dao.VenueDao;
+import com.example.stas.sml.data.database.entity.VenueDb;
 import com.example.stas.sml.presentation.feature.venueselected.VenueSelectedFragment;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     VenuelistFragment venuelistFragment;
     @Inject
     VenueSelectedFragment venueSelectedFragment;
+    @Inject
+    AppDatabase db;
     @BindView(R.id.bottomContainer)FrameLayout bottomContainer;
     @BindView(R.id.bottomAppBar)BottomNavigationView bottomNavigation;
     @BindView(R.id.fragment_container)FrameLayout fragmentContainer;
@@ -64,6 +70,20 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_container, mapsFragment);
         ft.commit();
+
+        VenueDao venueDao = db.venueDao();
+
+        VenueDb venueDb = new VenueDb();
+        venueDb.address = "Северная";
+        venueDb.isOpen = false;
+        venueDb.name = "Зубная клинка";
+        venueDao.insert(venueDb);
+
+        List<VenueDb> list = new ArrayList<>();
+        list = venueDao.getAll();
+        list.size();
+
+
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
