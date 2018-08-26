@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -174,6 +175,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        Log.d("HIDE", "hide state changed");
         if (!hidden) {
             SharedPreferences indexPrefs = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE);
             int enabledIndex = indexPrefs.getInt("toMap", -1);
@@ -193,6 +195,12 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
             MainActivity activity = (MainActivity) getActivity();
             activity.showToolbar();
         }
+    }
+
+    public void pointLocation(double latitude, double longitude, String title){
+        LatLng latLng = new LatLng(latitude, longitude);
+        setMarker(latLng, title);
+        map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
 
@@ -218,7 +226,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
 
     @Override
     public void onMapClick(LatLng latLng) {
-        setMarker(latLng);
+        setMarker(latLng, null);
         presenter.getLocation(latLng);
         placesRecycler.setVisibility(View.GONE);
         venueListBtn.setVisibility(View.GONE);
@@ -258,13 +266,14 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         return addresses;
     }
 
-    void setMarker(LatLng latLng) {
+    void setMarker(LatLng latLng, String title) {
         if (marker != null) {
             marker.remove();
         }
         MarkerOptions markerOptions = new MarkerOptions().
                 position(latLng)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
+                .title(title);
         marker = map.addMarker(markerOptions);
     }
 

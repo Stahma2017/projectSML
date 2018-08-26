@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -46,8 +47,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     VenueSelectedFragment venueSelectedFragment;
     @Inject
     HistoryFragment historyFragment;
-   /* @Inject
-    AppDatabase db;*/
+
     @BindView(R.id.bottomContainer)FrameLayout bottomContainer;
     @BindView(R.id.bottomAppBar)BottomNavigationView bottomNavigation;
     @BindView(R.id.fragment_container)FrameLayout fragmentContainer;
@@ -126,6 +126,12 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         ft.add(R.id.fragment_container, venueSelectedFragment);
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    public void pointLocationOnMap(double langtitude, double longtitude, String name){
+        mapsFragment.pointLocation(langtitude, longtitude, name);
+        displayMapsFragment();
+        bottomNavigation.setSelectedItemId(R.id.action_map);
     }
 
     public void hideToolbar(){

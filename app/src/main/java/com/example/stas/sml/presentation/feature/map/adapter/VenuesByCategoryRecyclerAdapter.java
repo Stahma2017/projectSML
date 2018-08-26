@@ -96,7 +96,12 @@ public class VenuesByCategoryRecyclerAdapter extends RecyclerView.Adapter<Venues
             if (venue.getHours().getOpen()){
                 workIndicator.setImageResource(R.drawable.work_indicator);
             }
-            itemView.setOnClickListener(itemView -> onItemClickListener.onItemClick(venue));
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View itemView) {
+                    onItemClickListener.onItemClick(venue);
+                }
+            });
         }
     }
 }
