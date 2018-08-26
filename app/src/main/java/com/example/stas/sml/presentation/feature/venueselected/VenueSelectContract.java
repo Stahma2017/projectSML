@@ -10,6 +10,7 @@ public interface VenueSelectContract {
     interface VenueSelectView extends CanShowError{
         void deliverLocationForpreveious(Location location, String venueId);
         void showVenueSelected(VenueEntity venue, Location location);
+        void showSuccess();
 
     }
 }

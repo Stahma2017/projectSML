@@ -2,13 +2,23 @@ package com.example.stas.sml.presentation.feature.venueselected;
 
 import android.location.Location;
 
+import com.example.stas.sml.data.database.AppDatabase;
+import com.example.stas.sml.data.database.dao.VenueDao;
+import com.example.stas.sml.data.database.entity.VenueDb;
+import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
+import com.example.stas.sml.utils.UrlHelper;
+
 import java.lang.ref.WeakReference;
+
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
 public class VenueSelectedPresenter {
@@ -18,12 +28,14 @@ public class VenueSelectedPresenter {
     private final CompositeDisposable compositeDisposable;
     private final LocationGateway locationGateway;
     private final ErrorHandler errorHandler;
+    private final AppDatabase database;
 
-    public VenueSelectedPresenter(MapsModel interactor, CompositeDisposable compositeDisposable, LocationGateway locationGateway, ErrorHandler errorHandler) {
+    public VenueSelectedPresenter(MapsModel interactor, CompositeDisposable compositeDisposable, LocationGateway locationGateway, ErrorHandler errorHandler, AppDatabase database) {
         this.interactor = interactor;
         this.compositeDisposable = compositeDisposable;
         this.locationGateway = locationGateway;
         this.errorHandler = errorHandler;
+        this.database = database;
     }
 
     public void attachView(VenueSelectContract.VenueSelectView fragment) {
@@ -42,6 +54,37 @@ public class VenueSelectedPresenter {
                 .subscribe(location -> view.get().deliverLocationForpreveious(location, venueId)
                         ,errorHandler::proceed);
         compositeDisposable.add(dis);
+    }
+    public void saveVenueToDb(VenueEntity venue){
+        VenueDb venueDb = new VenueDb();
+        venueDb.name = venue.getName();
+        venueDb.address = venue.getLocation().getAddress();
+        venueDb.latitude = venue.getLocation().getLat();
+        venueDb.longitude = venue.getLocation().getLng();
+        venueDb.imageUrl = UrlHelper.getUrlToPhoto(venue.getBestPhoto().getPrefix(), venue.getBestPhoto().getSuffix());
+        venueDb.workStatus = venue.getHours().getStatus();
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                database.venueDao().insert(venueDb);
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+                view.get().showSuccess();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                errorHandler.proceed(e);
+            }
+        });
     }
 
     public void getVenuesWithCategory(String venueId,Location location){

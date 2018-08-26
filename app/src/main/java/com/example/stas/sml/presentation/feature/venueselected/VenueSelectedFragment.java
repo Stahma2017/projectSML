@@ -18,6 +18,8 @@ import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
 import com.example.stas.sml.domain.entity.venuedetailedentity.Group;
@@ -97,9 +99,8 @@ VenueSelectContract.VenueSelectView{
 
     @Override
     public void showVenueSelected(VenueEntity venue, Location location) {
+        presenter.saveVenueToDb(venue);
         List<String> galleryUrls = new ArrayList<>();
-
-
         if (venue.getListed().getGroups()!= null) {
             for (GroupListed groupListed : venue.getListed().getGroups()) {
                 if (groupListed.getItems() != null) {
@@ -126,7 +127,6 @@ VenueSelectContract.VenueSelectView{
                         }
                     }
                 }
-
         galleryRecyclerAdapter.setList(galleryUrls);
         galleryRecyclerAdapter.notifyDataSetChanged();
 
@@ -170,6 +170,11 @@ VenueSelectContract.VenueSelectView{
         super.onStop();
         App.getInstance().clearVenueSelectComponent();
         presenter.detachView();
+    }
+
+    @Override
+    public void showSuccess(){
+        Toast.makeText(getContext(), "Venue added to db", Toast.LENGTH_SHORT).show();
     }
 
     @Override

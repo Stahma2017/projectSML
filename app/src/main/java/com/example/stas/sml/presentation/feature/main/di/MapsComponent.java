@@ -1,6 +1,8 @@
 package com.example.stas.sml.presentation.feature.main.di;
 
 import com.example.stas.sml.di.annotations.MapsScope;
+import com.example.stas.sml.presentation.feature.history.di.HistoryComponent;
+import com.example.stas.sml.presentation.feature.history.di.HistoryModule;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentComponent;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentModule;
@@ -18,5 +20,7 @@ public interface MapsComponent {
     MapsFragmentComponent addMapsFragmentComponent(MapsFragmentModule mapsFragmentModule);
     VenuelistComponent addVenuelistComponent(VenuelistModule venuelistModule);
     VenueSelectedComponent addVenueSelectedComponent(VenueSelectedModule venueSelectedModule);
+    HistoryComponent addHistoryComponent(HistoryModule historyModule);
+
 }
 

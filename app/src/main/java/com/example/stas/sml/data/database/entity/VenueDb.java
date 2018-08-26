@@ -19,9 +19,9 @@ public class VenueDb {
 
     public String imageUrl;
 
-    public String longitude;
+    public double longitude;
 
-    public String latitude;
+    public double latitude;
 
     public boolean saved;
 }

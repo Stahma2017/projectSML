@@ -2,6 +2,9 @@ package com.example.stas.sml;
 import android.app.Application;
 import com.example.stas.sml.di.AppComponent;
 import com.example.stas.sml.di.DaggerAppComponent;
+import com.example.stas.sml.presentation.feature.history.HistoryFragment;
+import com.example.stas.sml.presentation.feature.history.di.HistoryComponent;
+import com.example.stas.sml.presentation.feature.history.di.HistoryModule;
 import com.example.stas.sml.presentation.feature.main.di.MapsComponent;
 import com.example.stas.sml.di.module.AppModule;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
@@ -34,6 +37,7 @@ public class App extends Application {
     private MapsFragmentComponent mapsFragmentComponent;
     private VenuelistComponent venuelistComponent;
     private VenueSelectedComponent venueSelectedComponent;
+    private HistoryComponent historyComponent;
 
     @Override
     public void onCreate() {
@@ -107,6 +111,18 @@ public class App extends Application {
     public void clearVenueSelectComponent(){
         venueSelectedComponent = null;
     }
+
+    public HistoryComponent addHistoryComponent(HistoryFragment historyFragment){
+        if (historyComponent == null){
+            historyComponent = mapsComponent.addHistoryComponent(new HistoryModule(historyFragment));
+        }
+        return historyComponent;
+    }
+    public void clearHistoryComponent(){
+        historyComponent = null;
+    }
+
+
 
 
 

@@ -19,6 +19,7 @@ public class DatabaseModule {
     @Singleton
     public AppDatabase provideAppDatabase(Context context){
         return Room.databaseBuilder(context, AppDatabase.class, "database")
+                // todo erase mainthred after rxJava included
                 .allowMainThreadQueries()
                 .build();
     }

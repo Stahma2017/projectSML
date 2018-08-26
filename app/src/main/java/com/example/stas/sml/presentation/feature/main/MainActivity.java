@@ -5,14 +5,11 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -24,17 +21,12 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
-import com.example.stas.sml.data.database.AppDatabase;
-import com.example.stas.sml.data.database.dao.VenueDao;
-import com.example.stas.sml.data.database.entity.VenueDb;
 import com.example.stas.sml.presentation.feature.history.HistoryFragment;
 import com.example.stas.sml.presentation.feature.venueselected.VenueSelectedFragment;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -53,13 +45,14 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     @Inject
     VenueSelectedFragment venueSelectedFragment;
     @Inject
-    AppDatabase db;
+    HistoryFragment historyFragment;
+   /* @Inject
+    AppDatabase db;*/
     @BindView(R.id.bottomContainer)FrameLayout bottomContainer;
     @BindView(R.id.bottomAppBar)BottomNavigationView bottomNavigation;
     @BindView(R.id.fragment_container)FrameLayout fragmentContainer;
 
-    // New dependency
-    HistoryFragment historyFragment = new HistoryFragment();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,34 +68,20 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         ft.add(R.id.fragment_container, mapsFragment);
         ft.commit();
 
-      /*  VenueDao venueDao = db.venueDao();
-        VenueDb venueDb = new VenueDb();
-        venueDb.address = "Северная";
-        venueDb.isOpen = false;
-        venueDb.name = "Зубная клинка";
-        venueDao.insert(venueDb);
-        List<VenueDb> list = new ArrayList<>();
-        list = venueDao.getAll();
-        list.size();*/
-
-        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-                switch (menuItem.getItemId()) {
-                    case R.id.action_map:
-                        menuItem.setChecked(true);
-                        displayMapsFragment();
-                        break;
-                    case R.id.action_account:
-                        menuItem.setChecked(true);
-                        break;
-                    case R.id.action_places:
-                        menuItem.setChecked(true);
-                        displayHistoryFragment();
-                }
-                return false;
+        bottomNavigation.setOnNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.action_map:
+                    menuItem.setChecked(true);
+                    displayMapsFragment();
+                    break;
+                case R.id.action_account:
+                    menuItem.setChecked(true);
+                    break;
+                case R.id.action_places:
+                    menuItem.setChecked(true);
+                    displayHistoryFragment();
             }
+            return false;
         });
 
         BroadcastReceiver br = new BroadcastReceiver() {
