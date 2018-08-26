@@ -27,6 +27,7 @@ import com.example.stas.sml.R;
 import com.example.stas.sml.data.database.AppDatabase;
 import com.example.stas.sml.data.database.dao.VenueDao;
 import com.example.stas.sml.data.database.entity.VenueDb;
+import com.example.stas.sml.presentation.feature.history.HistoryFragment;
 import com.example.stas.sml.presentation.feature.venueselected.VenueSelectedFragment;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.base.ErrorHandler;
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     @BindView(R.id.bottomAppBar)BottomNavigationView bottomNavigation;
     @BindView(R.id.fragment_container)FrameLayout fragmentContainer;
 
+    // New dependency
+    HistoryFragment historyFragment = new HistoryFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,19 +75,15 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         ft.add(R.id.fragment_container, mapsFragment);
         ft.commit();
 
-        VenueDao venueDao = db.venueDao();
-
+      /*  VenueDao venueDao = db.venueDao();
         VenueDb venueDb = new VenueDb();
         venueDb.address = "Северная";
         venueDb.isOpen = false;
         venueDb.name = "Зубная клинка";
         venueDao.insert(venueDb);
-
         List<VenueDb> list = new ArrayList<>();
         list = venueDao.getAll();
-        list.size();
-
-
+        list.size();*/
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -92,13 +92,14 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
                 switch (menuItem.getItemId()) {
                     case R.id.action_map:
                         menuItem.setChecked(true);
-                        MainActivity.this.displayMapsFragment();
+                        displayMapsFragment();
                         break;
                     case R.id.action_account:
                         menuItem.setChecked(true);
                         break;
                     case R.id.action_places:
                         menuItem.setChecked(true);
+                        displayHistoryFragment();
                 }
                 return false;
             }
@@ -122,6 +123,15 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         ft.show(mapsFragment);
         ft.remove(venuelistFragment);
         ft.remove(venueSelectedFragment);
+        ft.remove(historyFragment);
+        ft.commit();
+    }
+
+    public void displayHistoryFragment(){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.remove(venuelistFragment);
+        ft.remove(venueSelectedFragment);
+        ft.add(R.id.fragment_container, historyFragment);
         ft.commit();
     }
 
