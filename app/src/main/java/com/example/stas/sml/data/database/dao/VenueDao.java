@@ -10,6 +10,8 @@ import com.example.stas.sml.data.database.entity.VenueDb;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface VenueDao {
 
@@ -23,5 +25,5 @@ public interface VenueDao {
     void delete(VenueDb venueDb);
 
     @Query("SELECT * FROM venuedb")
-    List<VenueDb> getAll();
+    Flowable<List<VenueDb>> getAll();
 }

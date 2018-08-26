@@ -1,13 +1,18 @@
 package com.example.stas.sml.presentation.feature.history;
 
 import com.example.stas.sml.data.database.AppDatabase;
+import com.example.stas.sml.data.database.entity.VenueDb;
 import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 public class HistoryPresenter {
 
@@ -31,5 +36,17 @@ public class HistoryPresenter {
     public void detachView() {
         view = null;
         compositeDisposable.dispose();
+    }
+
+    public void getVenues(){
+      Disposable dis = database.venueDao().getAll()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<VenueDb>>() {
+                    @Override
+                    public void accept(List<VenueDb> venueDbs) throws Exception {
+                        view.get().showPlaces(venueDbs);
+                    }
+                });
+      compositeDisposable.add(dis);
     }
 }

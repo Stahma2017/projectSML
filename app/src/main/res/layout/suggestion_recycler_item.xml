@@ -19,12 +19,12 @@
     <TextView
         android:id="@+id/placeName"
         android:layout_width="@dimen/placename_width"
-        android:layout_height="26dp"
+        android:layout_height="28dp"
         android:layout_marginStart="90dp"
         android:layout_marginTop="@dimen/placename_margintop"
-        android:text="Мясо Love"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,7 +46,7 @@
         android:layout_height="20dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="80dp"
-        android:text="Ресторан, где любят мясо"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="110dp"
-        android:text="Ул. Красная, 134"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="23dp"
         android:layout_marginTop="130dp"
-        android:text="Открыто до 00:00"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

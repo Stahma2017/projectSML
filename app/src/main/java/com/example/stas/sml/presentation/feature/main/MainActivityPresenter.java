@@ -51,19 +51,4 @@ public class MainActivityPresenter implements ActivityContract.Presenter {
         errorHandler.detachView();
         compositeDisposable.dispose();
     }
-
-    public void getVenuesByQuerySubmit(String querry){
-      /*  Location currentLocation = mapsView.get().getCurrentLocation();
-
-        venues.clear();
-        Disposable venueListDisposable = model.loadVenuesByQuerySubmition(currentLocation, querry)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((VenueEntity venue) -> {
-                            venues.add(venue);
-                            mapsView.get().showPlacesByQuerySubmit(venues);
-                        },
-                        errorHandler::proceed);
-        compositeDisposable.add(venueListDisposable);*/
-    }
 }
