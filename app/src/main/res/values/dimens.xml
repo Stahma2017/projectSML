@@ -30,8 +30,8 @@
     <dimen name="bottomnavigation_width">170dp</dimen>
     <dimen name="bottomnavigation_height">56dp</dimen>
     <dimen name="bottomnavigation_margintop">10dp</dimen>
-    <dimen name="placelogo_width">70dp</dimen>
-    <dimen name="placelogo_height">70dp</dimen>
+    <dimen name="placelogo_width">60dp</dimen>
+    <dimen name="placelogo_height">60dp</dimen>
     <dimen name="placelogo_marginstart">10dp</dimen>
     <dimen name="placelogo_margintop">15dp</dimen>
     <dimen name="placename_width">230dp</dimen>
@@ -47,8 +47,8 @@
     <dimen name="placeaddress_margintop">140dp</dimen>
     <dimen name="workstatus_marginstart">40dp</dimen>
     <dimen name="workstatus_margintop">160dp</dimen>
-    <dimen name="short_distance_sign_width">30dp</dimen>
-    <dimen name="short_distance_sign_height">30dp</dimen>
+    <dimen name="short_distance_sign_width">25dp</dimen>
+    <dimen name="short_distance_sign_height">25dp</dimen>
     <dimen name="short_distance_sign_marginstart">237dp</dimen>
     <dimen name="short_distance_sign_margintop">145dp</dimen>
     <dimen name="short_distance_marginstart">270dp</dimen>

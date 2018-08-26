@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.stas.sml.R;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
+import com.example.stas.sml.utils.UrlHelper;
 
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class VenuesByCategoryRecyclerAdapter extends RecyclerView.Adapter<VenuesByCategoryRecyclerAdapter.SuggestionViewHolder> {
 
@@ -65,7 +67,7 @@ public class VenuesByCategoryRecyclerAdapter extends RecyclerView.Adapter<Venues
 
         private OnItemClickListener onItemClickListener;
 
-        @BindView(R.id.placeLogo)ImageView logo;
+        @BindView(R.id.placeLogo)CircleImageView logo;
         @BindView(R.id.placeName)TextView name;
         @BindView(R.id.placeRating)AppCompatRatingBar rating;
         @BindView(R.id.placeShortDescription)TextView shortDescription;
@@ -82,7 +84,7 @@ public class VenuesByCategoryRecyclerAdapter extends RecyclerView.Adapter<Venues
 
         void bind(VenueEntity venue) {
             com.example.stas.sml.GlideApp.with(logo)
-                    .load(venue.getPage().getPageInfo().getBanner())
+                    .load(UrlHelper.getUrlToPhoto(venue.getBestPhoto().getPrefix(), venue.getBestPhoto().getSuffix()))
                     .placeholder(R.drawable.circle_no_image)
                     .into(logo);
             name.setText(venue.getName());

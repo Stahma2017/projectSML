@@ -8,23 +8,23 @@
     android:background="@drawable/suggestion_card_background"
     android:layout_margin="20dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/placeLogo"
         android:layout_width="@dimen/placelogo_width"
         android:layout_height="@dimen/placelogo_height"
-        android:layout_marginStart="@dimen/placelogo_marginstart"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="@dimen/placelogo_margintop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/placeName"
         android:layout_width="@dimen/placename_width"
-        android:layout_height="30dp"
+        android:layout_height="26dp"
         android:layout_marginStart="90dp"
         android:layout_marginTop="@dimen/placename_margintop"
         android:text="Мясо Love"
-        android:textSize="@dimen/placename_text_size"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,9 +43,9 @@
     <TextView
         android:id="@+id/placeShortDescription"
         android:layout_width="@dimen/placeshortdescription_width"
-        android:layout_height="25dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="@dimen/placeshortdescription_margintop"
+        android:layout_height="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="80dp"
         android:text="Ресторан, где любят мясо"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -54,8 +54,8 @@
         android:id="@+id/placeAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="125dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="110dp"
         android:text="Ул. Красная, 134"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -64,8 +64,8 @@
         android:id="@+id/workIndicator"
         android:layout_width="5dp"
         android:layout_height="5dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="163dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="140dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,8 +73,8 @@
         android:id="@+id/workStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/workstatus_marginstart"
-        android:layout_marginTop="155dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="130dp"
         android:text="Открыто до 00:00"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -82,8 +82,8 @@
     <ImageView
         android:layout_width="@dimen/short_distance_sign_width"
         android:layout_height="@dimen/short_distance_sign_height"
-        android:layout_marginStart="@dimen/short_distance_sign_marginstart"
-        android:layout_marginTop="130dp"
+        android:layout_marginStart="227dp"
+        android:layout_marginTop="110dp"
         android:src="@drawable/distance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -92,8 +92,8 @@
         android:id="@+id/shortDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/short_distance_marginstart"
-        android:layout_marginTop="134dp"
+        android:layout_marginStart="260dp"
+        android:layout_marginTop="114dp"
         android:text="3.1 км"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -183,8 +183,8 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
                 categoryAdapter.notifyDataSetChanged();
                 presenter.getLocationForCategories(categoryAdapter.getEnabledCategoryId());
             }else {
-                SharedPreferences qieryPrefs = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE);
-                String query = qieryPrefs.getString("query", "none");
+                SharedPreferences queryPrefs = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE);
+                String query = queryPrefs.getString("query", "none");
                 if (!query.equals("none")){
                     categoryAdapter.notifyDataSetChanged();
                     presenter.getLocationForSubmit(query);
@@ -194,6 +194,8 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
             activity.showToolbar();
         }
     }
+
+
 
     @Override
     public void onDestroyView() {
@@ -289,6 +291,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
                 map.animateCamera(CameraUpdateFactory.zoomIn());
                 break;
             case R.id.toVenueListBtn:
+                categoryAdapter.notifyDataSetChanged();
                 int categoryIndex = categoryAdapter.getEnabledCategory();
                     SharedPreferences.Editor editor = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE).edit();
                     editor.putInt("index", categoryIndex);
@@ -367,12 +370,8 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         SharedPreferences.Editor editor = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE).edit();
         editor.putString("venueSelect", venueId);
         editor.apply();
-     /*   categoryAdapter.setEnabledCategory(-1);
-        categoryAdapter.notifyDataSetChanged();*/
         MainActivity activity = (MainActivity) getActivity();
         activity.displayVenueSelectedFragment();
-        activity.hideToolbar();
-
     }
 
     @Override

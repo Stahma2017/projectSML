@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.stas.sml.R;
 
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
+import com.example.stas.sml.utils.UrlHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PreviousPlacesByCategoryAdapter extends RecyclerView.Adapter<PreviousPlacesByCategoryAdapter.PreviousPlacesViewHolder> {
 
@@ -65,7 +67,7 @@ public class PreviousPlacesByCategoryAdapter extends RecyclerView.Adapter<Previo
 
         private OnItemClickListener onItemClickListener;
 
-        @BindView(R.id.placeLogoPrev)ImageView logo;
+        @BindView(R.id.placeLogoPrev)CircleImageView logo;
         @BindView(R.id.placeNamePrev)TextView name;
         @BindView(R.id.placeRatingPrev)AppCompatRatingBar rating;
         @BindView(R.id.placeShortDescriptionPrev)TextView shortDescription;
@@ -83,7 +85,7 @@ public class PreviousPlacesByCategoryAdapter extends RecyclerView.Adapter<Previo
         void bind(VenueEntity venue) {
 
             com.example.stas.sml.GlideApp.with(logo)
-                    .load(venue.getPage().getPageInfo().getBanner())
+                    .load(UrlHelper.getUrlToPhoto(venue.getBestPhoto().getPrefix(), venue.getBestPhoto().getSuffix()))
                     .placeholder(R.drawable.circle_no_image)
                     .into(logo);
 

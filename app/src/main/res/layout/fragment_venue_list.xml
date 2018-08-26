@@ -62,7 +62,7 @@
             android:background="#ffffff"
             android:id="@+id/categoryRecyclerVenuelist"
             android:layout_width="match_parent"
-            android:layout_height="110dp"
+            android:layout_height="80dp"
             android:layout_marginTop="54dp"/>
 
         <android.support.v7.widget.RecyclerView
@@ -73,7 +73,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:visibility="invisible"
-            android:layout_marginTop="135dp"
+            android:layout_marginTop="133dp"
             android:id="@+id/suggestion_listPrev"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

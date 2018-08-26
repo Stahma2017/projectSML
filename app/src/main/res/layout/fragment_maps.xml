@@ -173,20 +173,20 @@
                 android:visibility="invisible"
                 android:id="@+id/categoryRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="110dp"
+                android:layout_height="80dp"
                 android:layout_marginTop="54dp"/>
 
             <android.support.v7.widget.RecyclerView
                 android:visibility="gone"
                 android:id="@+id/placesRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="200dp"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="60dp"/>
 
             <android.support.v7.widget.RecyclerView
                 android:visibility="invisible"
-                android:layout_marginTop="135dp"
+                android:layout_marginTop="133dp"
                 android:id="@+id/suggestion_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

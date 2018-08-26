@@ -9,7 +9,7 @@
     android:layout_margin="20dp"
     android:paddingBottom="10dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/placeLogoPrev"
         android:layout_width="50dp"
         android:layout_height="50dp"
