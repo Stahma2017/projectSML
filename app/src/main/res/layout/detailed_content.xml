@@ -24,6 +24,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="40dp"
         android:textStyle="bold"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,6 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="75dp"
+        android:textColor="#000000"
         android:text="Описание"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +75,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:textStyle="bold"
+        android:textColor="#000000"
         android:text="Контакты"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionSelected" />
@@ -130,6 +133,7 @@
         android:layout_height="18dp"
         android:layout_marginStart="27dp"
         android:layout_marginTop="10dp"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/number" />
 
@@ -139,6 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:textColor="#000000"
         android:text="Галерея"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

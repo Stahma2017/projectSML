@@ -19,6 +19,7 @@
 
         <activity
             android:name=".presentation.feature.main.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MapActivityTheme"
             android:label=""
             android:windowSoftInputMode="adjustPan">

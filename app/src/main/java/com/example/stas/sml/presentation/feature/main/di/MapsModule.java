@@ -8,10 +8,12 @@ import com.example.stas.sml.data.repository.LocationRepository;
 import com.example.stas.sml.di.annotations.MapsScope;
 import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
+import com.example.stas.sml.presentation.feature.history.HistoryFragment;
 import com.example.stas.sml.presentation.feature.main.ActivityContract;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.example.stas.sml.presentation.feature.main.MainActivityPresenter;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
+import com.example.stas.sml.presentation.feature.save.SaveFragment;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
 import com.example.stas.sml.presentation.feature.venueselected.VenueSelectedFragment;
 
@@ -62,6 +64,19 @@ public class MapsModule {
     VenueSelectedFragment provideVenueSelectedFragment(){
         return new VenueSelectedFragment();
     }
+
+    @NonNull
+    @Provides
+    HistoryFragment provideHistoryFragment(){
+        return new HistoryFragment();
+    }
+
+    @NonNull
+    @Provides
+    SaveFragment provideSaveFragment(){
+        return new SaveFragment();
+    }
+
 
 
 

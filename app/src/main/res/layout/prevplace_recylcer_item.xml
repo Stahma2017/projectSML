@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/prev_places_item_background"
@@ -25,7 +24,7 @@
         android:layout_marginStart="@dimen/placename_marginstart"
         android:layout_marginTop="@dimen/placename_margintop"
         android:textSize="25sp"
-        android:text="Мясо Love"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,7 +46,7 @@
         android:layout_height="35dp"
         android:layout_marginStart="70dp"
         android:layout_marginTop="50dp"
-        android:text="Ресторан, где любят мясо"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginTop="90dp"
-        android:text="Ул. Красная, 134"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
         android:layout_marginTop="115dp"
-        android:text="Открыто до 00:00"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="5dp"/>

@@ -20,9 +20,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkModule {
 
     private static final String CLIENT_ID = "client_id";
-    private static final String CLIENT_ID_VALUE = "UC2RPAAKOLC2PB3A2V2MV2CB3BQTJ30MLC0SNJ1E1FMXSNOJ";
+    private static final String CLIENT_ID_VALUE = "Q0YZFOLYTOH1VTWXEJOYIUVFXIHHUBRFDPLKUYVBDPW3ZIH5";
     private static final String CLIENT_SECRET = "client_secret";
-    private static final String CLIENT_SECRET_VALUE = "305WUAUOK0X20QAEGZGYBBSQQJKU00U1TV4DMGIIUV4GBWQ4";
+    private static final String CLIENT_SECRET_VALUE = "IXPIJW3ENVEBWLCGIX24FWMBPHGZHYBIE0NZB1ANWYCEUIGZ";
     private static final String VERSION = "v";
     private static final String VERSION_VALUE = "20180323";
     private static final String BASE_URL = "https://api.foursquare.com/";
