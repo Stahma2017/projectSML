@@ -43,42 +43,25 @@ public class HistoryPresenter {
     }
 
     public void saveVenue(long id,boolean saved){
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                database.venueDao().updateSavedById(id, saved);
-            }
-        }).observeOn(AndroidSchedulers.mainThread())
+        Completable.fromAction(() -> database.venueDao().updateSavedById(id, saved)).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                compositeDisposable.add(d);
             }
-
             @Override
             public void onComplete() {
-
             }
-
             @Override
             public void onError(Throwable e) {
-
             }
         });
-
-      //  Disposable dis = database.venueDao().updateSavedById(id, saved)
-
     }
 
     public void getVenues(){
       Disposable dis = database.venueDao().getSaved(false)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<VenueDb>>() {
-                    @Override
-                    public void accept(List<VenueDb> venueDbs) throws Exception {
-                        view.get().showPlaces(venueDbs);
-                    }
-                });
+                .subscribe(venueDbs -> view.get().showPlaces(venueDbs));
       compositeDisposable.add(dis);
     }
 }

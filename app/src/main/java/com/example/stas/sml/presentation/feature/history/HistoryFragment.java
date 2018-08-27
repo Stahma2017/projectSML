@@ -41,6 +41,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.History
         App.getInstance().addHistoryComponent(this, this).injectHistoryFragment(this);
         unbinder = ButterKnife.bind(this, view);
         presenter.attachView(this);
+
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         placesRecycler.setLayoutManager(verticalLayoutManager);
         placesRecycler.setAdapter(historyRecyclerAdapter);

@@ -20,7 +20,6 @@
         android:id="@+id/action_account"
         android:icon="@drawable/ic_bottombar_bookmark"
         android:title=""
-        android:enabled="false"
         app:showAsAction="ifRoom"
         android:gravity = "start"/>
 

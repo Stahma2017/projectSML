@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     @BindView(R.id.fragment_container)FrameLayout fragmentContainer;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
                     break;
                 case R.id.action_account:
                     menuItem.setChecked(true);
+                    displaySaveFragment();
                     break;
                 case R.id.action_places:
                     menuItem.setChecked(true);
@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         ft.remove(venuelistFragment);
         ft.remove(venueSelectedFragment);
         ft.remove(historyFragment);
+        ft.remove(saveFragment);
         ft.commit();
     }
 
@@ -113,8 +114,19 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.remove(venuelistFragment);
         ft.remove(venueSelectedFragment);
+        ft.remove(saveFragment);
         ft.add(R.id.fragment_container, historyFragment);
         ft.commit();
+    }
+
+    public void displaySaveFragment(){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.remove(venuelistFragment);
+        ft.remove(venueSelectedFragment);
+        ft.remove(historyFragment);
+        ft.add(R.id.fragment_container, saveFragment);
+        ft.commit();
+
     }
 
     public void displayVenuelistFragment(){
@@ -123,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         ft.hide(mapsFragment);
         ft.commit();
     }
+
+
 
     public void displayVenueSelectedFragment(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

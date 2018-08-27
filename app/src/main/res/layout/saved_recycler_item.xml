@@ -31,7 +31,7 @@
             android:id="@+id/toSaveBtnSaved"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@drawable/bookmark_button"
+            android:background="@drawable/bookmark_button_clicked"
             android:layout_marginStart="270dp"
             android:layout_marginTop="130dp"
             app:layout_constraintStart_toStartOf="parent"
