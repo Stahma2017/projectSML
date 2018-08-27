@@ -23,11 +23,26 @@ import butterknife.ButterKnife;
 public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecyclerAdapter.HisoryViewHolder>{
 
     private List<VenueDb> venues = new ArrayList<>();
+    private List<VenueDb> filterVenues = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
 
     public void setList(List<VenueDb> venues){
         if(venues != null){
             this.venues = venues;
+        }
+    }
+    public void setFilter(String s){
+        List<VenueDb> results = new ArrayList<>();
+        if (filterVenues.size() == 0){
+            filterVenues = venues;
+        }else{
+            venues = filterVenues;
+        }
+        for (VenueDb venueDb : venues) {
+            if (venueDb.name.toLowerCase().contains(s.toLowerCase())){
+                results.add(venueDb);
+            }
+            venues = results;
         }
     }
 

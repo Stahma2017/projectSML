@@ -134,7 +134,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
                     toolbar.startAnimation(anim);
                     categoryRecycler.startAnimation(anim);
                 } else {
-                    //TODO  handle shaking after closing searchview
+                    // handle shaking after closing searchview
                     searchView.setIconified(true);
                     toolbar.setBackground(ContextCompat.getDrawable(MapsFragment.this.getContext(), R.drawable.rectangle_14_edited));
                     btnHome.setVisibility(View.GONE);
@@ -324,6 +324,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         zoomOutBtn.setVisibility(View.GONE);
         zoomInBtn.setVisibility(View.GONE);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        marker.remove();
         //todo add markers of places
     }
 
@@ -362,6 +363,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         suggestionRecycler.setVisibility(View.GONE);
         categoryAdapter.setEnabledCategory(-1);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        marker.remove();
     }
 
     @Override

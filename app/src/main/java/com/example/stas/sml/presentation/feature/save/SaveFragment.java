@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
@@ -15,6 +17,7 @@ import com.example.stas.sml.data.database.entity.VenueDb;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.example.stas.sml.presentation.feature.save.adapter.SaveRecyclerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,11 +36,12 @@ public class SaveFragment extends Fragment implements SaveContract.SaveView, Sav
     @Inject
     SaveRecyclerAdapter saveRecyclerAdapter;
     @BindView(R.id.placesSave)RecyclerView placesRecycler;
+    @BindView(R.id.searchSave)SearchView search;
+    @BindView(R.id.titleSaved)TextView title;
 
     public SaveFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,7 +54,29 @@ public class SaveFragment extends Fragment implements SaveContract.SaveView, Sav
         placesRecycler.setLayoutManager(verticalLayoutManager);
         placesRecycler.setAdapter(saveRecyclerAdapter);
         presenter.getVenues();
-
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                saveRecyclerAdapter.setFilter(s);
+                saveRecyclerAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+        search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    title.setVisibility(View.GONE);
+                }else{
+                    title.setVisibility(View.VISIBLE);
+                    search.setIconified(true);
+                }
+            }
+        });
         return view;
     }
 

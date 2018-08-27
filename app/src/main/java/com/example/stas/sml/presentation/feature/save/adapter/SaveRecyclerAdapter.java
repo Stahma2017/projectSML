@@ -26,11 +26,31 @@ import butterknife.ButterKnife;
 public class SaveRecyclerAdapter extends RecyclerView.Adapter<SaveRecyclerAdapter.SaveViewHolder> {
 
     private List<VenueDb> venues = new ArrayList<>();
+    private List<VenueDb> filterVenues = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
 
     public void setList(List<VenueDb> venues){
         if(venues != null){
             this.venues = venues;
+        }
+    }
+
+    public List<VenueDb> getList(){
+        return venues;
+    }
+
+    public void setFilter(String s){
+        List<VenueDb> results = new ArrayList<>();
+        if (filterVenues.size() == 0){
+            filterVenues = venues;
+        }else{
+            venues = filterVenues;
+        }
+        for (VenueDb venueDb : venues) {
+            if (venueDb.name.toLowerCase().contains(s.toLowerCase())){
+                results.add(venueDb);
+            }
+            venues = results;
         }
     }
 
@@ -62,7 +82,6 @@ public class SaveRecyclerAdapter extends RecyclerView.Adapter<SaveRecyclerAdapte
     class SaveViewHolder extends RecyclerView.ViewHolder{
 
         private OnItemClickListener onItemClickListener;
-
         @BindView(R.id.imageSaved)ImageView photoSaved;
         @BindView(R.id.nameSaved)TextView nameSaved;
         @BindView(R.id.addressSaved)TextView addressSaved;
@@ -77,7 +96,6 @@ public class SaveRecyclerAdapter extends RecyclerView.Adapter<SaveRecyclerAdapte
         }
 
         void bind(VenueDb venue){
-
             RequestOptions requestOptions = new RequestOptions();
             requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(25));
             com.example.stas.sml.GlideApp.with(photoSaved)
@@ -90,8 +108,7 @@ public class SaveRecyclerAdapter extends RecyclerView.Adapter<SaveRecyclerAdapte
             addressSaved.setText(venue.address);
             workStatusSaved.setText(venue.workStatus);
             toMapBtn.setOnClickListener(itemView -> onItemClickListener.onItemClick(itemView, venue));
-            toSaveBtn.setOnClickListener(itemView -> onItemClickListener.onItemClick(itemView, venue)); 
-
+            toSaveBtn.setOnClickListener(itemView -> onItemClickListener.onItemClick(itemView, venue));
         }
     }
 }
