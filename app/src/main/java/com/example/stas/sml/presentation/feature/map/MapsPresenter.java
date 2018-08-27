@@ -13,6 +13,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -45,9 +46,10 @@ public class MapsPresenter  {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(venue -> {
-                    venues.add(venue);
-                    view.get().showPlacesByCategory(venues);
-                }, errorHandler::proceed);
+                    view.get().displayProgressbar();
+                            venues.add(venue);
+                            view.get().showPlacesByCategory(venues);
+                        }, errorHandler::proceed);
         compositeDisposable.add(venueListDisposable);
     }
 
@@ -101,10 +103,14 @@ public class MapsPresenter  {
         Disposable bla = interactor.loadVenuesByQuerySubmition(location, submit)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(venue -> {
-                    venues.add(venue);
-                    view.get().showPlacesBySubmit(venues);
-                }, errorHandler::proceed);
+                .subscribe(new Consumer<VenueEntity>() {
+                               @Override
+                               public void accept(VenueEntity venue) throws Exception {
+                                   venues.add(venue);
+                                   view.get().showPlacesBySubmit(venues);
+                               }
+                           }, errorHandler::proceed,
+                        () -> view.get().hideProgressbar());
               compositeDisposable.add(bla);
     }
 

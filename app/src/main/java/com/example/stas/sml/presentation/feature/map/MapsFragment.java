@@ -175,7 +175,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.d("HIDE", "hide state changed");
         if (!hidden) {
             SharedPreferences indexPrefs = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE);
             int enabledIndex = indexPrefs.getInt("toMap", -1);
@@ -337,7 +336,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
 
     public void deliverLocationToCategories(Location location, String category){
         presenter.getVenuesWithCategory(category, location);
-        displayProgressbar();
     }
 
     @Override
@@ -356,7 +354,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         placesAdapter.notifyDataSetChanged();
         placesRecycler.setVisibility(View.VISIBLE);
         venueListBtn.setVisibility(View.VISIBLE);
-        hideProgressbar();
         locationBtn.setVisibility(View.GONE);
         zoomOutBtn.setVisibility(View.GONE);
         zoomInBtn.setVisibility(View.GONE);
@@ -395,17 +392,17 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         activity.displayVenueSelectedFragment();
     }
 
-    private void displayProgressbar(){
+    public void displayProgressbar(){
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    private void hideProgressbar(){
+    public void hideProgressbar(){
         progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void showError(String errorMessage) {
-        hideProgressbar();
-        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(getContext(), "INET GONE", Toast.LENGTH_SHORT).show();
     }
 }

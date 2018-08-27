@@ -20,6 +20,8 @@ public interface MapsContract {
         void deliverLocationToCategories(Location location, String category);
         void deliverLocationToSumbit(Location location,String submit);
         void showPlacesBySubmit(List<VenueEntity> venues);
+        void hideProgressbar();
+        void displayProgressbar();
 
     }
 

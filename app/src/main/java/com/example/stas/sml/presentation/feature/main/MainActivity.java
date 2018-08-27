@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
                     break;
                 case R.id.action_account:
                     menuItem.setChecked(true);
+                  //  menuItem.setIcon(R.drawable.ic_bottombar_bookmark_clicked)
                     displaySaveFragment();
                     break;
                 case R.id.action_places:

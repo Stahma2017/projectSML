@@ -7,21 +7,25 @@
 
     <item
         android:id="@+id/action_places"
-        android:icon="@drawable/ic_bottombar_location"
-        android:title=""
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/action_map"
-        android:icon="@drawable/ic_bottombar_map"
-        android:title=""
-
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/action_account"
-        android:icon="@drawable/ic_bottombar_bookmark"
+        android:icon="@drawable/location_selector"
         android:title=""
         app:showAsAction="ifRoom"
-        android:gravity = "start"/>
+        android:checked="false"
+        />
+    <item
+        android:id="@+id/action_map"
+        android:icon="@drawable/map_selector"
+        android:title=""
+        android:checked="false"
+        app:showAsAction="ifRoom"
+       />
+    <item
+        android:id="@+id/action_account"
+        android:icon="@drawable/bookmark_selector"
+        android:title=""
+        app:showAsAction="ifRoom"
+        android:gravity ="start"
+        android:checked="false"/>
 
 </menu>
 
