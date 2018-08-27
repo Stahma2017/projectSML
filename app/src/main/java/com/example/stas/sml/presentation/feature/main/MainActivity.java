@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
                     break;
                 case R.id.action_account:
                     menuItem.setChecked(true);
-                  //  menuItem.setIcon(R.drawable.ic_bottombar_bookmark_clicked)
                     displaySaveFragment();
                     break;
                 case R.id.action_places:
@@ -112,22 +111,25 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     }
 
     public void displayHistoryFragment(){
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.remove(venuelistFragment);
-        ft.remove(venueSelectedFragment);
-        ft.remove(saveFragment);
-        ft.add(R.id.fragment_container, historyFragment);
-        ft.commit();
+        if (!historyFragment.isAdded()){
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.remove(venuelistFragment);
+            ft.remove(venueSelectedFragment);
+            ft.remove(saveFragment);
+            ft.add(R.id.fragment_container, historyFragment);
+            ft.commit();
+        }
     }
 
     public void displaySaveFragment(){
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.remove(venuelistFragment);
-        ft.remove(venueSelectedFragment);
-        ft.remove(historyFragment);
-        ft.add(R.id.fragment_container, saveFragment);
-        ft.commit();
-
+        if(!saveFragment.isAdded()){
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.remove(venuelistFragment);
+            ft.remove(venueSelectedFragment);
+            ft.remove(historyFragment);
+            ft.add(R.id.fragment_container, saveFragment);
+            ft.commit();
+        }
     }
 
     public void displayVenuelistFragment(){
@@ -136,8 +138,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         ft.hide(mapsFragment);
         ft.commit();
     }
-
-
 
     public void displayVenueSelectedFragment(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

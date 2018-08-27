@@ -47,30 +47,35 @@ public class MapsModule {
         return mainActivity;
     }
 
+    @MapsScope
     @NonNull
     @Provides
     MapsFragment provideMapsFragment(){
         return new MapsFragment();
     }
 
+    @MapsScope
     @NonNull
     @Provides
     VenuelistFragment provideVenulistFragment(){
         return new VenuelistFragment();
     }
 
+    @MapsScope
     @NonNull
     @Provides
     VenueSelectedFragment provideVenueSelectedFragment(){
         return new VenueSelectedFragment();
     }
 
+    @MapsScope
     @NonNull
     @Provides
     HistoryFragment provideHistoryFragment(){
         return new HistoryFragment();
     }
 
+    @MapsScope
     @NonNull
     @Provides
     SaveFragment provideSaveFragment(){
