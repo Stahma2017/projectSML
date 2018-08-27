@@ -82,7 +82,7 @@ VenueSelectContract.VenueSelectView{
         presenter.attachView(this);
         SharedPreferences prefs = getActivity().getSharedPreferences(MapsFragment.MY_PREFS, MODE_PRIVATE);
         String venueId = prefs.getString("venueSelect", "none");
-        Log.d("PREF", venueId);
+
         if (!venueId.equals("none")){
             presenter.getLocationForVenueDetailed(venueId);
         }

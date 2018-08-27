@@ -13,6 +13,7 @@ import com.example.stas.sml.presentation.feature.main.ActivityContract;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.example.stas.sml.presentation.feature.main.MainActivityPresenter;
 import com.example.stas.sml.presentation.feature.map.MapsFragment;
+import com.example.stas.sml.presentation.feature.save.SaveFragment;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
 import com.example.stas.sml.presentation.feature.venueselected.VenueSelectedFragment;
 
@@ -46,9 +47,6 @@ public class MapsModule {
         return mainActivity;
     }
 
-
-
-
     @NonNull
     @Provides
     MapsFragment provideMapsFragment(){
@@ -72,6 +70,13 @@ public class MapsModule {
     HistoryFragment provideHistoryFragment(){
         return new HistoryFragment();
     }
+
+    @NonNull
+    @Provides
+    SaveFragment provideSaveFragment(){
+        return new SaveFragment();
+    }
+
 
 
 

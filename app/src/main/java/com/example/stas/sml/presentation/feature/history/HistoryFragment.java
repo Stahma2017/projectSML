@@ -26,23 +26,19 @@ public class HistoryFragment extends Fragment implements HistoryContract.History
 
     @Inject
     HistoryPresenter presenter;
-
+    @Inject
+    HistoryRecyclerAdapter historyRecyclerAdapter;
     @BindView(R.id.placesVisited)RecyclerView placesRecycler;
-
-
-    //new dependency
-    HistoryRecyclerAdapter historyRecyclerAdapter = new HistoryRecyclerAdapter(this);
 
     public HistoryFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
-        App.getInstance().addHistoryComponent(this).injectHistoryFragment(this);
+        App.getInstance().addHistoryComponent(this, this).injectHistoryFragment(this);
         unbinder = ButterKnife.bind(this, view);
         presenter.attachView(this);
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -60,13 +56,10 @@ public class HistoryFragment extends Fragment implements HistoryContract.History
                 activity.pointLocationOnMap(venuedb.latitude, venuedb.longitude, venuedb.name);
                 break;
             case R.id.toSaveBtnVisited:
-                //to do smth
-                Toast.makeText(getContext(), "to save", Toast.LENGTH_SHORT).show();
+               presenter.saveVenue(venuedb.id, true);
                 break;
         }
     }
-
-
 
     @Override
     public void onDestroyView() {

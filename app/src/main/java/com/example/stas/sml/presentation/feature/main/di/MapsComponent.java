@@ -6,6 +6,8 @@ import com.example.stas.sml.presentation.feature.history.di.HistoryModule;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentComponent;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentModule;
+import com.example.stas.sml.presentation.feature.save.di.SaveComponent;
+import com.example.stas.sml.presentation.feature.save.di.SaveModule;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.di.VenuelistComponent;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.di.VenuelistModule;
 import com.example.stas.sml.presentation.feature.venueselected.di.VenueSelectedComponent;
@@ -21,6 +23,7 @@ public interface MapsComponent {
     VenuelistComponent addVenuelistComponent(VenuelistModule venuelistModule);
     VenueSelectedComponent addVenueSelectedComponent(VenueSelectedModule venueSelectedModule);
     HistoryComponent addHistoryComponent(HistoryModule historyModule);
+    SaveComponent addSaveComponent(SaveModule saveModule);
 
 }
 

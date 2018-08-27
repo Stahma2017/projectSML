@@ -3,6 +3,7 @@ import android.app.Application;
 import com.example.stas.sml.di.AppComponent;
 import com.example.stas.sml.di.DaggerAppComponent;
 import com.example.stas.sml.presentation.feature.history.HistoryFragment;
+import com.example.stas.sml.presentation.feature.history.adapter.HistoryRecyclerAdapter;
 import com.example.stas.sml.presentation.feature.history.di.HistoryComponent;
 import com.example.stas.sml.presentation.feature.history.di.HistoryModule;
 import com.example.stas.sml.presentation.feature.main.di.MapsComponent;
@@ -13,6 +14,10 @@ import com.example.stas.sml.presentation.feature.map.adapter.SearchSuggestionsRe
 import com.example.stas.sml.presentation.feature.map.adapter.VenuesByCategoryRecyclerAdapter;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentComponent;
 import com.example.stas.sml.presentation.feature.map.di.MapsFragmentModule;
+import com.example.stas.sml.presentation.feature.save.SaveFragment;
+import com.example.stas.sml.presentation.feature.save.adapter.SaveRecyclerAdapter;
+import com.example.stas.sml.presentation.feature.save.di.SaveComponent;
+import com.example.stas.sml.presentation.feature.save.di.SaveModule;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.VenuelistFragment;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.adapter.PreviousPlacesByCategoryAdapter;
 import com.example.stas.sml.presentation.feature.venuelistdisplay.di.VenuelistComponent;
@@ -38,6 +43,7 @@ public class App extends Application {
     private VenuelistComponent venuelistComponent;
     private VenueSelectedComponent venueSelectedComponent;
     private HistoryComponent historyComponent;
+    private SaveComponent saveComponent;
 
     @Override
     public void onCreate() {
@@ -112,14 +118,25 @@ public class App extends Application {
         venueSelectedComponent = null;
     }
 
-    public HistoryComponent addHistoryComponent(HistoryFragment historyFragment){
+    public HistoryComponent addHistoryComponent(HistoryFragment historyFragment, HistoryRecyclerAdapter.OnItemClickListener onItemClickListener){
         if (historyComponent == null){
-            historyComponent = mapsComponent.addHistoryComponent(new HistoryModule(historyFragment));
+            historyComponent = mapsComponent.addHistoryComponent(new HistoryModule(historyFragment, onItemClickListener));
         }
         return historyComponent;
     }
     public void clearHistoryComponent(){
         historyComponent = null;
+    }
+
+    public SaveComponent addSaveComponent(SaveFragment saveFragment, SaveRecyclerAdapter.OnItemClickListener onItemClickListener){
+        if (saveComponent == null){
+            saveComponent = mapsComponent.addSaveComponent(new SaveModule(saveFragment, onItemClickListener));
+        }
+        return saveComponent;
+    }
+
+    public void clearSaveComponent(){
+        saveComponent = null;
     }
 
 

@@ -55,6 +55,7 @@ public class VenueSelectedPresenter {
                         ,errorHandler::proceed);
         compositeDisposable.add(dis);
     }
+    
     public void saveVenueToDb(VenueEntity venue){
         VenueDb venueDb = new VenueDb();
         venueDb.name = venue.getName();
@@ -63,6 +64,7 @@ public class VenueSelectedPresenter {
         venueDb.longitude = venue.getLocation().getLng();
         venueDb.imageUrl = UrlHelper.getUrlToPhoto(venue.getBestPhoto().getPrefix(), venue.getBestPhoto().getSuffix());
         venueDb.workStatus = venue.getHours().getStatus();
+        venueDb.venueId = venue.getId();
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {

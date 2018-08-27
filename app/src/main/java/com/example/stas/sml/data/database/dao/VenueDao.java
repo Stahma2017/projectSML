@@ -26,4 +26,10 @@ public interface VenueDao {
 
     @Query("SELECT * FROM venuedb")
     Flowable<List<VenueDb>> getAll();
+
+    @Query("SELECT * FROM venuedb WHERE saved = :isSaved")
+    Flowable<List<VenueDb>> getSaved(boolean isSaved);
+
+    @Query("UPDATE venueDb SET saved = :newSaved WHERE id = :id")
+    int updateSavedById(long id, boolean newSaved);
 }

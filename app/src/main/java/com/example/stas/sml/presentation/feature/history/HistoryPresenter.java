@@ -9,10 +9,14 @@ import com.example.stas.sml.presentation.base.ErrorHandler;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class HistoryPresenter {
 
@@ -38,8 +42,36 @@ public class HistoryPresenter {
         compositeDisposable.dispose();
     }
 
+    public void saveVenue(long id,boolean saved){
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                database.venueDao().updateSavedById(id, saved);
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
+
+      //  Disposable dis = database.venueDao().updateSavedById(id, saved)
+
+    }
+
     public void getVenues(){
-      Disposable dis = database.venueDao().getAll()
+      Disposable dis = database.venueDao().getSaved(false)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<VenueDb>>() {
                     @Override

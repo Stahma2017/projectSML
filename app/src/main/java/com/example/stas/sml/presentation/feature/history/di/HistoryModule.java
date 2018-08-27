@@ -12,6 +12,7 @@ import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.example.stas.sml.presentation.feature.history.HistoryPresenter;
+import com.example.stas.sml.presentation.feature.history.adapter.HistoryRecyclerAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -21,10 +22,19 @@ import io.reactivex.disposables.CompositeDisposable;
 public class HistoryModule {
 
     private Fragment historyFragment;
+    private HistoryRecyclerAdapter.OnItemClickListener onItemClickListener;
 
-    public HistoryModule(Fragment historyFragment) {
+    public HistoryModule(Fragment historyFragment, HistoryRecyclerAdapter.OnItemClickListener onItemClickListener) {
         this.historyFragment = historyFragment;
+        this.onItemClickListener = onItemClickListener;
     }
+
+    @NonNull
+    @Provides
+    HistoryRecyclerAdapter provideHistoryRecyclerAdapter(){
+        return new HistoryRecyclerAdapter(onItemClickListener);
+    }
+
 
     @HistoryScope
     @NonNull

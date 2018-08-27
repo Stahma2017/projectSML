@@ -23,6 +23,7 @@ import permissions.dispatcher.RuntimePermissions;
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
 import com.example.stas.sml.presentation.feature.history.HistoryFragment;
+import com.example.stas.sml.presentation.feature.save.SaveFragment;
 import com.example.stas.sml.presentation.feature.venueselected.VenueSelectedFragment;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.base.ErrorHandler;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     VenueSelectedFragment venueSelectedFragment;
     @Inject
     HistoryFragment historyFragment;
+    @Inject
+    SaveFragment saveFragment;
 
     @BindView(R.id.bottomContainer)FrameLayout bottomContainer;
     @BindView(R.id.bottomAppBar)BottomNavigationView bottomNavigation;

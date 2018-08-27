@@ -74,21 +74,21 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         }
 
         void bind(VenueDb venue){
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(25));
-            com.example.stas.sml.GlideApp.with(photoVisited)
-                    .load(venue.imageUrl)
-                    .apply(requestOptions)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.no_image_rounded)
-                    .into(photoVisited);
-            nameVisited.setText(venue.name);
-            addressVisited.setText(venue.address);
-            workStatusVisited.setText(venue.workStatus);
-            toMapBtn.setOnClickListener(itemView -> onItemClickListener.onItemClick(itemView, venue));
-            toSaveBtn.setOnClickListener(itemView -> onItemClickListener.onItemClick(itemView, venue));
-
+            if (!venue.saved){
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(25));
+                com.example.stas.sml.GlideApp.with(photoVisited)
+                        .load(venue.imageUrl)
+                        .apply(requestOptions)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.no_image_rounded)
+                        .into(photoVisited);
+                nameVisited.setText(venue.name);
+                addressVisited.setText(venue.address);
+                workStatusVisited.setText(venue.workStatus);
+                toMapBtn.setOnClickListener(itemView -> onItemClickListener.onItemClick(itemView, venue));
+                toSaveBtn.setOnClickListener(itemView -> onItemClickListener.onItemClick(itemView, venue));
+            }
         }
-
     }
 }
