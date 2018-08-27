@@ -123,12 +123,15 @@
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
 
-            <ProgressBar
-                android:visibility="invisible"
+            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+
                 android:id="@+id/progressBar"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:backgroundTint="#a017fc"/>
+
+
             <Button
                 android:background="@drawable/venuelistbtn_background"
                 android:visibility="gone"

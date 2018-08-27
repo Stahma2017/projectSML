@@ -6,6 +6,9 @@ import com.example.stas.sml.domain.gateway.LocationGateway;
 import com.example.stas.sml.domain.interactor.MapsModel;
 import com.example.stas.sml.presentation.base.ErrorHandler;
 import com.google.android.gms.maps.model.LatLng;
+
+import org.reactivestreams.Subscriber;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,17 +44,22 @@ public class MapsPresenter  {
     }
 
     public void getVenuesWithCategory(String categoryId, Location currentLocation){
+        view.get().displayProgressbar();
         List<VenueEntity> venues = new ArrayList<>();
         Disposable venueListDisposable = interactor.loadVenuesWithCategory(currentLocation, categoryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(venue -> {
-                    view.get().displayProgressbar();
-                            venues.add(venue);
-                            view.get().showPlacesByCategory(venues);
-                        }, errorHandler::proceed);
+                .subscribe(venueEntity -> {
+                    view.get().hideProgressbar();
+                    venues.add(venueEntity);
+                    view.get().showPlacesByCategory(venues);
+                }, throwable -> {
+                    errorHandler.proceed(throwable);
+                    view.get().hideProgressbar();
+                });
         compositeDisposable.add(venueListDisposable);
     }
+
 
     public void getLocation(LatLng latLng){
         Disposable dis = locationGateway.getCurrentLocation()

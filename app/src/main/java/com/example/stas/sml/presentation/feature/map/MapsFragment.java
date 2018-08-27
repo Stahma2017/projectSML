@@ -1,6 +1,5 @@
 package com.example.stas.sml.presentation.feature.map;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Address;
@@ -16,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +52,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -85,7 +84,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     @BindView(R.id.categoryRecycler)RecyclerView categoryRecycler;
     @BindView(R.id.placesRecycler)RecyclerView placesRecycler;
     @BindView(R.id.suggestion_list)RecyclerView suggestionRecycler;
-    @BindView(R.id.progressBar)ProgressBar progressBar;
+    @BindView(R.id.progressBar)MaterialProgressBar progressBar;
     @BindView(R.id.toVenueListBtn)Button venueListBtn;
     @BindView(R.id.map)MapView mapView;
     @BindView(R.id.search_viewMaps)SearchView searchView;
@@ -201,8 +200,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         setMarker(latLng, title);
         map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
     }
-
-
 
     @Override
     public void onDestroyView() {
@@ -323,7 +320,9 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         zoomOutBtn.setVisibility(View.GONE);
         zoomInBtn.setVisibility(View.GONE);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        marker.remove();
+        if (marker != null){
+            marker.remove();
+        }
         //todo add markers of places
     }
 
@@ -360,7 +359,9 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         suggestionRecycler.setVisibility(View.GONE);
         categoryAdapter.setEnabledCategory(-1);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        marker.remove();
+        if (marker != null){
+            marker.remove();
+        }
     }
 
     @Override

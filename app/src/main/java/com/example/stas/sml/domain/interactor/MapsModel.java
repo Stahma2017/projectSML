@@ -29,7 +29,7 @@ public class MapsModel implements ActivityContract.Model {
        String ll = location.getLatitude() + ", " + location.getLongitude();
       //  String ll = "48.878396" + ", " + "2.354611";
       //  String ll = "40.725208" + ", " + "-73.862760";
-        return serverApi.searchWithCategory(ll, 1000.0, categoryId, 1)
+        return serverApi.searchWithCategory(ll, 1000.0, categoryId, 3)
                 .map(searchResponce -> searchResponce.getResponse().getVenues())
                 .flatMapIterable(items -> items)
                 .flatMap(venuesearch -> serverApi.getVenue(venuesearch.getId())
@@ -62,7 +62,6 @@ public class MapsModel implements ActivityContract.Model {
     public Observable<com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity> loadDetailedVenues(String venueId){
         return serverApi.getVenue(venueId)
                 .map(venueDetailsResponse -> mapper.map(venueDetailsResponse.getVenueDto().getVenue()));
-
     }
 }
 
