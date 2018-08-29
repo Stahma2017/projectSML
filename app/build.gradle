@@ -103,5 +103,8 @@ dependencies {
     //MaterialProgressBar
     implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
 
+    //RxBindings
+    implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.1.1'
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.stas.sml.presentation.feature.main.di;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.stas.sml.data.mapper.VenueMapper;
@@ -29,8 +30,8 @@ public class MapsModule {
     @NonNull
     @Provides
     ActivityContract.Presenter provideMapsPresenter(ErrorHandler errorHandler, CompositeDisposable compositeDisposable,
-                                                    ActivityContract.Model mapsModel) {
-        return new MainActivityPresenter(mapsModel, errorHandler, compositeDisposable);
+                                                    ActivityContract.Model mapsModel, Context context) {
+        return new MainActivityPresenter(mapsModel, errorHandler, compositeDisposable, context);
     }
 
     @MapsScope
@@ -40,42 +41,42 @@ public class MapsModule {
         return new MapsModel(api, venueMapper);
     }
 
-    @MapsScope
+
     @NonNull
     @Provides
     MainActivity provideMapsActivity(MainActivity mainActivity) {
         return mainActivity;
     }
 
-    @MapsScope
+
     @NonNull
     @Provides
     MapsFragment provideMapsFragment(){
         return new MapsFragment();
     }
 
-    @MapsScope
+
     @NonNull
     @Provides
     VenuelistFragment provideVenulistFragment(){
         return new VenuelistFragment();
     }
 
-    @MapsScope
+
     @NonNull
     @Provides
     VenueSelectedFragment provideVenueSelectedFragment(){
         return new VenueSelectedFragment();
     }
 
-    @MapsScope
+
     @NonNull
     @Provides
     HistoryFragment provideHistoryFragment(){
         return new HistoryFragment();
     }
 
-    @MapsScope
+
     @NonNull
     @Provides
     SaveFragment provideSaveFragment(){

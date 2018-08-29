@@ -21,7 +21,7 @@
             android:name=".presentation.feature.main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MapActivityTheme"
-            android:label=""
+            android:label="Maps"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -37,8 +37,6 @@
                 <action android:name="android.location.PROVIDERS_CHANGED" />
             </intent-filter>
         </receiver>
-
-        <service android:name=".service.LocationService" android:process=":my_service" />
     </application>
 
 </manifest>

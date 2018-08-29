@@ -174,7 +174,6 @@ VenueSelectContract.VenueSelectView{
 
     @Override
     public void showSuccess(){
-        Toast.makeText(getContext(), "Venue added to db", Toast.LENGTH_SHORT).show();
     }
 
     @Override

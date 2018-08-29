@@ -26,7 +26,7 @@ public interface ActivityContract {
 
         void detachView();
 
-        void checkNetworkConnection(Context context);
+        void checkNetworkConnection();
 
 //        void onBindCategoryRowViewAtPosition(int position, ActivityContract.CategoryRowView rowView);
 //        int getCategoryRowCount();

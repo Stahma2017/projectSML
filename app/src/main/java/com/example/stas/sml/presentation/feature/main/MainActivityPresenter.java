@@ -1,6 +1,7 @@
 package com.example.stas.sml.presentation.feature.main;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.example.stas.sml.R;
 import com.example.stas.sml.presentation.base.ErrorHandler;
@@ -17,17 +18,20 @@ public class MainActivityPresenter implements ActivityContract.Presenter {
     private final ActivityContract.Model model;
     private final ErrorHandler errorHandler;
     private final CompositeDisposable compositeDisposable;
+    private final Context context;
 
     public MainActivityPresenter(ActivityContract.Model model,
                                  ErrorHandler errorHandler,
-                                 CompositeDisposable compositeDisposable) {
+                                 CompositeDisposable compositeDisposable,
+                                 Context context) {
         this.model = model;
         this.errorHandler = errorHandler;
         this.compositeDisposable = compositeDisposable;
+        this.context = context;
     }
 
     @Override
-    public void checkNetworkConnection(Context context) {
+    public void checkNetworkConnection() {
         Disposable networkConnectionDisposable = model.observeConnectionStates()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -47,8 +51,10 @@ public class MainActivityPresenter implements ActivityContract.Presenter {
 
     @Override
     public void detachView() {
+        mapsView.clear();
         mapsView = null;
         errorHandler.detachView();
         compositeDisposable.dispose();
     }
+
 }

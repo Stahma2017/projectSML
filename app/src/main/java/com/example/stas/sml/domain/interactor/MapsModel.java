@@ -29,7 +29,7 @@ public class MapsModel implements ActivityContract.Model {
        String ll = location.getLatitude() + ", " + location.getLongitude();
       //  String ll = "48.878396" + ", " + "2.354611";
       //  String ll = "40.725208" + ", " + "-73.862760";
-        return serverApi.searchWithCategory(ll, 1000.0, categoryId, 3)
+        return serverApi.searchWithCategory(ll, 1000.0, categoryId, 1)
                 .map(searchResponce -> searchResponce.getResponse().getVenues())
                 .flatMapIterable(items -> items)
                 .flatMap(venuesearch -> serverApi.getVenue(venuesearch.getId())
@@ -48,7 +48,7 @@ public class MapsModel implements ActivityContract.Model {
     @Override
     public Observable<VenueEntity> loadVenuesByQuerySubmition(Location location, String query){
         String ll = location.getLatitude() + ", " + location.getLongitude();
-        return serverApi.searchWithQueryParam(ll, 1000.0, query, 2)
+        return serverApi.searchWithQueryParam(ll, 1000.0, query, 1)
                 .map(searchResponce -> searchResponce.getResponse().getVenues())
                 .flatMapIterable(items -> items)
                 .flatMap(venuesearch -> serverApi.getVenue(venuesearch.getId())

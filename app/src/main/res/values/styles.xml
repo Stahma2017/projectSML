@@ -24,11 +24,4 @@
         name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 
     </style>
-
-
-
-
-
-
-
 </resources>

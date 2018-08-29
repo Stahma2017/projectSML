@@ -1,5 +1,7 @@
 package com.example.stas.sml;
+
 import android.app.Application;
+
 import com.example.stas.sml.di.AppComponent;
 import com.example.stas.sml.di.DaggerAppComponent;
 import com.example.stas.sml.presentation.feature.history.HistoryFragment;
@@ -35,7 +37,7 @@ public class App extends Application {
         return instance;
     }
 
-    private  AppComponent component;
+    private AppComponent component;
     private MapsComponent mapsComponent;
 
 
@@ -59,6 +61,14 @@ public class App extends Application {
         LeakCanary.install(this);
     }
 
+    public void clearAllComponents() {
+        mapsFragmentComponent = null;
+        venuelistComponent = null;
+        venueSelectedComponent = null;
+        historyComponent = null;
+        saveComponent = null;
+    }
+
 
     public AppComponent getComponent() {
         return component;
@@ -68,79 +78,77 @@ public class App extends Application {
         return mapsComponent;
     }
 
-    public MapsComponent addMapsComponent(){
-        if (mapsComponent == null){
+    public MapsComponent addMapsComponent() {
+        if (mapsComponent == null) {
             mapsComponent = component.addMapsComponent();
         }
         return mapsComponent;
     }
 
-    public void clearMapsComponent(){
+    public void clearMapsComponent() {
         mapsComponent = null;
     }
 
     public MapsFragmentComponent addMapsFragmentComponent(MapsFragment mapsFragment, CategoryRecyclerAdapter.OnItemClickListener onItemClickListenerCategory,
                                                           VenuesByCategoryRecyclerAdapter.OnItemClickListener onItemClickListenerByCategory,
-                                                          SearchSuggestionsRecyclerAdapter.OnItemClickListener onItemClickListenerSuggest){
-        if (mapsFragmentComponent == null){
+                                                          SearchSuggestionsRecyclerAdapter.OnItemClickListener onItemClickListenerSuggest) {
+        if (mapsFragmentComponent == null) {
             mapsFragmentComponent = mapsComponent.addMapsFragmentComponent(new MapsFragmentModule(mapsFragment, onItemClickListenerCategory,
                     onItemClickListenerByCategory, onItemClickListenerSuggest));
         }
         return mapsFragmentComponent;
     }
 
-    public void clearMapsFragmentComponent(){
+    public void clearMapsFragmentComponent() {
         mapsFragmentComponent = null;
     }
 
     public VenuelistComponent addVenuelistComponent(VenuelistFragment venuelistFragment, PreviousPlacesByCategoryAdapter.OnItemClickListener onItemClickListener,
                                                     CategoryRecyclerAdapter.OnItemClickListener onItemClickListenerCategory,
-                                                    SearchSuggestionsRecyclerAdapter.OnItemClickListener onItemClickListenerSuggest){
-        if (venuelistComponent == null){
+                                                    SearchSuggestionsRecyclerAdapter.OnItemClickListener onItemClickListenerSuggest) {
+        if (venuelistComponent == null) {
             venuelistComponent = mapsComponent.addVenuelistComponent(new VenuelistModule(venuelistFragment, onItemClickListener,
                     onItemClickListenerCategory, onItemClickListenerSuggest));
         }
         return venuelistComponent;
     }
 
-    public void clearVenuComponent(){
+    public void clearVenuComponent() {
         venuelistComponent = null;
     }
 
-    public VenueSelectedComponent addVenueSelectComponent(VenueSelectedFragment venueSelectedFragment){
-        if (venueSelectedComponent == null){
+    public VenueSelectedComponent addVenueSelectComponent(VenueSelectedFragment venueSelectedFragment) {
+        if (venueSelectedComponent == null) {
             venueSelectedComponent = mapsComponent.addVenueSelectedComponent(new VenueSelectedModule(venueSelectedFragment));
         }
         return venueSelectedComponent;
     }
 
-    public void clearVenueSelectComponent(){
+    public void clearVenueSelectComponent() {
         venueSelectedComponent = null;
     }
 
-    public HistoryComponent addHistoryComponent(HistoryFragment historyFragment, HistoryRecyclerAdapter.OnItemClickListener onItemClickListener){
-        if (historyComponent == null){
+    public HistoryComponent addHistoryComponent(HistoryFragment historyFragment, HistoryRecyclerAdapter.OnItemClickListener onItemClickListener) {
+        if (historyComponent == null) {
             historyComponent = mapsComponent.addHistoryComponent(new HistoryModule(historyFragment, onItemClickListener));
         }
         return historyComponent;
     }
-    public void clearHistoryComponent(){
+
+    public void clearHistoryComponent() {
         historyComponent = null;
     }
 
-    public SaveComponent addSaveComponent(SaveFragment saveFragment, SaveRecyclerAdapter.OnItemClickListener onItemClickListener){
-        if (saveComponent == null){
+    public SaveComponent addSaveComponent(SaveFragment saveFragment, SaveRecyclerAdapter.OnItemClickListener onItemClickListener) {
+        if (saveComponent == null) {
             saveComponent = mapsComponent.addSaveComponent(new SaveModule(saveFragment, onItemClickListener));
         }
         return saveComponent;
     }
 
-    public void clearSaveComponent(){
+    public void clearSaveComponent() {
         saveComponent = null;
     }
-
-
-
 
 
 }

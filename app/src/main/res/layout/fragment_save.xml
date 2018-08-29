@@ -15,24 +15,13 @@
         android:background="#ffffff"
         app:menu="@menu/toolbar_menu">
 
-        <!--<ImageButton
-            android:id="@+id/homeBtnSave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:paddingEnd="8dp"
-            android:foregroundGravity="center_vertical"
-            android:src="@drawable/ic_home"
-            android:background="#ffffff"/>-->
-
         <TextView
             android:id="@+id/titleSaved"
-            android:layout_width="290dp"
+            android:layout_width="@dimen/title_saved_width"
             android:layout_height="wrap_content"
             android:text="@string/title_saved_fragment"
-            android:textColor="#000000"
-            android:textSize="25sp"/>
+            android:textColor="@color/black_text"
+            android:textSize="@dimen/title_saved_textsize"/>
 
         <android.support.v7.widget.SearchView
             android:id="@+id/searchSave"
@@ -40,9 +29,9 @@
             app:closeIcon="@drawable/ic_close"
             app:searchIcon="@drawable/ic_search_black_24dp"
             app:searchHintIcon="@null"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#00000000"
+            android:background="@color/black_text"
             android:layout_alignParentEnd="true"
             android:foregroundGravity="center_vertical"
             android:src="@drawable/ic_search_black_24dp" />

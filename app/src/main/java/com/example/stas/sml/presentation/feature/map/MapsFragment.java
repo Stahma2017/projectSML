@@ -1,5 +1,6 @@
 package com.example.stas.sml.presentation.feature.map;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Address;
@@ -9,12 +10,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +60,8 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class MapsFragment extends Fragment implements MapsContract.MapsView, OnMapReadyCallback, GoogleMap.OnMapClickListener, View.OnClickListener,
+public class MapsFragment extends Fragment implements MapsContract.MapsView, OnMapReadyCallback, GoogleMap.OnMapClickListener,
+        GoogleMap.OnMarkerClickListener ,View.OnClickListener,
         CategoryRecyclerAdapter.OnItemClickListener, VenuesByCategoryRecyclerAdapter.OnItemClickListener, SearchSuggestionsRecyclerAdapter.OnItemClickListener
 {
     public static String MY_PREFS = "mapsPreferences";
@@ -73,6 +77,8 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     VenuesByCategoryRecyclerAdapter placesAdapter;
     @Inject
     SearchSuggestionsRecyclerAdapter suggestionAdapter;
+    @Inject
+    Context context;
     @BindView(R.id.addressField)TextView addressTW;
     @BindView(R.id.regionField)TextView regionTW;
     @BindView(R.id.distance)TextView distanceTW;
@@ -122,28 +128,45 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         suggestionRecycler.setLayoutManager(suggestionManager);
         suggestionRecycler.setAdapter(suggestionAdapter);
 
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    toolbar.setBackgroundColor(Color.WHITE);
-                    btnHome.setVisibility(View.VISIBLE);
-                    categoryRecycler.setVisibility(View.VISIBLE);
-                    Animation anim = AnimationUtils.loadAnimation(MapsFragment.this.getContext(), R.anim.fadein);
-                    toolbar.startAnimation(anim);
-                    categoryRecycler.startAnimation(anim);
-                } else {
-                    // handle shaking after closing searchview
-                    searchView.setIconified(true);
-                    toolbar.setBackground(ContextCompat.getDrawable(MapsFragment.this.getContext(), R.drawable.rectangle_14_edited));
-                    btnHome.setVisibility(View.GONE);
-                    categoryRecycler.setVisibility(View.GONE);
-                    suggestionRecycler.setVisibility(View.GONE);
-                }
+      searchView.setOnSearchClickListener(v -> {
+          toolbar.setLayoutParams(new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+          toolbar.setBackgroundColor(Color.WHITE);
+          btnHome.setVisibility(View.VISIBLE);
+          categoryRecycler.setVisibility(View.VISIBLE);
+          Animation anim = AnimationUtils.loadAnimation(MapsFragment.this.getContext(), R.anim.fadein);
+          toolbar.startAnimation(anim);
+          categoryRecycler.startAnimation(anim);
+      });
+      searchView.setOnCloseListener(() -> {
+          CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+          params.gravity = Gravity.END;
+        toolbar.setLayoutParams(params);
+          toolbar.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rectangle_14_edited));
+          btnHome.setVisibility(View.GONE);
+          categoryRecycler.setVisibility(View.GONE);
+          suggestionRecycler.setVisibility(View.GONE);
+          if (!venueListBtn.isShown()){
+              zoomInBtn.setVisibility(View.VISIBLE);
+              locationBtn.setVisibility(View.VISIBLE);
+              zoomOutBtn.setVisibility(View.VISIBLE);
+          }
+          return false;
+      });
+
+        btnHome.setOnClickListener(view1 -> {
+            searchView.setQuery("", false);
+            searchView.setIconified(true);
+            toolbar.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rectangle_14_edited));
+            btnHome.setVisibility(View.GONE);
+            categoryRecycler.setVisibility(View.GONE);
+            suggestionRecycler.setVisibility(View.GONE);
+            if (!venueListBtn.isShown()){
+                zoomInBtn.setVisibility(View.VISIBLE);
+                locationBtn.setVisibility(View.VISIBLE);
+                zoomOutBtn.setVisibility(View.VISIBLE);
             }
         });
 
-        btnHome.setOnClickListener(view1 -> searchView.setIconified(true));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -152,8 +175,11 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
             }
             @Override
             public boolean onQueryTextChange(String query) {
-                if ((query.length() % 3 == 0) && (query.length() != 0)){
+
+                if ((query.length() % 3 == 0) && (query.length() >= 3)){
                    presenter.getTextSuggestions(query);
+                }else{
+                    suggestionRecycler.setVisibility(View.GONE);
                 }
                 return true;
             }
@@ -195,6 +221,14 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         }
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if (marker.getTitle() == null){
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
+        return false;
+    }
+
     public void pointLocation(double latitude, double longitude, String title){
         LatLng latLng = new LatLng(latitude, longitude);
         setMarker(latLng, title);
@@ -211,11 +245,13 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        MapsInitializer.initialize(getContext());
+        MapsInitializer.initialize(context);
         map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.setOnMapClickListener(this);
+        map.setOnMarkerClickListener(this);
         map.getUiSettings().setCompassEnabled(false);
+        map.getUiSettings().setMapToolbarEnabled(false);
         CameraPosition liberty = CameraPosition.builder().target(new LatLng(45.045583, 38.978452)).zoom(16).bearing(0).tilt(45).build();
         map.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
     }
@@ -237,17 +273,20 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     public void showBottomSheet(Location location, LatLng latLng) {
         List<Address> addresses = getAddress(latLng);
         if (addresses.size()==0) {
-            showError("operation failed, check internet connection");
+            showError("getting address failed");
         }else {
             float[] results = new float[1];
             Location.distanceBetween(latLng.latitude, latLng.longitude, location.getLatitude(), location.getLongitude(), results);
-            String[] splitedAddress = addresses.get(0).getAddressLine(0).split(",");
-            String address = splitedAddress[0] + "," + splitedAddress[1];
-            String region = addresses.get(0).getCountryName() + ", " + addresses.get(0).getAdminArea();
-            addressTW.setText(address);
-            regionTW.setText(region);
-            distanceTW.setText(String.format(Locale.CANADA, "%.0f м", results[0]));
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            Address address = addresses.get(0);
+            if (address.getAddressLine(0) != null){
+                String[] splitedAddress = address.getAddressLine(0).split(",");
+                String addressStr = splitedAddress[0] + "," + splitedAddress[1];
+                String region = addresses.get(0).getCountryName() + ", " + addresses.get(0).getAdminArea();
+                addressTW.setText(addressStr);
+                regionTW.setText(region);
+                distanceTW.setText(String.format(Locale.CANADA, "%.0f м", results[0]));
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }else showError("getting address failed");
         }
     }
 
@@ -270,8 +309,10 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
                 position(latLng)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
                 .title(title);
+
         marker = map.addMarker(markerOptions);
     }
+
 
     @Override
     public void toCurrentLocation(Location location) {
@@ -329,6 +370,9 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     @Override
     public void showSearchSuggestions(List<Minivenue> minivenues){
         suggestionRecycler.setVisibility(View.VISIBLE);
+        locationBtn.setVisibility(View.GONE);
+        zoomInBtn.setVisibility(View.GONE);
+        zoomOutBtn.setVisibility(View.GONE);
         suggestionAdapter.setMinivenues(minivenues);
         suggestionAdapter.notifyDataSetChanged();
     }
@@ -371,6 +415,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         categoryAdapter.notifyDataSetChanged();
         suggestionRecycler.setVisibility(View.GONE);
         presenter.getLocationForCategories(category.getCategoryId());
+        searchView.clearFocus();
     }
 
     @Override
@@ -404,6 +449,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     @Override
     public void showError(String errorMessage) {
 
-        Toast.makeText(getContext(), "INET GONE", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
     }
 }

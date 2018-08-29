@@ -10,5 +10,6 @@
         <item name="android:endColor">#00FFFF</item>
         <item name="android:angle">145</item>
     </color>
+    <color name="black_text">#000000</color>
 
 </resources>

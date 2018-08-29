@@ -102,19 +102,9 @@ PreviousPlacesByCategoryAdapter.OnItemClickListener, SearchSuggestionsRecyclerAd
             public boolean onQueryTextChange(String query) {
                 if ((query.length() % 3 == 0) && (query.length() != 0)){
                     presenter.getTextSuggestions(query);
+                }else{
+                    suggestionRecycler.setVisibility(View.GONE);
                 }
-                return true;
-            }
-        });
-
-        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
-            @Override
-            public boolean onSuggestionSelect(int i) {
-                return false;
-            }
-
-            @Override
-            public boolean onSuggestionClick(int i) {
                 return true;
             }
         });
@@ -126,7 +116,8 @@ PreviousPlacesByCategoryAdapter.OnItemClickListener, SearchSuggestionsRecyclerAd
             editor.apply();
             MainActivity activity = (MainActivity) getActivity();
             activity.showToolbar();
-            activity.displayMapsFragment();
+            activity.getSupportFragmentManager().popBackStack();
+           // activity.displayMapsFragment();
         });
 
         toMapBtn.setOnClickListener(view1 -> {
@@ -136,7 +127,8 @@ PreviousPlacesByCategoryAdapter.OnItemClickListener, SearchSuggestionsRecyclerAd
             editor.apply();
             MainActivity activity = (MainActivity) getActivity();
             activity.showToolbar();
-            activity.displayMapsFragment();
+            activity.getSupportFragmentManager().popBackStack();
+            //activity.displayMapsFragment();
         });
         return view;
     }

@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:paddingEnd="8dp"
+            android:paddingEnd="@dimen/homeBtn_paddingend"
             android:foregroundGravity="center_vertical"
             android:src="@drawable/ic_home"
             android:background="#ffffff"/>
@@ -49,7 +49,7 @@
             app:closeIcon="@drawable/ic_close"
             app:searchIcon="@drawable/ic_search_black_24dp"
             app:searchHintIcon="@null"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
             android:background="#00000000"
@@ -62,18 +62,18 @@
             android:background="#ffffff"
             android:id="@+id/categoryRecyclerVenuelist"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="54dp"/>
+            android:layout_height="@dimen/venuelist_recycler_height"
+            android:layout_marginTop="@dimen/venuelist_margin_top"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/placesRecyclerPrev"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="164dp"/>
+            android:layout_marginTop="@dimen/placerecylerprev_margin_top"/>
 
         <android.support.v7.widget.RecyclerView
             android:visibility="invisible"
-            android:layout_marginTop="133dp"
+            android:layout_marginTop="@dimen/suggestionlistprev_margintop"
             android:id="@+id/suggestion_listPrev"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

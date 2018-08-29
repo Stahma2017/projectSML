@@ -10,8 +10,8 @@
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="@dimen/ratingbar_margin_start"
+        android:layout_marginTop="@dimen/ratingbar_maring_top"
         android:numStars="5"
         android:theme="@style/RatingBar"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,31 +19,31 @@
 
     <TextView
         android:id="@+id/addressSelected"
-        android:layout_width="195dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="@dimen/addressselected_width"
+        android:layout_height="@dimen/addressselected_height"
+        android:layout_marginStart="@dimen/addressselected_margin_start"
+        android:layout_marginTop="@dimen/addressselected_marmgin_top"
         android:textStyle="bold"
-        android:textColor="#000000"
+        android:textColor="@color/black_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="213dp"
-        android:layout_marginTop="15dp"
+        android:layout_width="@dimen/distanceselected_img_width"
+        android:layout_height="@dimen/distanceselected_img_height"
+        android:layout_marginStart="@dimen/distanceSelected_img_margin_start"
+        android:layout_marginTop="@dimen/distanceselected_img_margintop"
         android:src="@drawable/distance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/kmSelected"
-        android:layout_width="80dp"
+        android:layout_width="@dimen/kmselected_width"
         android:layout_height="wrap_content"
-        android:layout_marginStart="248dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="@dimen/kmselected_marginstart"
+        android:layout_marginTop="@dimen/kmselected_margintop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,60 +51,60 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="75dp"
-        android:textColor="#000000"
-        android:text="Описание"
+        android:layout_marginStart="@dimen/textview3_marginstart"
+        android:layout_marginTop="@dimen/textview3_margintop"
+        android:textColor="@color/black_text"
+        android:text="@string/description"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/descriptionSelected"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/descriptionselected_width"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginStart="@dimen/descriptionselected_marginstart"
+        android:layout_marginTop="@dimen/desciptionselected_margintop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="100dp"
+        android:layout_width="@dimen/textView2_width"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="@dimen/textview2_width"
+        android:layout_marginTop="@dimen/textView2_margintop"
         android:textStyle="bold"
-        android:textColor="#000000"
-        android:text="Контакты"
+        android:textColor="@color/black_text"
+        android:text="@string/contacts"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionSelected" />
 
     <ImageView
         android:src="@drawable/phone"
         android:id="@+id/imageView2"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="@dimen/imageview2_width"
+        android:layout_height="@dimen/imageview2_height"
+        android:layout_marginStart="@dimen/imageview_marginstart"
+        android:layout_marginTop="@dimen/imageview2_margintop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/number"
-        android:layout_width="130dp"
+        android:layout_width="@dimen/number_width"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="@dimen/number_marginstart"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <ImageView
         android:src="@drawable/twitter"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="190dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="@dimen/twitter_width"
+        android:layout_height="@dimen/twitter_height"
+        android:layout_marginStart="@dimen/twitter_marginstart"
+        android:layout_marginTop="@dimen/twitter_margintop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -112,17 +112,17 @@
         android:id="@+id/twitter"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="220dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/twitterlabel_marginstart"
+        android:layout_marginTop="@dimen/twitterlable_margintop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <ImageView
         android:id="@+id/workIndicatorSelected"
-        android:layout_width="5dp"
-        android:layout_height="5dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="@dimen/workindicatorselected_width"
+        android:layout_height="@dimen/workindicatorselected_height"
+        android:layout_marginStart="@dimen/workindicatorselected_marginstart"
+        android:layout_marginTop="@dimen/workindicatorselected_margintop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
@@ -133,7 +133,7 @@
         android:layout_height="18dp"
         android:layout_marginStart="27dp"
         android:layout_marginTop="10dp"
-        android:textColor="#000000"
+        android:textColor="@color/black_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/number" />
 
@@ -143,8 +143,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:textColor="#000000"
-        android:text="Галерея"
+        android:textColor="@color/black_text"
+        android:text="@string/gallery"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/workStatusSelected" />
@@ -152,8 +152,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/galleryRecycler"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="@dimen/galleryrecycler_height"
+        android:layout_marginTop="@dimen/galleryrecycler_margintop"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </android.support.constraint.ConstraintLayout>

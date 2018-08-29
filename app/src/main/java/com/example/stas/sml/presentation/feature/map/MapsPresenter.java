@@ -39,9 +39,11 @@ public class MapsPresenter  {
     }
 
     public void detachView() {
+        view.clear();
         view = null;
         compositeDisposable.dispose();
     }
+
 
     public void getVenuesWithCategory(String categoryId, Location currentLocation){
         view.get().displayProgressbar();
@@ -111,13 +113,10 @@ public class MapsPresenter  {
         Disposable bla = interactor.loadVenuesByQuerySubmition(location, submit)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<VenueEntity>() {
-                               @Override
-                               public void accept(VenueEntity venue) throws Exception {
-                                   venues.add(venue);
-                                   view.get().showPlacesBySubmit(venues);
-                               }
-                           }, errorHandler::proceed,
+                .subscribe(venue -> {
+                    venues.add(venue);
+                    view.get().showPlacesBySubmit(venues);
+                }, errorHandler::proceed,
                         () -> view.get().hideProgressbar());
               compositeDisposable.add(bla);
     }
