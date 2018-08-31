@@ -21,6 +21,7 @@ public class BaseErrorHandler implements ErrorHandler {
     @Override
     public void proceed(Throwable error) {
         Log.d("Error", error.getMessage());
+       // ((HttpException)error).response().errorBody().string();
         CanShowError view = mapsView.get();
         if (view == null) {
             throw new IllegalStateException("View is detached");

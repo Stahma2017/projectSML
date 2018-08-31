@@ -31,7 +31,7 @@
             app:searchHintIcon="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black_text"
+
             android:layout_alignParentEnd="true"
             android:foregroundGravity="center_vertical"
             android:src="@drawable/ic_search_black_24dp" />

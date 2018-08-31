@@ -1,6 +1,9 @@
 package com.example.stas.sml.domain.interactor;
 
 import android.location.Location;
+
+import com.example.stas.sml.data.model.venuesearch.SearchResponse;
+import com.example.stas.sml.data.model.venuesearch.Venue;
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.feature.main.ActivityContract;
@@ -9,6 +12,7 @@ import com.example.stas.sml.data.mapper.VenueMapper;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import java.util.List;
 import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 
 public class MapsModel implements ActivityContract.Model {
     private final Api serverApi;
@@ -27,10 +31,13 @@ public class MapsModel implements ActivityContract.Model {
     @Override
     public Observable<VenueEntity> loadVenuesWithCategory(Location location, String categoryId) {
        String ll = location.getLatitude() + ", " + location.getLongitude();
-      //  String ll = "48.878396" + ", " + "2.354611";
-      //  String ll = "40.725208" + ", " + "-73.862760";
-        return serverApi.searchWithCategory(ll, 1000.0, categoryId, 1)
-                .map(searchResponce -> searchResponce.getResponse().getVenues())
+        return serverApi.searchWithCategory(ll, 1000.0, categoryId, 2)
+                .map(new Function<SearchResponse, List<Venue>>() {
+                    @Override
+                    public List<Venue> apply(SearchResponse searchResponce) throws Exception {
+                        return searchResponce.getResponse().getVenues();
+                    }
+                })
                 .flatMapIterable(items -> items)
                 .flatMap(venuesearch -> serverApi.getVenue(venuesearch.getId())
                         .map(venueDetailsResponse -> {

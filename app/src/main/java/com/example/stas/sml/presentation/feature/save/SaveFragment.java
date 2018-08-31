@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
@@ -66,16 +67,15 @@ public class SaveFragment extends Fragment implements SaveContract.SaveView, Sav
                 return true;
             }
         });
-        search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
-                    title.setVisibility(View.GONE);
-                }else{
-                    title.setVisibility(View.VISIBLE);
-                    search.setIconified(true);
-                }
+        search.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus){
+                title.setVisibility(View.GONE);
             }
+        });
+
+        search.setOnCloseListener(() -> {
+            title.setVisibility(View.VISIBLE);
+            return false;
         });
         return view;
     }
@@ -103,6 +103,7 @@ public class SaveFragment extends Fragment implements SaveContract.SaveView, Sav
                 break;
             case R.id.toSaveBtnSaved:
                 presenter.unsaveVenue(venuedb.id, false);
+                Toast.makeText(getContext(), venuedb.name + " unsaved",Toast.LENGTH_SHORT).show();
                 break;
         }
     }

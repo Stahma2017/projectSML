@@ -57,8 +57,10 @@ public class App extends Application {
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
+        }else {
+            LeakCanary.install(this);
         }
-        LeakCanary.install(this);
+
     }
 
     public void clearAllComponents() {

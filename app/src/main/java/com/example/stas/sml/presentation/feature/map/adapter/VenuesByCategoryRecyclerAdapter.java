@@ -93,15 +93,10 @@ public class VenuesByCategoryRecyclerAdapter extends RecyclerView.Adapter<Venues
             address.setText(venue.getLocation().getAddress());
             workStatus.setText(venue.getHours().getStatus());
             distance.setText(String.format(Locale.US,"%.1f км", ((double)venue.getDistance())/1000));
-            if (venue.getHours().getOpen()){
+            if (venue.getHours().getOpen() || (venue.getHours().getStatus() != null)){
                 workIndicator.setImageResource(R.drawable.work_indicator);
             }
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View itemView) {
-                    onItemClickListener.onItemClick(venue);
-                }
-            });
+            itemView.setOnClickListener(itemView -> onItemClickListener.onItemClick(venue));
         }
     }
 }

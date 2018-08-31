@@ -117,7 +117,6 @@ PreviousPlacesByCategoryAdapter.OnItemClickListener, SearchSuggestionsRecyclerAd
             MainActivity activity = (MainActivity) getActivity();
             activity.showToolbar();
             activity.getSupportFragmentManager().popBackStack();
-           // activity.displayMapsFragment();
         });
 
         toMapBtn.setOnClickListener(view1 -> {
@@ -128,7 +127,6 @@ PreviousPlacesByCategoryAdapter.OnItemClickListener, SearchSuggestionsRecyclerAd
             MainActivity activity = (MainActivity) getActivity();
             activity.showToolbar();
             activity.getSupportFragmentManager().popBackStack();
-            //activity.displayMapsFragment();
         });
         return view;
     }

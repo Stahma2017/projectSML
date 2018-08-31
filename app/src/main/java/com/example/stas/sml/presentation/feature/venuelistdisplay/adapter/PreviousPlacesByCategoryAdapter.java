@@ -95,10 +95,9 @@ public class PreviousPlacesByCategoryAdapter extends RecyclerView.Adapter<Previo
             address.setText(venue.getLocation().getAddress());
             workStatus.setText(venue.getHours().getStatus());
             distance.setText(String.format(Locale.US,"%.1f км", ((double)venue.getDistance())/1000));
-            if (venue.getHours().getOpen() && venue.getHours().getStatus()!= null){
+            if ((venue.getHours().getOpen()) || (venue.getHours().getStatus()!= null)){
                 workIndicator.setImageResource(R.drawable.work_indicator);
             }
-
             itemView.setOnClickListener(itemView -> onItemClickListener.onItemClick(venue));
         }
     }

@@ -79,8 +79,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
         Log.d("LIFE", "OnCreate");
     }
 
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     }
 
     public void displaySaveFragment(){
-        if(!saveFragment.isAdded()){
+        if(!saveFragment.isAdded()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.remove(venuelistFragment);
             ft.remove(venueSelectedFragment);
@@ -120,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
             ft.add(R.id.fragment_container, saveFragment);
             ft.commit();
         }
+
     }
 
     public void displayVenuelistFragment(){
@@ -151,8 +150,6 @@ public class MainActivity extends AppCompatActivity implements ActivityContract.
     public void showToolbar(){
         bottomContainer.setVisibility(View.VISIBLE);
     }
-
-
 
     @Override
     public void showError(String errorMessage) {

@@ -5,14 +5,16 @@ public class Category {
     private int categoryImageEnabled;
     private String categoryName;
     private String categoryId;
+    private Integer markerColor;
     private boolean isEnabled = false;
 
 
-    public Category(int categoryImage, String categoryName, String categoryId, int categoryImageEnabled) {
+    public Category(int categoryImage, String categoryName, String categoryId, int categoryImageEnabled, int markerColor) {
         this.categoryImage = categoryImage;
         this.categoryName = categoryName;
         this.categoryId = categoryId;
         this.categoryImageEnabled = categoryImageEnabled;
+        this.markerColor = markerColor;
     }
     public Category(String categoryId){
         this.categoryId = categoryId;
@@ -57,5 +59,13 @@ public class Category {
 
     public void setCategoryImageEnabled(int categoryImageEnabled) {
         this.categoryImageEnabled = categoryImageEnabled;
+    }
+
+    public Integer getMarkerColor() {
+        return markerColor;
+    }
+
+    public void setMarkerColor(Integer markerColor) {
+        this.markerColor = markerColor;
     }
 }

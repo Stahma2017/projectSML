@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.stas.sml.App;
 import com.example.stas.sml.R;
 import com.example.stas.sml.data.database.entity.VenueDb;
@@ -60,16 +62,15 @@ public class HistoryFragment extends Fragment implements HistoryContract.History
                 return true;
             }
         });
-        search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
-                    title.setVisibility(View.GONE);
-                }else{
-                    title.setVisibility(View.VISIBLE);
-                    search.setIconified(true);
-                }
+        search.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus){
+                title.setVisibility(View.GONE);
             }
+        });
+
+        search.setOnCloseListener(() -> {
+            title.setVisibility(View.VISIBLE);
+            return false;
         });
         return view;
     }
@@ -83,6 +84,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.History
                 break;
             case R.id.toSaveBtnVisited:
                presenter.saveVenue(venuedb.id, true);
+                Toast.makeText(getContext(), venuedb.name + " saved",Toast.LENGTH_SHORT).show();
                 break;
         }
     }

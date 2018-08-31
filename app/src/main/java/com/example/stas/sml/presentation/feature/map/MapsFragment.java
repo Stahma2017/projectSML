@@ -25,7 +25,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.stas.sml.App;
@@ -37,6 +36,7 @@ import com.example.stas.sml.presentation.feature.map.adapter.VenuesByCategoryRec
 import com.example.stas.sml.data.model.venuesuggestion.Minivenue;
 import com.example.stas.sml.domain.entity.venuedetailedentity.VenueEntity;
 import com.example.stas.sml.presentation.feature.main.MainActivity;
+import com.example.stas.sml.utils.CategoryList;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -56,7 +56,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
-
 import static android.content.Context.MODE_PRIVATE;
 
 
@@ -67,6 +66,7 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
     public static String MY_PREFS = "mapsPreferences";
     GoogleMap map;
     private Marker marker;
+    private Marker categoryMarker;
     private BottomSheetBehavior bottomSheetBehavior;
     private Unbinder unbinder;
     @Inject
@@ -114,7 +114,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         zoomOutBtn.setOnClickListener(this);
         zoomInBtn.setOnClickListener(this);
         venueListBtn.setOnClickListener(this);
-
         categoryAdapter.refreshList();
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         categoryRecycler.setLayoutManager(horizontalLayoutManager);
@@ -175,7 +174,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
             }
             @Override
             public boolean onQueryTextChange(String query) {
-
                 if ((query.length() % 3 == 0) && (query.length() >= 3)){
                    presenter.getTextSuggestions(query);
                 }else{
@@ -252,13 +250,14 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         map.setOnMarkerClickListener(this);
         map.getUiSettings().setCompassEnabled(false);
         map.getUiSettings().setMapToolbarEnabled(false);
-        CameraPosition liberty = CameraPosition.builder().target(new LatLng(45.045583, 38.978452)).zoom(16).bearing(0).tilt(45).build();
+        CameraPosition liberty = CameraPosition.builder().target(new LatLng(45.046088, 38.979382)).zoom(16).bearing(0).tilt(45).build();
         map.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
-        setMarker(latLng, null);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        map.clear();
         presenter.getLocation(latLng);
         placesRecycler.setVisibility(View.GONE);
         venueListBtn.setVisibility(View.GONE);
@@ -274,18 +273,22 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         List<Address> addresses = getAddress(latLng);
         if (addresses.size()==0) {
             showError("getting address failed");
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
         }else {
             float[] results = new float[1];
             Location.distanceBetween(latLng.latitude, latLng.longitude, location.getLatitude(), location.getLongitude(), results);
             Address address = addresses.get(0);
             if (address.getAddressLine(0) != null){
                 String[] splitedAddress = address.getAddressLine(0).split(",");
+                if (splitedAddress.length >=2){
                 String addressStr = splitedAddress[0] + "," + splitedAddress[1];
+                    addressTW.setText(addressStr);}
                 String region = addresses.get(0).getCountryName() + ", " + addresses.get(0).getAdminArea();
-                addressTW.setText(addressStr);
                 regionTW.setText(region);
                 distanceTW.setText(String.format(Locale.CANADA, "%.0f м", results[0]));
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                setMarker(latLng, null);
             }else showError("getting address failed");
         }
     }
@@ -309,8 +312,16 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
                 position(latLng)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
                 .title(title);
+       marker = map.addMarker(markerOptions);
+    }
 
-        marker = map.addMarker(markerOptions);
+   private void setCategoryMarker(double latitude, double longitute, int resource, String title){
+        LatLng latLng = new LatLng(latitude, longitute);
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.fromResource(resource))
+                .title(title);
+      categoryMarker = map.addMarker(markerOptions);
     }
 
 
@@ -361,10 +372,16 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         zoomOutBtn.setVisibility(View.GONE);
         zoomInBtn.setVisibility(View.GONE);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        if (marker != null){
-            marker.remove();
+        if ((marker != null) || (categoryMarker != null)){
+            map.clear();
         }
-        //todo add markers of places
+        int index = categoryAdapter.getEnabledCategory();
+        for (VenueEntity venuentity: venues) {
+            setCategoryMarker(venuentity.getLocation().getLat(),
+                    venuentity.getLocation().getLng(),
+                    CategoryList.getInstance().getCategoryList().get(index).getMarkerColor(),
+                    venuentity.getName());
+        }
     }
 
     @Override
@@ -403,8 +420,8 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
         suggestionRecycler.setVisibility(View.GONE);
         categoryAdapter.setEnabledCategory(-1);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        if (marker != null){
-            marker.remove();
+        if (marker != null || categoryMarker !=null){
+            map.clear();
         }
     }
 
@@ -448,7 +465,6 @@ public class MapsFragment extends Fragment implements MapsContract.MapsView, OnM
 
     @Override
     public void showError(String errorMessage) {
-
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
     }
 }

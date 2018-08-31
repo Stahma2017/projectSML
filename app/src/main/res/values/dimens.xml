@@ -40,7 +40,7 @@
     <dimen name="placename_text_size">26sp</dimen>
     <dimen name="placerating_marginstart">90dp</dimen>
     <dimen name="placerating_margintop">50dp</dimen>
-    <dimen name="placeshortdescription_width">250dp</dimen>
+    <dimen name="placeshortdescription_width">230dp</dimen>
     <dimen name="placeshortdescription_marginstart">25dp</dimen>
     <dimen name="placeshortdescription_margintop">90dp</dimen>
     <dimen name="placeaddress_marginstart">25dp</dimen>
@@ -59,7 +59,7 @@
     <dimen name="spacing_normal">16dp</dimen>
     <dimen name="width_category_recycler">60dp</dimen>
     <dimen name="category_recycler_height_img">60dp</dimen>
-    <dimen name="catecory_recycler_width_tw">90dp</dimen>
+    <dimen name="catecory_recycler_width_tw">98dp</dimen>
     <dimen name="ratingbar_margin_start">10dp</dimen>
     <dimen name="ratingbar_maring_top">10dp</dimen>
     <dimen name="addressselected_width">195dp</dimen>
