@@ -31,7 +31,7 @@ public class MapsModel implements ActivityContract.Model {
     @Override
     public Observable<VenueEntity> loadVenuesWithCategory(Location location, String categoryId) {
        String ll = location.getLatitude() + ", " + location.getLongitude();
-        return serverApi.searchWithCategory(ll, 1000.0, categoryId, 2)
+        return serverApi.searchWithCategory(ll, 1000.0, categoryId, 15)
                 .map(new Function<SearchResponse, List<Venue>>() {
                     @Override
                     public List<Venue> apply(SearchResponse searchResponce) throws Exception {
@@ -55,7 +55,7 @@ public class MapsModel implements ActivityContract.Model {
     @Override
     public Observable<VenueEntity> loadVenuesByQuerySubmition(Location location, String query){
         String ll = location.getLatitude() + ", " + location.getLongitude();
-        return serverApi.searchWithQueryParam(ll, 1000.0, query, 1)
+        return serverApi.searchWithQueryParam(ll, 1000.0, query, 15)
                 .map(searchResponce -> searchResponce.getResponse().getVenues())
                 .flatMapIterable(items -> items)
                 .flatMap(venuesearch -> serverApi.getVenue(venuesearch.getId())
